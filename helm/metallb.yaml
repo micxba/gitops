@@ -1,0 +1,4 @@
+fullnameOverride: metallb
+speaker:
+  frr:
+    enabled: false

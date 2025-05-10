@@ -1,0 +1,23 @@
+# Do not modify this file
+# It is intented to do App-of-Apps monitoring
+# of application manifests in the /apps folder.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    name: in-cluster
+  project: default
+  source:
+    path: apps
+    repoURL: git@github.com:micxba/gitops.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
