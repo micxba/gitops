@@ -1,28 +1,29 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: metallb
-  namespace: argo-cd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  sources:
-    - repoURL: https://metallb.github.io/metallb
-      targetRevision: 0.14.9
-      chart: metallb
-      helm:
-        valueFiles:
-          - $values/helm/metallb-values.yaml
-    - repoURL: git@github.com:micxba/gitops.git
-      targetRevision: main
-      ref: values
-    - repoURL: git@github.com:micxba/gitops.git
-      path: manifests/metallb/metallb.yaml
-      targetRevision: main
-  destination:
-    namespace: metallb-system
-    name: in-cluster
-  # syncPolicy:
-  #   automated:
-  #     selfHeal: true
+---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: metallb
+#   namespace: argo-cd
+#   finalizers:
+#   - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   sources:
+#     - repoURL: https://metallb.github.io/metallb
+#       targetRevision: 0.14.9
+#       chart: metallb
+#       helm:
+#         valueFiles:
+#           - $values/helm/metallb-values.yaml
+#     - repoURL: git@github.com:micxba/gitops.git
+#       targetRevision: main
+#       ref: values
+#     - repoURL: git@github.com:micxba/gitops.git
+#       path: manifests/metallb/metallb.yaml
+#       targetRevision: main
+#   destination:
+#     namespace: metallb-system
+#     name: in-cluster
+#   # syncPolicy:
+#   #   automated:
+#   #     selfHeal: true
