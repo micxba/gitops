@@ -27,6 +27,6 @@ spec:
   issuerRef:
     name: letsencrypt-sith-network-issuer
     kind: ClusterIssuer
-  commonName: "*.sith-network"
+  commonName: "*.sith.network"
   dnsNames:
-    - "*.sith-network"
+    - "*.sith.network"
