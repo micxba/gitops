@@ -1,3 +1,5 @@
+# Install cert-manager crd's manually 
+# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -10,7 +12,7 @@ spec:
   project: default
   sources:
     - repoURL: https://charts.jetstack.io
-      targetRevision: v1.17.1
+      targetRevision: v1.17.2
       chart: cert-manager
       helm:
         valueFiles:
