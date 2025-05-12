@@ -11,12 +11,12 @@ spec:
     - repoURL: https://metallb.github.io/metallb
       targetRevision: 0.14.9
       chart: metallb
-      # helm:
-      #   valueFiles:
-      #     - $values/helm/argocd-values.yaml
-    # - repoURL: git@github.com:micxba/gitops.git
-    #   targetRevision: main
-    #   ref: values
+      helm:
+        valueFiles:
+          - $values/helm/metallb-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
     - repoURL: git@github.com:micxba/gitops.git
       path: manifests/metallb/metallb.yaml
       targetRevision: main
