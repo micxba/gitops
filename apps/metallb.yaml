@@ -18,7 +18,7 @@ spec:
       targetRevision: main
       ref: values
     - repoURL: git@github.com:micxba/gitops.git
-      path: manifests/metallb/metallb.yaml
+      path: manifests/metallb
       targetRevision: main
   destination:
     namespace: metallb-system
