@@ -1,0 +1,11 @@
+controller:
+  ingressClassResource:
+    default: true
+  # metrics:
+  #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
+  #     additionalLabels:
+  #       release: kps
+  extraArgs:
+    default-ssl-certificate: cert-manager/wildcard-sith-networ
