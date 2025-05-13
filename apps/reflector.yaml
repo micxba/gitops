@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reflector
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: mgmt
+  sources:
+    - repoURL: https://emberstack.github.io/helm-charts
+      targetRevision: 7.1.288
+      chart: reflector
+      helm:
+        valueFiles:
+          - $values/helm/reflector-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: reflector
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
