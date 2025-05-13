@@ -24,10 +24,10 @@ server:
   #   - envName: VAULT_AWSKMS_SEAL_KEY_ID
   #     secretName: vault-kms
   #     secretKey: VAULT_AWSKMS_SEAL_KEY_ID
-  # auditStorage:
-  #   enabled: true
-  #   size: 10Gi
-  #   mountPath: "/vault/audit"
+  auditStorage:
+    enabled: true
+    size: 10Gi
+    mountPath: "/vault/audit"
   standalone:
     enabled: false
   ha:
@@ -47,9 +47,9 @@ server:
           }
         }
 
-#         storage "raft" {
-#           path = "/vault/data"
-#         }
+        storage "raft" {
+          path = "/vault/data"
+        }
 
 #         telemetry {
 #           prometheus_retention_time = "30s"
