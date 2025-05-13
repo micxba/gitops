@@ -30,22 +30,22 @@ server:
   #   mountPath: "/vault/audit"
   standalone:
     enabled: false
-#   ha:
-#     enabled: true
-#     replicas: 3
-#     raft:
-#       enabled: true
-#       config: |
-#         ui = true
+  ha:
+    enabled: true
+    replicas: 3
+    raft:
+      enabled: true
+      config: |
+        ui = true
 
-#         listener "tcp" {
-#           tls_disable = 1
-#           address = "[::]:8200"
-#           cluster_address = "[::]:8201"
-#           telemetry {
-#             unauthenticated_metrics_access = "true"
-#           }
-#         }
+        listener "tcp" {
+          tls_disable = 1
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
+          telemetry {
+            unauthenticated_metrics_access = "true"
+          }
+        }
 
 #         storage "raft" {
 #           path = "/vault/data"
