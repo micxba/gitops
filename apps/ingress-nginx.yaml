@@ -14,7 +14,7 @@ spec:
       helm:
         valueFiles:
           - $values/helm/ingress-nginx-values.yaml
-    - repoURL: git@git.crunchtime.it:opsmgmt/platform/k8s/argo-deploy.git
+    - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
   destination:
