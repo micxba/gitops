@@ -1,0 +1,6 @@
+fullnameOverride: nfs-subdir-external-provisioner
+nfs:
+  server: idefix.sith.network
+  path: /ruleof3-k8s-nfs
+storageClass:
+  defaultClass: true

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs-subdir-external-provisioner
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+      targetRevision: 4.0.18
+      chart: nfs-subdir-external-provisioner
+      helm:
+        valueFiles:
+          - $values/helm/nfs-provisioner-values.yaml
+    - repoURL: git@git.crunchtime.it:opsmgmt/platform/k8s/argo-deploy.git
+      targetRevision: main
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: nfs-provisioner
