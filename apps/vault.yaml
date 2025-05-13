@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://helm.releases.hashicorp.com
+      targetRevision: 0.29.1
+      chart: vault
+      helm:
+        valueFiles:
+          - $values/helm/vault-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   path: manifests/vault
+    #   targetRevision: main
+  destination:
+    name: in-cluster
+    namespace: vault
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true

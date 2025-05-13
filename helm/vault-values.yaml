@@ -1,0 +1,64 @@
+global:
+  namespace: "vault"
+injector:
+  enabled: false
+server:
+  ingress:
+    enabled: true
+    hosts:
+      - host: vault.sith.network
+    tls:
+      - secretName: wildcard-sith-network
+        hosts:
+          - vault.sith.network
+  # extraEnvironmentVars:
+  #   VAULT_SEAL_TYPE: awskms
+  #   AWS_REGION: us-east-1
+  # extraSecretEnvironmentVars:
+  #   - envName: AWS_ACCESS_KEY_ID
+  #     secretName: vault-kms
+  #     secretKey: AWS_ACCESS_KEY_ID
+  #   - envName: AWS_SECRET_ACCESS_KEY
+  #     secretName: vault-kms
+  #     secretKey: AWS_SECRET_ACCESS_KEY
+  #   - envName: VAULT_AWSKMS_SEAL_KEY_ID
+  #     secretName: vault-kms
+  #     secretKey: VAULT_AWSKMS_SEAL_KEY_ID
+  # auditStorage:
+  #   enabled: true
+  #   size: 10Gi
+  #   mountPath: "/vault/audit"
+  standalone:
+    enabled: false
+#   ha:
+#     enabled: true
+#     replicas: 3
+#     raft:
+#       enabled: true
+#       config: |
+#         ui = true
+
+#         listener "tcp" {
+#           tls_disable = 1
+#           address = "[::]:8200"
+#           cluster_address = "[::]:8201"
+#           telemetry {
+#             unauthenticated_metrics_access = "true"
+#           }
+#         }
+
+#         storage "raft" {
+#           path = "/vault/data"
+#         }
+
+#         telemetry {
+#           prometheus_retention_time = "30s"
+#           disable_hostname = true
+#         }
+
+#         service_registration "kubernetes" {}
+# serverTelemetry:
+#   serviceMonitor:
+#     enabled: true
+#     selectors:
+#       release: kps
