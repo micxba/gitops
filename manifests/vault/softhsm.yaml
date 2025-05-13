@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: softhsm
+  namespace: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: softhsm
+  template:
+    metadata:
+      labels:
+        app: softhsm
+    spec:
+      containers:
+      - name: softhsm
+        image: ghcr.io/ekristen/softhsm:latest
+        resources: {}
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            softhsm2-util --init-token --free --label vault-token --so-pin 1234 --pin 1234 && sleep infinity
+        volumeMounts:
+        - name: hsm-storage
+          mountPath: /var/lib/softhsm/tokens
+        - name: config-volume
+          mountPath: /etc/softhsm2
+      volumes:
+      - name: hsm-storage
+        persistentVolumeClaim:
+          claimName: softhsm-pvc
+      - name: config-volume
+        configMap:
+          name: softhsm-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: softhsm-pvc
+  namespace: vault
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-config
+  namespace: vault
+data:
+  softhsm2.conf: |
+    directories.tokendir = /var/lib/softhsm/tokens
+    objectstore.backend = file
+    log.level = INFO
