@@ -7,7 +7,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: mgmt
+  project: default
   sources:
     - repoURL: https://emberstack.github.io/helm-charts
       targetRevision: 7.1.288
