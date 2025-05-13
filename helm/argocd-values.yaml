@@ -77,7 +77,6 @@ server:
     extraTls:
       - hosts:
         - argocd.sith.network
-        secretName: cert-manager/wildcard-sith-network
 repoServer:
   replicas: 1
   # metrics:

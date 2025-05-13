@@ -8,4 +8,4 @@ controller:
   #     additionalLabels:
   #       release: kps
   extraArgs:
-    default-ssl-certificate: cert-manager/wildcard-sith-networ
+    default-ssl-certificate: cert-manager/wildcard-sith-network
