@@ -68,16 +68,16 @@ server:
   #     enabled: true
   #     selector:
   #       release: kps
-  # ingress:
-  #   enabled: true
-  #   ingressClassName: nginx
-  #   annotations:
-  #     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-  #     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-  #   extraTls:
-  #     - hosts:
-  #       - argocd.crunchtime.it
-  #       secretName: crunchtime-wildcard-tls
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    extraTls:
+      - hosts:
+        - argocd.sith.network
+        secretName: wildcard-sith-network
 repoServer:
   replicas: 1
   # metrics:
