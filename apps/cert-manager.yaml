@@ -10,6 +10,12 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: bw-auth-token
+      jsonPointers:
+        - /data
   sources:
     - repoURL: https://charts.jetstack.io
       targetRevision: v1.17.2
