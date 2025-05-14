@@ -1,0 +1,58 @@
+---
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: grafana-ldap
+#   namespace: monitoring
+# spec:
+#   refreshInterval: 1h
+#   secretStoreRef:
+#     name: vault-backend-css
+#     kind: ClusterSecretStore
+#   data:
+#   - remoteRef:
+#       key: dex
+#       property: ldap_readonly
+#     secretKey: ldap_readonly
+#   target:
+#     name: grafana-ldap
+#     template:
+#       type: Opaque
+#       data:
+#         ldap-toml: |
+#           [[servers]]
+#           host = "ldap.sith.network"
+#           port = 636
+#           use_ssl = true
+#           start_tls = false
+#           ssl_skip_verify = false
+#           bind_dn = "cn=readonly,ou=ServiceAccounts,dc=sith,dc=network"
+#           bind_password = "{{ .ldap_readonly }}"
+#           search_filter = "(uid=%s)"
+#           search_base_dns = ["ou=People,dc=sith,dc=network"]
+#           group_search_filter = "(&(objectClass=posixGroup)(memberUid=%s))"
+#           group_search_base_dns = ["ou=Groups,dc=sith,dc=network"]
+#           group_search_filter_user_attribute = "uid"
+
+#           [servers.attributes]
+#           email =  "mail"
+
+#           [[servers.group_mappings]]
+#           group_dn = "cn=k8s-admins,ou=Groups,dc=sith,dc=network"
+#           org_role = "Admin"
+#           grafana_admin = true
+
+#           [[servers.group_mappings]]
+#           group_dn = "cn=opsmgmt-devops,ou=Groups,dc=sith,dc=network"
+#           org_role = "Editor"
+#           grafana_admin = false
+
+#           [[servers.group_mappings]]
+#           group_dn = "cn=opsmgmt-devops-plus,ou=Groups,dc=sith,dc=network"
+#           org_role = "Editor"
+#           grafana_admin = false
+
+#           [[servers.group_mappings]]
+#           group_dn = "cn=ct-it-ops-offshore,ou=Groups,dc=sith,dc=network"
+#           org_role = "Viewer"
+#           grafana_admin = false

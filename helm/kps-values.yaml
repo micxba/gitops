@@ -1,0 +1,143 @@
+nameOverride: "kps"
+namespaceOverride: "monitoring"
+crds:
+  enabled: false
+alertmanager:
+  # config:
+  #   route:
+  #     group_by: ['job']
+  #     receiver: 'slack'
+  #     routes:
+  #     - matchers:
+  #         - alertname = "Watchdog"
+  #       receiver: 'null'
+  #     - matchers:
+  #         - alertname = "NodeDiskIOSaturation"
+  #       receiver: 'null'
+  #   receivers:
+  #   - name: 'null'
+  #   - name: 'slack'
+  #     slack_configs:
+  #     - channel: heartbeat-opsmgmt-production
+  #       api_url: https://slack.com/api/chat.postMessage
+  #       http_config:
+  #         authorization:
+  #           credentials_file: /etc/alertmanager/secrets/slack-token/slack-token
+  #       send_resolved: true
+  templateFiles:
+    template_1.tmpl: |-
+      {{ define "__alertmanager" }}Alertmanager{{ end }}
+  ingress:
+    enabled: true
+    hosts:
+      - alertmanager.sith.network
+    paths:
+      - /
+    tls:
+      - secretName: wildcard-sith-network
+        hosts:
+          - alertmanager.sith.network
+  # alertmanagerSpec:
+  #   secrets:
+  #     - slack-token
+grafana:
+  namespaceOverride: "monitoring"
+  defaultDashboardsEnabled: false
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.sith.network
+    path: /
+    tls:
+      - secretName: wildcard-sith-network
+        hosts:
+          - grafana.sith.network
+  persistence:
+    type: pvc
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 20Gi
+    finalizers:
+      - kubernetes.io/pvc-protection
+  grafana.ini:
+    enable_gzip: true
+    auth.anonymous:
+      enabled: true
+    # auth.ldap:
+    #   enabled: true
+    #   config_file: /etc/grafana/ldap.toml
+    dataproxy:
+      timeout: 300
+  # ldap:
+  #   enabled: true
+  #   existingSecret: "grafana-ldap"
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'grafana-dashboards-kubernetes'
+        orgId: 1
+        folder: 'Kubernetes'
+        type: file
+        disableDeletion: true
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/grafana-dashboards-kubernetes
+  dashboards:
+    grafana-dashboards-kubernetes:
+      k8s-system-api-server:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+        token: ''
+      k8s-system-coredns:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+        token: ''
+      k8s-views-global:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+        token: ''
+      k8s-views-namespaces:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+        token: ''
+      k8s-views-nodes:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+        token: ''
+      k8s-views-pods:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+        token: ''
+kubeControllerManager:
+  service:
+    selector:
+      k8s-app: kube-controller-manager
+kubeEtcd:
+  endpoints:
+    - 192.168.0.216
+kubeScheduler:
+  service:
+    selector:
+      k8s-app: kube-scheduler
+kube-state-metrics:
+  namespaceOverride: "monitoring"
+prometheus-node-exporter:
+  namespaceOverride: "monitoring"
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.sith.network
+    paths:
+    - /
+    tls:
+      - secretName: wildcard-sith-network
+        hosts:
+          - prometheus.sith.network
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        metadata:
+          name: prometheus-data
+        spec:
+          storageClassName: nfs-client
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 20Gi

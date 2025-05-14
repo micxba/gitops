@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kps-crds
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 17.0.2
+      chart: prometheus-operator-crds
+  destination:
+    namespace: monitoring
+    name: in-cluster
+#  syncPolicy:
+#    automated:
+#      selfHeal: false
