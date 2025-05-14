@@ -11,11 +11,11 @@ metadata:
 spec:
   project: default
   ignoreDifferences:
-    - group: ""
+    - group: "*"
       kind: Secret
       name: bw-auth-token
-      jsonPointers:
-        - /data
+      jqPathExpressions:
+        - .data
   sources:
     - repoURL: https://charts.jetstack.io
       targetRevision: v1.17.2
