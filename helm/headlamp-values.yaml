@@ -1,0 +1,16 @@
+config:
+  # oidc:
+  #   clientID: kubectl
+  #   clientSecret: 603*
+  #   issuerURL: https://dex.sith.network/dex
+  #   scopes: groups
+ingress:
+  enabled: true
+  hosts:
+    - host: headlamp.sith.network
+      paths:
+      - path: /
+        type: Prefix
+  tls:
+    - hosts:
+        - headlamp.sith.network

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io  
+spec:
+  project: mgmt
+  sources:
+    - repoURL: https://kubernetes-sigs.github.io/headlamp
+      targetRevision: 0.30.1
+      chart: headlamp
+      helm:
+        valueFiles:
+          - $values/helm/headlamp-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+  destination:
+    name: in-cluster
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
