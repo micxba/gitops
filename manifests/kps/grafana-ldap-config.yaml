@@ -4,7 +4,7 @@ kind: Secret
 metadata:
   annotations:
     reflector.v1.k8s.emberstack.com/reflects: bitwarden/bw-auth-token
-  name: grafana-ldap
+  name: bw-auth-token
 type: Opaque
 ---
 apiVersion: k8s.bitwarden.com/v1
@@ -16,13 +16,13 @@ metadata:
     app.kubernetes.io/part-of: sm-operator
     app.kubernetes.io/managed-by: argo-cd
     app.kubernetes.io/created-by: sm-operator
-  name: grafana-ldap
+  name: grafana-ldap-toml  # Name of the Bitwarden secret to be created
 spec:
   organizationId: "ef45391c-e654-4ac1-acab-b16e001e58b4"
-  secretName: grafana-ldap
+  secretName: ldap-toml  # Name of the K8s secret to be created
   map:
-    - bwSecretId: ba9185c4-fdd2-4018-907a-b2dc0143ebef
-      secretKeyName: ldap-toml
+    - bwSecretId: b672c2a6-469c-470a-8323-b2de0128bf1f
+      secretKeyName: ldap-toml  # key name of k/v pair 
   authToken:
-    secretName: grafana-ldap
+    secretName: bw-auth-token
     secretKey: token
