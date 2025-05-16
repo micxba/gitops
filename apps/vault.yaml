@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: peng
+  project: default
   sources:
     - repoURL: https://helm.releases.hashicorp.com
       targetRevision: 0.29.1
