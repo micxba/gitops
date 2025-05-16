@@ -64,14 +64,14 @@ grafana:
     enable_gzip: true
     auth.anonymous:
       enabled: true
-    # auth.ldap:
-    #   enabled: true
-    #   config_file: /etc/grafana/ldap.toml
+    auth.ldap:
+      enabled: true
+      config_file: /etc/grafana/ldap.toml
     dataproxy:
       timeout: 300
-  # ldap:
-  #   enabled: true
-  #   existingSecret: "grafana-ldap"
+  ldap:
+    enabled: true
+    existingSecret: "grafana-ldap"
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1

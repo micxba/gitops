@@ -51,14 +51,14 @@ server:
           path = "/vault/data"
         }
 
-#         telemetry {
-#           prometheus_retention_time = "30s"
-#           disable_hostname = true
-#         }
+        telemetry {
+          prometheus_retention_time = "30s"
+          disable_hostname = true
+        }
 
-#         service_registration "kubernetes" {}
-# serverTelemetry:
-#   serviceMonitor:
-#     enabled: true
-#     selectors:
-#       release: kps
+        service_registration "kubernetes" {}
+serverTelemetry:
+  serviceMonitor:
+    enabled: true
+    selectors:
+      release: kps
