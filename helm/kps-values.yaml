@@ -118,6 +118,8 @@ kubeEtcd:
   service:
     enabled: true
     port: 2381
+    targetPort: 2381
+    selector: {}
   serviceMonitor:
     enabled: true
     scheme: http
