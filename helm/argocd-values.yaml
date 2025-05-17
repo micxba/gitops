@@ -14,14 +14,14 @@ configs:
     #   requestedScopes:
     #     - openid
     #     - groups
-    resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
-      jqPathExpressions:
-      - '.webhooks[]?.clientConfig.caBundle'
-    resource.exclusions: |
-      - apiGroups:
-          - discovery.k8s.io
-        kinds:
-          - EndpointSlice
+    # resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
+    #   jqPathExpressions:
+    #   - '.webhooks[]?.clientConfig.caBundle'
+  resource.exclusions: |
+    - apiGroups:
+        - discovery.k8s.io
+      kinds:
+        - EndpointSlice
   params:
     server.insecure: true
     applicationsetcontroller.enable.progressive.syncs: true
