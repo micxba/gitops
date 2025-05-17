@@ -108,9 +108,25 @@ kubeControllerManager:
   service:
     selector:
       k8s-app: kube-controller-manager
+# kubeEtcd:
+#   endpoints:
+#     - 192.168.0.216
 kubeEtcd:
+  enabled: true
   endpoints:
     - 192.168.0.216
+  service:
+    enabled: true
+    port: 2381
+  serviceMonitor:
+    enabled: true
+    scheme: http
+    insecureSkipVerify: true
+    interval: 30s
+    scrapeTimeout: 10s
+    tlsConfig:
+      insecureSkipVerify: true
+
 kubeScheduler:
   service:
     selector:
