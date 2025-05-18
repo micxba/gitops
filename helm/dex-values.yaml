@@ -1,0 +1,27 @@
+configSecret:
+  create: false
+  name: dex-secrets
+replicaCount: 2
+volumes:
+  - name: dex
+    persistentVolumeClaim:
+      claimName: dex
+volumeMounts:
+  - name: dex
+    mountPath: /var/dex
+    readOnly: false
+ingress:
+  enabled: true
+  hosts:
+    - host: dex.sith.network
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - dex.sith.network
+      secretName: wildcard-sith-network
+serviceMonitor:
+  enabled: true
+  labels:
+    release: kps

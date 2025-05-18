@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dex
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: mgmt
+  sources:
+    - repoURL: https://charts.dexidp.io
+      targetRevision: 0.23.0
+      chart: dex
+      helm:
+        valueFiles:
+          - $values/helm/dex-values.yaml
+    - repoURL: git@git.crunchtime.it:opsmgmt/platform/k8s/argo-deploy.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@git.crunchtime.it:opsmgmt/platform/k8s/argo-deploy.git
+      path: manifests/dex
+      targetRevision: main
+  destination:
+    name: in-cluster
+    namespace: dex
+  ignoreDifferences:
+    - group: "apiextensions.k8s.io"
+      kind: CustomResourceDefinition
+      name: bgppeers.metallb.io
+      jsonPointers:
+        - /spec/conversion/webhook/clientConfig/caBundle
+  syncPolicy:
+    # automated:
+    #   prune: true
+    #   selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/warn: baseline

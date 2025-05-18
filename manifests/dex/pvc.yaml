@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dex
+  namespace: dex
+  finalizers:
+  - kubernetes.io/pvc-protection
+spec:
+  storageClassName: nfs-client
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 100Mi
