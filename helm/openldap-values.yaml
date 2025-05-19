@@ -6,7 +6,7 @@ rollingUpdate:
 # Valid log levels: none, error, warning, info (default), debug, trace
 logLevel: info
 # Spcifies an existing secret to be used for admin and config user passwords
-existingSecret: ""
+existingSecret: "openldap-passwords"
 tls:
   enabled: true
   secret: ""  # The name of a kubernetes.io/tls type secret to use for TLS
@@ -18,12 +18,6 @@ env:
  LDAP_ORGANISATION: "Sith Empire"
  LDAP_DOMAIN: "sith.network"
  LDAP_READONLY_USER: "false"
-
-# Default Passwords to use, stored as a secret.
-# You can override these at install time with
-# helm install openldap --set openldap.adminPassword=<passwd>,openldap.configPassword=<passwd>
-adminPassword: Not@SecurePassw0rd
-configPassword: Not@SecurePassw0rd
 
 replication:
   enabled: true    
