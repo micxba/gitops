@@ -12,7 +12,7 @@ spec:
       targetRevision: 0.3.0
       chart: argocd-rbac-operator
       helm:
-        values: $values/helm/argocd-rbac-operator-values.yaml
+        valueFiles: $values/helm/argocd-rbac-operator-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
