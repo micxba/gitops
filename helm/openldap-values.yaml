@@ -1,0 +1,57 @@
+replicaCount: 2
+type: RollingUpdate
+rollingUpdate:
+  maxSurge: 1
+  maxUnavailable: 0
+# Valid log levels: none, error, warning, info (default), debug, trace
+logLevel: info
+# Spcifies an existing secret to be used for admin and config user passwords
+existingSecret: ""
+tls:
+  enabled: true
+  secret: ""  # The name of a kubernetes.io/tls type secret to use for TLS
+  CA:
+    enabled: false
+    secret: ""  # The name of a generic secret to use for custom CA certificate (ca.crt)
+env:
+ LDAP_LOG_LEVEL: "256"
+ LDAP_ORGANISATION: "Sith Empire"
+ LDAP_DOMAIN: "sith.network"
+ LDAP_READONLY_USER: "false"
+
+# Default Passwords to use, stored as a secret.
+# You can override these at install time with
+# helm install openldap --set openldap.adminPassword=<passwd>,openldap.configPassword=<passwd>
+adminPassword: Not@SecurePassw0rd
+configPassword: Not@SecurePassw0rd
+
+replication:
+  enabled: true    
+  # Enter the name of your cluster, defaults to "cluster.local"
+  clusterName: "cluster.local"
+  retry: 60
+  timeout: 1
+  interval: 00:00:00:10
+  starttls: "critical"
+  tls_reqcert: "never"
+
+phpldapadmin:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+    - ldapadmin.sith.network
+  env:
+    PHPLDAPADMIN_LDAP_HOSTS: openldap
+ # TODO make it works
+ #     "#PYTHON2BASH:
+ #       [{'openldap.openldap': 
+ #         [{'server': [
+ #           {'tls': False},
+ #           {'port':636}
+ #         ]},
+ #           {'login': 
+ #             [{'bind_id': 'cn=admin,dc=example,dc=org'}]
+ #           }]
+ #       }]"
+     
