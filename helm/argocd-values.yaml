@@ -4,7 +4,6 @@ global:
     level: info
 configs:
   cm:
-    # accounts.gitlab: apiKey
     exec.enabled: true
     statusbadge.enabled: true
     oidc.config: |
