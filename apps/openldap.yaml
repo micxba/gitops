@@ -18,9 +18,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
-    # - repoURL: git@github.com:micxba/gitops.git
-    #   path: manifests/openldap
-    #   targetRevision: main
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/openldap
+      targetRevision: main
   destination:
     name: in-cluster
     namespace: openldap
