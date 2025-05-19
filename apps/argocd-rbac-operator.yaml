@@ -17,9 +17,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
-    # - repoURL: git@github.com:micxba/gitops.git
-    #   path: manifests/argocd
-    #   targetRevision: main
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/argocd-rbac
+      targetRevision: main
   destination:
     namespace: argocd-rbac-operator-system
     name: in-cluster

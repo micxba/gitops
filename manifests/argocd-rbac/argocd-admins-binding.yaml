@@ -1,0 +1,11 @@
+apiVersion: rbac-operator.argoproj-labs.io/v1alpha1
+kind: ArgoCDRoleBinding
+metadata:
+  name: argocd-admins-binding
+  namespace: argo-cd
+spec:
+  subjects:
+  - kind: "sso"
+    name: "argocd-admins"
+  argocdRoleRef:
+    name: admin
