@@ -11,9 +11,9 @@ spec:
     - repoURL: https://argoproj-labs.github.io/argocd-rbac-operator/
       targetRevision: 0.3.0
       chart: argocd-rbac-operator
-    - repoURL: git@github.com:micxba/gitops.git
-      path: manifests/argocd
-      targetRevision: main
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   path: manifests/argocd
+    #   targetRevision: main
   destination:
     namespace: argocd-rbac-operator-system
     name: in-cluster
