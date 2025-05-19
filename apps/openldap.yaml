@@ -22,7 +22,7 @@ spec:
     #   path: manifests/openldap
     #   targetRevision: main
   destination:
-    name: openldap
+    name: in-cluster
     namespace: openldap
   syncPolicy:
     # automated:
