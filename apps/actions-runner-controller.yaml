@@ -17,6 +17,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      path: manifests/actions-runner-controller
   destination:
     namespace: github
     name: in-cluster
