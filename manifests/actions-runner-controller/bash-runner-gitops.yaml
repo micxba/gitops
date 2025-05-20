@@ -10,5 +10,7 @@ spec:
       repository: micxba/gitops
       labels:
         - gitops
+      dockerdContainerResources: {}
       dockerdWithinRunnerContainer: false
+      sidecarContainers: []
       image: ghcr.io/actions/actions-runner:latest
