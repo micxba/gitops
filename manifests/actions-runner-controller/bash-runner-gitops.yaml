@@ -1,19 +1,19 @@
-apiVersion: actions.summerwind.dev/v1alpha1
-kind: Runner
-metadata:
-  name: gitops-runner
-  namespace: github
-spec:
-  repository: micxba/gitops
-  labels:
-    - gitops
-  dockerdWithinRunnerContainer: false
-  containerMode: kubernetes
-  container: 
-    image: alpine:318
-  workVolumeClaimTemplate:
-    storageClassName: nfs-client
-    accessModes: ["ReadWriteOnce"]
-    resources:
-      requests:
-        storage: 1Gi
+# apiVersion: actions.summerwind.dev/v1alpha1
+# kind: Runner
+# metadata:
+#   name: gitops-runner
+#   namespace: github
+# spec:
+#   repository: micxba/gitops
+#   labels:
+#     - gitops
+#   dockerdWithinRunnerContainer: false
+#   containerMode: kubernetes
+#   container: 
+#     image: alpine:318
+#   workVolumeClaimTemplate:
+#     storageClassName: nfs-client
+#     accessModes: ["ReadWriteOnce"]
+#     resources:
+#       requests:
+#         storage: 1Gi

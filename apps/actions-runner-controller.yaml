@@ -7,6 +7,11 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  ignoreDifferences:
+    - group: "*"
+      kind: CustomResourceDefinition
+      jqPathExpressions:
+        - .preserveUnknownFields
   sources:
     - repoURL: https://actions-runner-controller.github.io/actions-runner-controller
       targetRevision: 0.23.7
@@ -23,6 +28,10 @@ spec:
   destination:
     namespace: github
     name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+
   # syncPolicy:
   #   automated:
   #     selfHeal: true
