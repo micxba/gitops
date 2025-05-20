@@ -40,11 +40,13 @@ server:
     enabled: true
     hosts:
       - argoworkflows.sith.network
+      - wf.sith.network
     paths:
       - /
     tls:
       - hosts:
           - argoworkflows.sith.network
+          - wf.sith.network
 
   sso:
     # -- Create SSO configuration. If you set `true` , please also set `.Values.server.authModes` as `sso`.
