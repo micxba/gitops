@@ -33,7 +33,7 @@ controller:
   #   sslMode: require
   workflowNamespaces:
     - default
-    - wokflows
+    - workflows
 
 server:
   ingress:
