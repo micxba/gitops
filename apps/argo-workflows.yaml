@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: woodpecker
+  name: argo-workflows
   namespace: argo-cd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-    - repoURL: ghcr.io/woodpecker-ci/helm
-      targetRevision: 3.1.1
-      chart: woodpecker
+    - repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: 0.45.15
+      chart: argo-workflows
       helm:
         valueFiles:
-          - $values/helm/woodpecker-values.yaml
+          - $values/helm/argo-workflows-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
@@ -21,7 +21,7 @@ spec:
     #   targetRevision: main
     #   path: manifests/actions-runner-controller
   destination:
-    namespace: woodpecker
+    namespace: argo-workflows
     name: in-cluster
   syncPolicy:
     syncOptions:
