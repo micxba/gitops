@@ -9,6 +9,7 @@ spec:
     - gitops
   dockerdWithinRunnerContainer: false
   containerMode: kubernetes
+  container: alpine:318
   workVolumeClaimTemplate:
     storageClassName: nfs-client
     accessModes: ["ReadWriteOnce"]
