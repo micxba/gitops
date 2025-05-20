@@ -1,0 +1,48 @@
+name: Talos etcd to S3 backup
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: [gitops]
+    env:
+      TALOSCONFIG: ${{ secrets.TALOSCONFIG }}
+    
+    steps:
+      - name: Run etcd backup
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          Setting up Talos config file
+          mkdir ~/.talos
+          echo "$TALOSCONFIG" > ~/.talos/config
+          chmod 600 ~/talos/config
+
+          DATE=`date +%Y%m%d%H%M`
+          cp='192.168.0.216'
+          wn='192.168.0.220'
+
+          # Install yq TODO: create image with it pre-installed
+          YQ_VERSION=v4.45.1
+          curl -sL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq
+          chmod +x /usr/local/bin/yq
+
+          # back up etcd cluster
+          talosctl -n $cp etcd snapshot ruleof3-k8s-etcd-${DATE}.snapshot
+
+          # back up control plane machine config
+          talosctl -n $cp get mc v1alpha1 -o yaml | yq -y '.spec' - > cp.yaml
+
+          # back up worker machine config
+          talosctl -n $wn get mc v1alpha1 -o yaml | yq -y '.spec' - > wn.yaml
+
+          # create tarball of etcd snapshot and machine configs
+          tar -zcf cluster-backup-${DATE}.tar.gz ruleof3-k8s-etcd-${DATE}.snapshot cp.yaml wn.yaml
+
+          # copy tarball to oci bucket
+          # aws s3 cp ${i}-backup-${DATE}.tar.gz s3://talos-${i}/ --no-progress
+

@@ -73,12 +73,12 @@ server:
         - argocd.sith.network
 repoServer:
   replicas: 1
-  # metrics:
-  #   enabled: true
-  #   serviceMonitor:
-  #     enabled: true
-  #     selector:
-  #       release: kps
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        release: kps
 applicationSet:
   replicas: 1
 # notifications:
