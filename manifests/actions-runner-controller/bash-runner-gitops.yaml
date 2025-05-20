@@ -9,3 +9,8 @@ spec:
     - gitops
   dockerdWithinRunnerContainer: false
   containerMode: kubernetes
+  workVolumeClaimTemplate:
+    accessModes: ["ReadWriteOnce"]
+    resources:
+      requests:
+        storage: 1Gi
