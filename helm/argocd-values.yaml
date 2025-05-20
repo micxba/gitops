@@ -24,10 +24,10 @@ configs:
   params:
     server.insecure: true
     applicationsetcontroller.enable.progressive.syncs: true
-  # rbac:
-  #   policy.csv: |
-  #     ### assign built-in admin role to argocd-admins
-  #     g, argocd-admins, role:admin
+  rbac:
+    policy.csv: |
+      ### assign built-in admin role to argocd-admins
+      g, argocd-admins, role:admin
   #     ### Allow sync operations on applications within the development project
   #     p, role:sync-dev, applications, sync, development/*, allow
   #     ### Allow read-only on root-app-dev by argocd-devops-plus
@@ -56,12 +56,12 @@ redis-ha:
   hardAntiAffinity: false
 server:
   replicas: 2
-  # metrics:
-  #   enabled: true
-  #   serviceMonitor:
-  #     enabled: true
-  #     selector:
-  #       release: kps
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      selector:
+        release: kps
   ingress:
     enabled: true
     ingressClassName: nginx
