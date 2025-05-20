@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: woodpecker
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: ghcr.io/woodpecker-ci/helm
+      targetRevision: 3.1.1
+      chart: woodpecker
+      helm:
+        valueFiles:
+          - $values/helm/woodpecker-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   targetRevision: main
+    #   path: manifests/actions-runner-controller
+  destination:
+    namespace: woodpecker
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+
+  # syncPolicy:
+  #   automated:
+  #     selfHeal: true
