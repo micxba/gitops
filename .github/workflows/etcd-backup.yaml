@@ -17,7 +17,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          Setting up Talos config file
+          # Setting up Talos config file
           mkdir ~/.talos
           echo "$TALOSCONFIG" > ~/.talos/config
           chmod 600 ~/talos/config
