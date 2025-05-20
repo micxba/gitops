@@ -1,0 +1,13 @@
+name: Daily Bash Job
+
+on:
+  schedule:
+    - cron: '20 * * * *'
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: [gitops]
+    steps:
+      - name: Say Hello
+        run: echo "Hello World"
