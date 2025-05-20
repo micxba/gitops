@@ -1,0 +1,15 @@
+replicaCount: 1
+
+defaultScaleDownDelay: 10m
+
+authSecret:
+  enabled: true
+  create: false
+  name: "controller-manager"
+  annotations: {}
+
+metrics:
+  serviceMonitor:
+    enable: true
+  serviceMonitorLabels:
+    release: kps
