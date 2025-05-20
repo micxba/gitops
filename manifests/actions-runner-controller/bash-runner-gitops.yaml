@@ -8,3 +8,5 @@ spec:
   labels:
     - gitops
   dockerdWithinRunnerContainer: false
+  containerMode:
+    type: kubernetes
