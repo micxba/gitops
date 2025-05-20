@@ -1,17 +1,10 @@
 apiVersion: actions.summerwind.dev/v1alpha1
-kind: RunnerDeployment
+kind: Runner
 metadata:
   name: gitops-runner
   namespace: github
 spec:
-  replicas: 1
-  template:
-    spec:
-      repository: micxba/gitops
-      labels:
-        - gitops
-      dockerdContainerResources: {}
-      dockerdWithinRunnerContainer: false
-      sidecarContainers: []
-      dockerEnabled: false
-      image: ghcr.io/actions/actions-runner:latest
+  repository: micxba/gitops
+  labels:
+    - gitops
+  dockerdWithinRunnerContainer: false
