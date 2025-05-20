@@ -13,4 +13,5 @@ spec:
       dockerdContainerResources: {}
       dockerdWithinRunnerContainer: false
       sidecarContainers: []
+      dockerEnabled: false
       image: ghcr.io/actions/actions-runner:latest
