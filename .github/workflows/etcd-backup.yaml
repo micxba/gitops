@@ -20,7 +20,7 @@ jobs:
           # Setting up Talos config file
           mkdir ~/.talos
           echo "$TALOSCONFIG" > ~/.talos/config
-          chmod 600 ~/talos/config
+          chmod 600 ~/.talos/config
 
           DATE=`date +%Y%m%d%H%M`
           cp='192.168.0.216'
