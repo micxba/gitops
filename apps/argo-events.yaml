@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-events
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: 2.4.15
+      chart: argo-events
+      helm:
+        valueFiles:
+          - $values/helm/argo-workflows-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      path: manifests/argo-workflows
+  destination:
+    namespace: argo-workflows
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+
+  # syncPolicy:
+  #   automated:
+  #     selfHeal: true

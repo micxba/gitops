@@ -1,0 +1,9 @@
+controller:
+  rbac:
+    managedNamespace: "events"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: kps
