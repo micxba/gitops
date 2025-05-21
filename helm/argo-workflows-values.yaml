@@ -61,7 +61,7 @@ server:
       key: client-secret
     redirectUrl: "https://argoworkflows.sith.network/oauth2/callback"
     rbac:
-      enabled: true
+      enabled: false
       scopes:
         - openid
         - profile
