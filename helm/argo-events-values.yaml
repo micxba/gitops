@@ -1,6 +1,4 @@
 controller:
-  rbac:
-    managedNamespace: "workflowsss"
   metrics:
     enabled: true
     serviceMonitor:
