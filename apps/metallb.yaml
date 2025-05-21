@@ -7,6 +7,12 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+  ignoreDifferences:
+    - group: "*"
+      kind: CustomResourceDefinition
+      name: bgppeers.metallb.io
+      jqPathExpressions:
+        - .spec.conversion.webhook.clientConfig.caBundle
   sources:
     - repoURL: https://metallb.github.io/metallb
       targetRevision: 0.14.9
@@ -23,6 +29,8 @@ spec:
   destination:
     namespace: metallb-system
     name: in-cluster
-  # syncPolicy:
-  #   automated:
-  #     selfHeal: true
+  syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
+    automated:
+      selfHeal: true

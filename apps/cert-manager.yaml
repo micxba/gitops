@@ -32,11 +32,6 @@ spec:
   destination:
     name: in-cluster
     namespace: cert-manager
-  # ignoreDifferences:
-  #   - group: "*"
-  #     kind: "ExternalSecret"
-  #     jqPathExpressions:
-  #       - .status.refreshTime
 #  syncPolicy:
 #    automated:
 #      prune: true

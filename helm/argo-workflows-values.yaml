@@ -36,6 +36,8 @@ controller:
     - workflows
 
 server:
+  authModes:
+    - sso
   ingress:
     enabled: true
     hosts:
@@ -49,13 +51,12 @@ server:
           - wf.sith.network
 
   sso:
-    # -- Create SSO configuration. If you set `true` , please also set `.Values.server.authModes` as `sso`.
-    enabled: false
+    enabled: true
     # -- The root URL of the OIDC identity provider
-    issuer: https://accounts.google.com
+    issuer: https://dex.sith.network/dex
     clientId:
       # -- Name of secret to retrieve the app OIDC client ID
-      name: argo-server-sso
+      name: argocd-sso
       # -- Key of secret to retrieve the app OIDC client ID
       key: client-id
     clientSecret:
