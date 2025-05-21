@@ -5,6 +5,7 @@ metadata:
   namespace: workflows
 spec:
   entrypoint: say-hello
+  serviceAccountName: argo-workflow
   templates:
     - name: say-hello
       container:
