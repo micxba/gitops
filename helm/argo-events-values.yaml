@@ -1,6 +1,6 @@
 controller:
   rbac:
-    managedNamespace: "events"
+    managedNamespace: "workflows"
   metrics:
     enabled: true
     serviceMonitor:

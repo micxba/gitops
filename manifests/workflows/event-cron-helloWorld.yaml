@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
   name: hourly-cron
-  namespace: events
+  namespace: workflows
 spec:
   cron:
     every-hour:
@@ -15,7 +15,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: hourly-hello-world-trigger
-  namespace: events
+  namespace: workflows
 spec:
   dependencies:
     - name: cron-dep
