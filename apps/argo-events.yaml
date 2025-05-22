@@ -17,6 +17,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      path: manifests/argo-events
   destination:
     namespace: argo-events
     name: in-cluster
