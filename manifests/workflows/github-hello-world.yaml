@@ -65,3 +65,25 @@ spec:
                 workflowTemplateRef:
                   name: hello-world                 # Reference to pre-existing WorkflowTemplate
 
+#### Example for different events:
+# dependencies:
+#   - name: push-event
+#     eventSourceName: github
+#     eventName: gitops
+#     filters:
+#       data:
+#         - path: "header.X-GitHub-Event"
+#           type: string
+#           value:
+#             - push
+
+# dependencies:
+#   - name: pr-event
+#     eventSourceName: github
+#     eventName: gitops
+#     filters:
+#       data:
+#         - path: "header.X-GitHub-Event"
+#           type: string
+#           value:
+#             - pull_request
