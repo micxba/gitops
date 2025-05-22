@@ -19,7 +19,7 @@ spec:
         endpoint: /push
         port: "12000"
         method: POST
-        url: http://event-hook-gh.sith.network
+        url: https://event-hook-gh.sith.network
       events:
         - "*"
       insecure: true
