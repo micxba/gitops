@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: hello-world-cron
+  namespace: workflows
+spec:
+  schedules:
+  - '* * * * *'
+  workflowMetadata:
+    labels:
+      foo: "bar"
+  workflowSpec:
+    arguments: {}
+    podGC:
+      strategy: OnPodCompletion
+    ttlStrategy:
+      secondsAfterCompletion: 300
+    workflowTemplateRef:
+      name: hello-world
