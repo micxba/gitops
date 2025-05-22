@@ -25,3 +25,4 @@ spec:
       insecure: true
       active: true
       contentType: json
+
