@@ -1,0 +1,83 @@
+# Manually create a webhook in GH to point at Event Source URL
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github
+  namespace: events
+spec:
+  service:
+    ports:
+      - name: gitops
+        port: 12000
+        targetPort: 12000
+  github:
+    gitops:
+      repositories:
+        - owner: micxba
+          names:
+            - gitops
+      webhook:
+        endpoint: /push
+        port: "12000"
+        method: POST
+        url: https://github-webhook-gitops.sith.network
+      events:
+        - "*"
+      insecure: true
+      active: true
+      contentType: json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github-hello-world-sensor
+  namespace: events
+spec:
+  serviceAccountName: argo-workflow
+  eventBusName: default
+  dependencies:
+    - name: push-event
+      eventSourceName: github
+      eventName: gitops  # <-- matches the key under `github:` in your EventSource
+  triggers:
+    - template:
+        name: trigger-hello-template
+        k8s:
+          group: argoproj.io
+          version: v1alpha1
+          resource: workflows
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: github-triggered-
+                namespace: workflows
+              spec:
+                workflowTemplateRef:
+                  name: hello-world
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: github-gitops-webhook-ingress
+  namespace: events
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  tls:
+    - hosts:
+        - github-webhook-gitops.sith.network
+  rules:
+    - host: github-webhook-gitops.sith.network
+      http:
+        paths:
+          - path: /push
+            pathType: Prefix
+            backend:
+              service:
+                name: github-eventsource-svc
+                port:
+                  number: 12000
