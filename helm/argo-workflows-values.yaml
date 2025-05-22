@@ -34,6 +34,7 @@ controller:
   workflowNamespaces:
     - default
     - workflows
+    - events
 
 server:
   authModes:

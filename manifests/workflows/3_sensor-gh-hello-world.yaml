@@ -4,6 +4,7 @@ metadata:
   name: github-hello-world-sensor
   namespace: events
 spec:
+  serviceAccountName: argo-workflow
   eventBusName: default
   dependencies:
     - name: push-event
