@@ -24,3 +24,4 @@ spec:
                 name: github-eventsource-svc   # Internal EventSource service
                 port:
                   number: 12000                # Port defined in EventSource and Service
+
