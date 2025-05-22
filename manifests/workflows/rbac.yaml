@@ -1,1 +1,14 @@
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: events-to-workflows
+  namespace: workflows
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: events
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
