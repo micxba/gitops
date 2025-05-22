@@ -5,19 +5,19 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: github-gitops-webhook-ingress
+  name: github-webhook-ingress
   namespace: events
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   tls:
     - hosts:
-        - github-webhook-gitops.sith.network   # Domain GitHub posts to
+        - github-webhook.sith.network   # Domain GitHub posts to
   rules:
-    - host: github-webhook-gitops.sith.network
+    - host: github-webhook.sith.network
       http:
         paths:
-          - path: /push                        # Must match EventSource endpoint
+          - path: /gitops                        # Must match EventSource endpoint
             pathType: Prefix
             backend:
               service:
