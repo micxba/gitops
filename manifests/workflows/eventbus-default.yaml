@@ -1,9 +1,15 @@
+# The EventBus is the central message bus used by Argo Events.
+# EventSources publish events to the bus, and Sensors subscribe to it.
+# This defines a default EventBus using an in-cluster NATS JetStream instance.
+# It must exist before any EventSources or Sensors that reference it.
+
 apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
-  name: default
-  namespace: events
+  name: default                # Must match the `eventBusName` in your Sensors and EventSources
+  namespace: events            # Same namespace as your EventSources and Sensors
 spec:
   nats:
     native:
-      replicas: 1
+      replicas: 1              # Single-node NATS JetStream cluster (good for dev/test)
+

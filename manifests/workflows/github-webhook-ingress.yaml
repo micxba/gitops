@@ -1,0 +1,26 @@
+---
+# This Ingress routes public HTTPS traffic from GitHub to the internal EventSource service.
+# The host must match your GitHub webhook configuration.
+# It forwards requests to the github-eventsource-svc service on port 12000.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: github-gitops-webhook-ingress
+  namespace: events
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  tls:
+    - hosts:
+        - github-webhook-gitops.sith.network   # Domain GitHub posts to
+  rules:
+    - host: github-webhook-gitops.sith.network
+      http:
+        paths:
+          - path: /push                        # Must match EventSource endpoint
+            pathType: Prefix
+            backend:
+              service:
+                name: github-eventsource-svc   # Internal EventSource service
+                port:
+                  number: 12000                # Port defined in EventSource and Service

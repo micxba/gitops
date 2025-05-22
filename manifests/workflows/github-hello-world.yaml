@@ -1,5 +1,7 @@
-# Manually create a webhook in GH to point at Event Source URL
----
+# This EventSource listens for GitHub webhook POSTs at /push on port 12000.
+# You must manually configure this webhook in your GitHub repo settings.
+# The webhook must point to your ingress URL (defined below).
+# The event name "gitops" is referenced later in the Sensor.
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
@@ -18,28 +20,32 @@ spec:
           names:
             - gitops
       webhook:
-        endpoint: /push
-        port: "12000"
+        endpoint: /push                # Argo listens on this path
+        port: "12000"                 # Must match the service port
         method: POST
-        url: https://github-webhook-gitops.sith.network
+        url: https://github-webhook-gitops.sith.network  # Display-only field; manual webhook config still required
       events:
-        - "*"
-      insecure: true
-      active: true
-      contentType: json
+        - "*"                         # Listen to all GitHub events (can restrict to "push")
+      insecure: true                  # Skip SSL verification (for internal usage/testing)
+      active: true                    # Accept webhooks
+      contentType: json              # Ensure GitHub sends JSON
 ---
+# This Sensor watches for the "gitops" event from the EventSource named "github".
+# When received, it triggers the creation of a Workflow based on the "hello-world" WorkflowTemplate.
+# The Workflow is created in the "workflows" namespace.
+# The Sensor uses the "argo-workflow" service account, which must have permission to create Workflows in that namespace.
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: github-hello-world-sensor
   namespace: events
 spec:
-  serviceAccountName: argo-workflow
-  eventBusName: default
+  serviceAccountName: argo-workflow  # Must have RBAC to create Workflows in target namespace
+  eventBusName: default              # Uses the default JetStream-backed event bus
   dependencies:
     - name: push-event
       eventSourceName: github
-      eventName: gitops  # <-- matches the key under `github:` in your EventSource
+      eventName: gitops              # Matches the key under EventSource's `github:`
   triggers:
     - template:
         name: trigger-hello-template
@@ -53,31 +59,9 @@ spec:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                generateName: github-triggered-
+                generateName: github-triggered-     # Randomized workflow name
                 namespace: workflows
               spec:
                 workflowTemplateRef:
-                  name: hello-world
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: github-gitops-webhook-ingress
-  namespace: events
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  tls:
-    - hosts:
-        - github-webhook-gitops.sith.network
-  rules:
-    - host: github-webhook-gitops.sith.network
-      http:
-        paths:
-          - path: /push
-            pathType: Prefix
-            backend:
-              service:
-                name: github-eventsource-svc
-                port:
-                  number: 12000
+                  name: hello-world                 # Reference to pre-existing WorkflowTemplate
+
