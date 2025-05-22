@@ -1,15 +1,37 @@
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: events-to-workflows
+#   namespace: workflows
+# subjects:
+#   - kind: ServiceAccount
+#     name: default
+#     namespace: events
+# roleRef:
+#   kind: ClusterRole
+#   name: cluster-admin
+#   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-workflow-create
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflows"]
+    verbs: ["create", "get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: events-to-workflows
+  name: events-to-workflows-minimal
   namespace: workflows
 subjects:
   - kind: ServiceAccount
-    name: default
+    name: default  # or argo-workflow if you're using that SA
     namespace: events
 roleRef:
   kind: ClusterRole
-  name: cluster-admin
+  name: argo-workflow-create
   apiGroup: rbac.authorization.k8s.io
-
