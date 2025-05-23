@@ -90,7 +90,7 @@ spec:
                   changed_dirs.add(top_dir)
 
           with open("/tmp/outputs/changed_dirs.txt", "w") as f:
-              f.write(json.dumps(list(changed_dirs)))
+              f.write('["' + '","'.join(changed_dirs) + '"]')
         env:
           - name: WEBHOOK_PAYLOAD
             value: "{{inputs.parameters.webhook-payload}}"
