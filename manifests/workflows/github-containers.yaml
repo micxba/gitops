@@ -13,28 +13,31 @@ spec:
     - name: push-event
       eventSourceName: github
       eventName: containers
-triggers:
-  - name: trigger-containers-build
-    template:
-      k8s:
-        group: argoproj.io
-        version: v1alpha1
-        resource: workflows
-        operation: create
-        source:
-          resource:
-            apiVersion: argoproj.io/v1alpha1
-            kind: Workflow
-            metadata:
-              generateName: github-containers-
-              namespace: workflows
-            spec:
-              workflowTemplateRef:
-                name: containers-build
-              arguments:
-                parameters:
-                  - name: webhook-payload
-                    value: '{{events.containers.containers.body}}'
+  triggers:
+    - template:
+        name: trigger-containers-build
+        argoWorkflow:
+          operation: submit
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: github-containers-
+                namespace: workflows
+              spec:
+                workflowTemplateRef:
+                  name: containers-build
+                arguments:
+                  parameters:
+                    - name: webhook-payload
+                      value: ""
+          parameters:
+            - src:
+                dependencyName: push-event
+                dataKey: body
+              dest: spec.arguments.parameters.0.value
+
 
 ---
 apiVersion: argoproj.io/v1alpha1
