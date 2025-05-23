@@ -113,10 +113,14 @@ spec:
           - |
             mkdir -p /kaniko/.docker && \
             echo "{\"auths\":{\"ghcr.io\":{\"auth\":\"$(echo -n micxba:${GHCR_TOKEN} | base64 -w 0)\"}}}" > /kaniko/.docker/config.json && \
+            TAG=$(date +%F)-{{workflow.uid}} && \
             /kaniko/executor \
               --dockerfile={{inputs.parameters.dir}}/Dockerfile \
               --context=git://github.com/micxba/containers.git#refs/heads/main \
               --destination=ghcr.io/micxba/{{inputs.parameters.dir}}:latest \
+              --destination=ghcr.io/micxba/{{inputs.parameters.dir}}:$TAG \
+              --cache=true \
+              --cache-repo=ghcr.io/micxba/cache \
               --verbosity=debug
         env:
           - name: GHCR_TOKEN
