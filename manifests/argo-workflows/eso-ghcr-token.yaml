@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: ghcr-creds
+  name: ghcr-token
   namespace: workflows
 spec:
   refreshInterval: 1h
@@ -9,14 +9,10 @@ spec:
     name: vault-backend-css
     kind: ClusterSecretStore
   target:
-    template:
-      type: kubernetes.io/dockerconfigjson
-      data:
-        .dockerconfigjson: "{{ .creds | toString }}"
     name: ghcr-creds
     creationPolicy: Owner
   data:
-  - secretKey: creds
+  - secretKey: token
     remoteRef:
       key: github
-      property: ghcr_write_dockerconfigjson
+      property: ghcr_write_classic_token
