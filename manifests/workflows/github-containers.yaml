@@ -102,28 +102,26 @@ spec:
             valueFrom:
               path: /argo/outputs/parameters/changed_dirs.txt
 
-
-
     - name: build-and-push
       inputs:
         parameters:
           - name: dir
       container:
         image: gcr.io/kaniko-project/executor:latest
-        command: ["/kaniko/executor"]
+        command: [sh, -c]
         args:
-          - "--dockerfile={{inputs.parameters.dir}}/Dockerfile"
-          - "--skip-push-permission-check"
-          - "--context=git://github.com/micxba/containers.git#refs/heads/main"
-          - "--destination=ghcr.io/micxba/{{inputs.parameters.dir}}:latest"
+          - |
+            mkdir -p /kaniko/.docker && \
+            echo "{\"auths\":{\"ghcr.io\":{\"auth\":\"$(echo -n micxba:${GHCR_TOKEN} | base64 -w 0)\"}}}" > /kaniko/.docker/config.json && \
+            /kaniko/executor \
+              --dockerfile={{inputs.parameters.dir}}/Dockerfile \
+              --context=git://github.com/micxba/containers.git#refs/heads/main \
+              --destination=ghcr.io/micxba/{{inputs.parameters.dir}}:latest \
+              --verbosity=debug
         env:
-          - name: DOCKER_CONFIG
-            value: /kaniko/.docker/
-        volumeMounts:
-          - name: docker-config
-            mountPath: /kaniko/.docker/
-      volumes:
-        - name: docker-config
-          secret:
-            secretName: ghcr-creds
+          - name: GHCR_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: ghcr-creds
+                key: token
 
