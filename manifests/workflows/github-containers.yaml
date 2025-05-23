@@ -107,7 +107,7 @@ spec:
         parameters:
           - name: dir
       container:
-        image: gcr.io/kaniko-project/executor:latest
+        image: gcr.io/kaniko-project/executor:v1.22.0-debug
         command: [sh, -c]
         args:
           - |
