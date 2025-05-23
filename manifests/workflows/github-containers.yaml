@@ -1,0 +1,121 @@
+---
+# This is a build pipeline to build (docker) containers from the https://github.com/mixba/containers repo
+# whenever a change was detected and publish it to GH.
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github-containers-sensor
+  namespace: events
+spec:
+  serviceAccountName: argo-workflow
+  eventBusName: default
+  dependencies:
+    - name: push-event
+      eventSourceName: github
+      eventName: containers
+triggers:
+  - template:
+      name: trigger-containers-build
+      k8s:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: create
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: github-containers-
+              namespace: workflows
+            spec:
+              workflowTemplateRef:
+                name: containers-build
+              arguments:
+                parameters:
+                  - name: webhook-payload
+                    value: "{{events.containers.containers.body}}"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: containers-build
+  namespace: workflows
+spec:
+  entrypoint: build-images-dag
+  serviceAccountName: argo-workflow
+  arguments:
+    parameters:
+      - name: webhook-payload
+  templates:
+    - name: build-images-dag
+      dag:
+        tasks:
+          - name: parse-changed-dirs
+            template: parse-changed-dirs
+            arguments:
+              parameters:
+                - name: webhook-payload
+                  value: "{{workflow.parameters.webhook-payload}}"
+          - name: build-and-push
+            dependencies: [parse-changed-dirs]
+            template: build-and-push
+            arguments:
+              parameters:
+                - name: dir
+                  value: "{{item}}"
+            withParam: "{{tasks.parse-changed-dirs.outputs.result}}"
+
+    - name: parse-changed-dirs
+      inputs:
+        parameters:
+          - name: webhook-payload
+      script:
+        image: python:3.9
+        command: [python]
+        source: |
+          import json
+          import os
+
+          payload = json.loads(os.environ["WEBHOOK_PAYLOAD"])
+          changed_dirs = set()
+
+          for commit in payload.get('commits', []):
+              for file_path in commit.get('added', []) + commit.get('modified', []):
+                  top_dir = file_path.split('/')[0]
+                  changed_dirs.add(top_dir)
+
+          with open("/tmp/outputs/changed_dirs.txt", "w") as f:
+              f.write(json.dumps(list(changed_dirs)))
+        env:
+          - name: WEBHOOK_PAYLOAD
+            value: "{{inputs.parameters.webhook-payload}}"
+      outputs:
+        result:
+          name: changed-dirs
+          valueFrom:
+            path: /tmp/outputs/changed_dirs.txt
+
+    - name: build-and-push
+      inputs:
+        parameters:
+          - name: dir
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        command:
+          - /kaniko/executor
+        args:
+          - "--dockerfile={{inputs.parameters.dir}}/Dockerfile"
+          - "--context=git://github.com/micxba/containers.git#refs/heads/main"
+          - "--destination=ghcr.io/micxba/{{inputs.parameters.dir}}:latest"
+        env:
+          - name: DOCKER_CONFIG
+            value: /kaniko/.docker/
+        volumeMounts:
+          - name: docker-config
+            mountPath: /kaniko/.docker/
+      volumes:
+        - name: docker-config
+          secret:
+            secretName: ghcr-creds

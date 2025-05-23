@@ -17,6 +17,7 @@ spec:
     - host: github-webhook.sith.network
       http:
         paths:
+          
           - path: /gitops                        # Must match EventSource endpoint
             pathType: Prefix
             backend:
@@ -24,4 +25,13 @@ spec:
                 name: github-eventsource-svc   # Internal EventSource service
                 port:
                   number: 12000                # Port defined in EventSource and Service
+          
+          - path: /containers
+            pathType: Prefix
+            backend:
+              service:
+                name: github-eventsource-svc
+                port:
+                  number: 12000
+                  
 

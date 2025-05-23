@@ -2,6 +2,7 @@
 # You must manually configure this webhook in your GitHub repo settings.
 # The webhook must point to your ingress URL (defined below).
 # The event name "gitops" is referenced later in the Sensor.
+
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
@@ -10,9 +11,10 @@ metadata:
 spec:
   service:
     ports:
-      - name: gitops
+      - name: gh-webhook
         port: 12000
         targetPort: 12000
+  
   github:
     gitops:
       repositories:
@@ -20,16 +22,34 @@ spec:
           names:
             - gitops
       webhook:
-        endpoint: /gitops                # Argo listens on this path
-        port: "12000"                 # Must match the service port
+        endpoint: /gitops
+        port: "12000"
         secret:
           name: github-webhook-secret
           key: secret
         method: POST
-        url: https://github-webhook.sith.network  # Display-only field; manual webhook config still required
+        url: https://github-webhook.sith.network/gitops
       events:
-        - "*"                         # Listen to all GitHub events (can restrict to "push")
-      insecure: true                  # Skip SSL verification (for internal usage/testing)
-      active: true                    # Accept webhooks
-      contentType: json              # Ensure GitHub sends JSON
-      
+        - "*"
+      insecure: true
+      active: true
+      contentType: json
+
+    containers:
+      repositories:
+        - owner: micxba
+          names:
+            - containers
+      webhook:
+        endpoint: /containers
+        port: "12000"
+        secret:
+          name: github-webhook-secret
+          key: secret
+        method: POST
+        url: https://github-webhook.sith.network/containers
+      events:
+        - "*"
+      insecure: true
+      active: true
+      contentType: json
