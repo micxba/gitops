@@ -17,4 +17,5 @@ spec:
   data:
   - secretKey: creds
     remoteRef:
-      key: ghcr_write_dockerconfigjson
+      key: github
+      property: ghcr_write_dockerconfigjson
