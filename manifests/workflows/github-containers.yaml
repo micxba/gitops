@@ -90,7 +90,8 @@ spec:
                   top_dir = file_path.split('/')[0]
                   changed_dirs.add(top_dir)
 
-          with open("/tmp/changed_dirs.txt", "w") as f:
+          os.makedirs("/argo/outputs/parameters", exist_ok=True)
+          with open("/argo/outputs/parameters/changed_dirs.txt", "w") as f:
               f.write(json.dumps(list(changed_dirs)))
         env:
           - name: WEBHOOK_PAYLOAD
@@ -99,7 +100,8 @@ spec:
         parameters:
           - name: changed-dirs
             valueFrom:
-              path: /tmp/changed_dirs.txt
+              path: /argo/outputs/parameters/changed_dirs.txt
+
 
 
     - name: build-and-push
