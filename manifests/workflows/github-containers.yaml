@@ -22,20 +22,20 @@ triggers:
         resource: workflows
         operation: create
         source:
-          artifact:
-            inline:
-              apiVersion: argoproj.io/v1alpha1
-              kind: Workflow
-              metadata:
-                generateName: github-containers-
-                namespace: workflows
-              spec:
-                arguments:
-                  parameters:
-                    - name: webhook-payload
-                      value: '{{events.containers.containers.body}}'
-                workflowTemplateRef:
-                  name: containers-build
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: github-containers-
+              namespace: workflows
+            spec:
+              workflowTemplateRef:
+                name: containers-build
+              arguments:
+                parameters:
+                  - name: webhook-payload
+                    value: '{{events.containers.containers.body}}'
+
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
