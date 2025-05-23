@@ -113,6 +113,7 @@ spec:
         command: ["/kaniko/executor"]
         args:
           - "--dockerfile={{inputs.parameters.dir}}/Dockerfile"
+          - "--skip-push-permission-check"
           - "--context=git://github.com/micxba/containers.git#refs/heads/main"
           - "--destination=ghcr.io/micxba/{{inputs.parameters.dir}}:latest"
         env:
@@ -125,3 +126,4 @@ spec:
         - name: docker-config
           secret:
             secretName: ghcr-creds
+
