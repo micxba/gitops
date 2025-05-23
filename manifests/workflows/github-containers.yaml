@@ -61,6 +61,7 @@ spec:
               parameters:
                 - name: webhook-payload
                   value: "{{workflow.parameters.webhook-payload}}"
+
           - name: build-and-push
             dependencies: [parse-changed-dirs]
             template: build-and-push
@@ -68,7 +69,7 @@ spec:
               parameters:
                 - name: dir
                   value: "{{item}}"
-            withParam: "{{tasks.parse-changed-dirs.outputs.result}}"
+            withParam: "{{tasks.parse-changed-dirs.outputs.parameters.changed-dirs}}"
 
     - name: parse-changed-dirs
       inputs:
@@ -89,16 +90,20 @@ spec:
                   top_dir = file_path.split('/')[0]
                   changed_dirs.add(top_dir)
 
-          with open("/tmp/outputs/changed_dirs.txt", "w") as f:
-              f.write('["' + '","'.join(changed_dirs) + '"]')
+          print(json.dumps(list(changed_dirs)))
         env:
           - name: WEBHOOK_PAYLOAD
             value: "{{inputs.parameters.webhook-payload}}"
       outputs:
-        result:
-          name: changed-dirs
-          valueFrom:
-            path: /tmp/outputs/changed_dirs.txt
+        parameters:
+          - name: changed-dirs
+            valueFrom:
+              path: /tmp/changed_dirs.txt
+      volumeMounts:
+        - name: temp
+          mountPath: /tmp
+      scriptExitCommand: |
+        echo "{{outputs.parameters.changed-dirs}}" > /tmp/changed_dirs.txt
 
     - name: build-and-push
       inputs:
@@ -106,8 +111,7 @@ spec:
           - name: dir
       container:
         image: gcr.io/kaniko-project/executor:latest
-        command:
-          - /kaniko/executor
+        command: ["/kaniko/executor"]
         args:
           - "--dockerfile={{inputs.parameters.dir}}/Dockerfile"
           - "--context=git://github.com/micxba/containers.git#refs/heads/main"
