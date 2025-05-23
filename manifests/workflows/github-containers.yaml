@@ -90,7 +90,8 @@ spec:
                   top_dir = file_path.split('/')[0]
                   changed_dirs.add(top_dir)
 
-          print(json.dumps(list(changed_dirs)))
+          with open("/tmp/changed_dirs.txt", "w") as f:
+              f.write(json.dumps(list(changed_dirs)))
         env:
           - name: WEBHOOK_PAYLOAD
             value: "{{inputs.parameters.webhook-payload}}"
@@ -99,11 +100,7 @@ spec:
           - name: changed-dirs
             valueFrom:
               path: /tmp/changed_dirs.txt
-      volumeMounts:
-        - name: temp
-          mountPath: /tmp
-      scriptExitCommand: |
-        echo "{{outputs.parameters.changed-dirs}}" > /tmp/changed_dirs.txt
+
 
     - name: build-and-push
       inputs:
