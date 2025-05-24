@@ -54,8 +54,8 @@ spec:
         - name: talosconfig
           mountPath: /tmp/talos
           readOnly: true
-    volumes:
-      - name: talosconfig
-        secret:
-          secretName: talosconfig
+  volumes:
+    - name: talosconfig
+      secret:
+        secretName: talosconfig
 
