@@ -24,10 +24,10 @@ spec:
             set -euo pipefail
 
             # Setting up Talos config file
-            mkdir ~/.talos
+            # mkdir ~/.talos
             echo "$TALOSCONFIG" > ~/.talos/config
-            chmod 600 ~/.talos/config
-            curl -sL https://talos.dev/install | sh
+            # chmod 600 ~/.talos/config
+            # curl -sL https://talos.dev/install | sh
 
             DATE=`date +%Y%m%d%H%M`
             cp='192.168.0.216'
