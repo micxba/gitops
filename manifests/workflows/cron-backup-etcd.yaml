@@ -21,17 +21,8 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            # Dump early to catch issues
-            echo "== TALOSCONFIG =="
-            echo "${TALOSCONFIG:-missing}" | head -n 5 || echo "TALOSCONFIG is empty"
+            export TALOSCONFIG=/tmp/talos/config
 
-            # Only proceed if TALOSCONFIG is set
-            if [ -z "${TALOSCONFIG:-}" ]; then
-              echo "ERROR: TALOSCONFIG is not set"
-              exit 1
-            fi
-
-            # Now enable strict error handling
             set -euo pipefail
 
             DATE=`date +%Y%m%d%H%M`
@@ -59,4 +50,12 @@ spec:
             secretKeyRef:
               name: talosconfig
               key: config
+      volumeMounts:
+        - name: talosconfig
+          mountPath: /tmp/talos
+          readOnly: true
+    volumes:
+      - name: talosconfig
+        secret:
+          secretName: talosconfig
 
