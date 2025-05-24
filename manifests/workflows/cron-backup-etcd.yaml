@@ -4,7 +4,7 @@ metadata:
   name: cron-backup-etcd
   namespace: workflows
 spec:
-  schedule: "0 2 * * *"  # Every day at 2 AM
+  schedule: "15 * * * *"  # Every hour at 15 minutes past the hour
   timezone: "UTC"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 300
