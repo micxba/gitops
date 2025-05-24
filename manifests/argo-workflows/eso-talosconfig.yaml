@@ -1,0 +1,18 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: talosconfig
+  namespace: workflows
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: talosconfig 
+    creationPolicy: Owner
+  data:
+  - secretKey: config
+    remoteRef:
+      key: /talos/config
+      property: config
