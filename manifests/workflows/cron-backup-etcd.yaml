@@ -44,17 +44,17 @@ spec:
               # Upload to S3 (optional)
               # aws s3 cp cluster-backup-${DATE}.tar.gz s3://talos-backups/ --no-progress
 
-        env:
-          - name: access_key
-            valueFrom:
-              secretKeyRef:
-                name: argo-w-minios3
-                key: access_key
-          - name: secret_key
-            valueFrom:
-              secretKeyRef:
-                name: argo-w-minios3
-                key: secret_key
+          env:
+            - name: access_key
+              valueFrom:
+                secretKeyRef:
+                  name: argo-w-minios3
+                  key: access_key
+            - name: secret_key
+              valueFrom:
+                secretKeyRef:
+                  name: argo-w-minios3
+                  key: secret_key
         volumeMounts:
           - name: talosconfig
             mountPath: /tmp/talos
