@@ -23,11 +23,9 @@ spec:
           - |
             set -euo pipefail
 
-            # Setting up Talos config file
-            # mkdir ~/.talos
+            echo "== TALOSCONFIG =="
+            echo "$TALOSCONFIG" | head -n 5 || echo "TALOSCONFIG is empty"
             echo "$TALOSCONFIG" > ~/.talos/config
-            # chmod 600 ~/.talos/config
-            # curl -sL https://talos.dev/install | sh
 
             DATE=`date +%Y%m%d%H%M`
             cp='192.168.0.216'
