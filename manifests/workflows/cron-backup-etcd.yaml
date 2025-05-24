@@ -55,10 +55,10 @@ spec:
                 secretKeyRef:
                   name: argo-w-minios3
                   key: secret_key
-        volumeMounts:
-          - name: talosconfig
-            mountPath: /tmp/talos
-            readOnly: true
+          volumeMounts:
+            - name: talosconfig
+              mountPath: /tmp/talos
+              readOnly: true
 
     volumes:
       - name: talosconfig
