@@ -1,4 +1,4 @@
-# Create an Argo-Workflow to backup etcd
+# Argo-Workflow to backup etcd
 # This workflow will run every day at 2 AM
 # and backup the etcd data to a specified S3 bucket
 apiVersion: argoproj.io/v1alpha1
