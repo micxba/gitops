@@ -10,11 +10,6 @@
           cp='192.168.0.216'
           wn='192.168.0.220'
 
-          # Install yq TODO: create image with it pre-installed
-          YQ_VERSION=v4.45.1
-          curl -sL "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq
-          chmod +x /usr/local/bin/yq
-
           # back up etcd cluster
           talosctl -n $cp etcd snapshot ruleof3-k8s-etcd-${DATE}.snapshot
 
