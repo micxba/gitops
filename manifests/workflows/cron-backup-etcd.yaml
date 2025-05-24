@@ -4,10 +4,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: cron-backup-etcd-
+  name: cron-backup-etcd
   namespace: workflows
 spec:
   entrypoint: backup-etcd
+  serviceAccountName: argo-workflow
   schedule: "0 2 * * *" # Every day at 2 AM
   templates:
     - name: backup-etcd
