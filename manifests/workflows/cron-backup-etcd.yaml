@@ -41,16 +41,19 @@ spec:
 
               tar -zcf cluster-backup-${DATE}.tar.gz ruleof3-k8s-etcd-${DATE}.snapshot cp.yaml wn.yaml
 
-              # Upload to S3 (optional)
-              # aws s3 cp cluster-backup-${DATE}.tar.gz s3://talos-backups/ --no-progress
+              # Upload to S3
+              aws s3 cp cluster-backup-${DATE}.tar.gz s3://etcd-backups/ \
+              --endpoint-url http://s3.sith.network:9000 \
+              --no-progress
+
 
           env:
-            - name: access_key
+            - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
                   name: argo-w-minios3
                   key: access_key
-            - name: secret_key
+            - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: argo-w-minios3
