@@ -1,91 +1,66 @@
-# Argo-Workflow to backup etcd
-# This workflow will run every day at 2 AM
-# and backup the etcd data to a specified S3 bucket
 apiVersion: argoproj.io/v1alpha1
-kind: Workflow
+kind: CronWorkflow
 metadata:
   name: cron-backup-etcd
   namespace: workflows
 spec:
-  entrypoint: backup-etcd
-  serviceAccountName: argo-workflow
-  schedule: "0 2 * * *" # Every day at 2 AM
-  templates:
-    - name: backup-etcd
-      steps:
-        - - name: backup
-            template: backup
-    - name: backup
-      container:
-        image: ghcr.io/micxba/tools:latest
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-apiVersion: argoproj.io/v1alpha1
-kind: Workflow
-metadata:
-  name: cron-backup-etcd
-  namespace: workflows
-spec:
-  entrypoint: backup-etcd
-  serviceAccountName: argo-workflow
-  schedule: "0 2 * * *" # Every day at 2 AM
-  templates:
-    - name: backup-etcd
-      steps:
-        - - name: backup
-            template: backup
-    - name: backup
-      container:
-        image: ghcr.io/micxba/tools:latest
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            set -euo pipefail
+  schedule: "0 2 * * *"  # Every day at 2 AM
+  timezone: "UTC"
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  workflowSpec:
+    entrypoint: backup-etcd
+    serviceAccountName: argo-workflow
+    templates:
+      - name: backup-etcd
+        steps:
+          - - name: backup
+              template: backup
 
-            export TALOSCONFIG=/tmp/talos/config
+      - name: backup
+        container:
+          image: ghcr.io/micxba/tools:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -euo pipefail
 
-            DATE=$(date +%Y%m%d%H%M)
-            cp='192.168.0.216'
-            wn='192.168.0.220'
+              export TALOSCONFIG=/tmp/talos/config
+              export AWS_ACCESS_KEY_ID="$access_key"
+              export AWS_SECRET_ACCESS_KEY="$secret_key"
 
-            # back up etcd cluster
-            talosctl -n "$cp" etcd snapshot ruleof3-k8s-etcd-${DATE}.snapshot
+              DATE=$(date +%Y%m%d%H%M)
+              cp='192.168.0.216'
+              wn='192.168.0.220'
 
-            # back up control plane machine config
-            talosctl -n "$cp" get mc v1alpha1 -o yaml | yq -y '.spec' - > cp.yaml
+              talosctl -n "$cp" etcd snapshot ruleof3-k8s-etcd-${DATE}.snapshot
+              talosctl -n "$cp" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > cp.yaml
+              talosctl -n "$wn" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > wn.yaml
 
-            # back up worker machine config
-            talosctl -n "$wn" get mc v1alpha1 -o yaml | yq -y '.spec' - > wn.yaml
+              tar -zcf cluster-backup-${DATE}.tar.gz ruleof3-k8s-etcd-${DATE}.snapshot cp.yaml wn.yaml
 
-            # create tarball of etcd snapshot and machine configs
-            tar -zcf cluster-backup-${DATE}.tar.gz ruleof3-k8s-etcd-${DATE}.snapshot cp.yaml wn.yaml
-            ls -ll
-            
-            # Example: copy tarball to S3 (uncomment and adjust if needed)
-            # aws s3 cp cluster-backup-${DATE}.tar.gz s3://talos-backups/ --no-progress
+              # Upload to S3 (optional)
+              # aws s3 cp cluster-backup-${DATE}.tar.gz s3://talos-backups/ --no-progress
+
+        env:
+          - name: access_key
+            valueFrom:
+              secretKeyRef:
+                name: argo-w-minios3
+                key: access_key
+          - name: secret_key
+            valueFrom:
+              secretKeyRef:
+                name: argo-w-minios3
+                key: secret_key
         volumeMounts:
           - name: talosconfig
             mountPath: /tmp/talos
             readOnly: true
-  volumes:
-    - name: talosconfig
-      secret:
-        secretName: talosconfig
 
-
-      env:
-        - name: TALOSCONFIG
-          valueFrom:
-            secretKeyRef:
-              name: talosconfig
-              key: config
-      volumeMounts:
-        - name: talosconfig
-          mountPath: /tmp/talos
-          readOnly: true
-  volumes:
-    - name: talosconfig
-      secret:
-        secretName: talosconfig
-
+    volumes:
+      - name: talosconfig
+        secret:
+          secretName: talosconfig
