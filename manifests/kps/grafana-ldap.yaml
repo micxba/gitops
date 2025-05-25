@@ -1,5 +1,5 @@
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: grafana-ldap
@@ -11,8 +11,8 @@ spec:
     kind: ClusterSecretStore
   data:
   - remoteRef:
-      key: dex
-      property: ldap_readonly
+      key: ldap
+      property:  LDAP_READONLY_PASSWORD
     secretKey: ldap_readonly
   target:
     name: grafana-ldap
