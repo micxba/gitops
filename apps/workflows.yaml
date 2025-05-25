@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     directory: 
-    recurse: true
+      recurse: true
     repoURL: git@github.com:micxba/gitops.git
     targetRevision: main
     path: manifests/workflows
