@@ -39,7 +39,7 @@ spec:
           name = "gecos"
 
           [[servers.group_mappings]]
-          group_dn = "cn=admins,cn=groups,dc=sith,dc=network"
+          group_dn = "cn=administrators,cn=groups,dc=sith,dc=network"
           org_role = "Admin"
           grafana_admin = true
 
