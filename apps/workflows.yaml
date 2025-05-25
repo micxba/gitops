@@ -7,12 +7,15 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-    - repoURL: git@github.com:micxba/gitops.git
+  source:
+    directory: 
+      recurse: true
+      repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       path: manifests/workflows
   destination:
     name: in-cluster
+    namespace: workflows
   syncPolicy:
     automated:
       selfHeal: true
