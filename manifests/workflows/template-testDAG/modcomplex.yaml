@@ -1,10 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Workflow
+kind: WorkflowTemplate
 metadata:
   name: complex-dag-demo
   namespace: workflows
 spec:
   entrypoint: complex-dag
+  serviceAccountName: argo-workflow
   templates:
     - name: complex-dag
       dag:
