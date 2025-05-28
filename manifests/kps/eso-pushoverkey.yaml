@@ -7,7 +7,7 @@ spec:
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
-  target: pushoverkey-key
+  target: "pushover-key"
   data:
     - secretKey: key
       remoteRef:
