@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: complex-dag-demo-
+  name: modcomplex-dag-demo
   namespace: workflows
 spec:
   entrypoint: complex-dag
