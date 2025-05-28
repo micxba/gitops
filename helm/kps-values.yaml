@@ -19,8 +19,8 @@ alertmanager:
       - name: 'null'
       - name: 'pushover'
         pushover_configs:
-          - user_key_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
-            token_file: /etc/alertmanager/secrets/pushover-secret/token
+          - user_key_file: /etc/alertmanager/secrets/pushover-secret/token
+            token_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
             title: "Homelab Alert"
             message: "🔔 {{ .CommonLabels.alertname }} - {{ .CommonLabels.severity }}"
             priority: 0
