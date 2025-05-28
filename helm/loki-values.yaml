@@ -2,6 +2,9 @@ global:
   extraEnvFrom:
     - secretRef:
         name: loki-s3-secret
+  extraArgs:
+    - -config.expand-env=true
+
 
 loki:
   auth_enabled: false
@@ -32,9 +35,10 @@ loki:
           prefix: index_
           period: 24h
 
-  compactor:
-    shared_store: s3
-    retention_enabled: true
-
   limits_config:
-    retention_period: 168h # 7 days
+    retention_period: 168h
+    retention_stream:
+      - selector: '{job="varlogs"}'
+        priority: 1
+        period: 168h
+
