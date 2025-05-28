@@ -1,13 +1,13 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: "eso-pushover-key"
+  name: eso-pushover-key
 spec:
   refreshInterval: "60s"
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
-  target: "pushover-key"
+  target: pushover-key
   data:
     - secretKey: key
       remoteRef:
