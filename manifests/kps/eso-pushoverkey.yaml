@@ -1,16 +1,20 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: eso-pushover-key
+  name: eso-pushover-secret
 spec:
   refreshInterval: "60s"
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
   target: 
-    name: pushover-key
+    name: pushover-secret
   data:
-    - secretKey: key
+    - secretKey: token
       remoteRef:
         key: pushover
-        property: key
+        property: tokent
+    - secretKey: homelab-apikey
+      remoteRef:
+        key: pushover
+        property: homelab-apikey
