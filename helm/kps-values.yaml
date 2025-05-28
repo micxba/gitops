@@ -3,27 +3,32 @@ namespaceOverride: "monitoring"
 crds:
   enabled: false
 alertmanager:
-  # config:
-  #   route:
-  #     group_by: ['job']
-  #     receiver: 'slack'
-  #     routes:
-  #     - matchers:
-  #         - alertname = "Watchdog"
-  #       receiver: 'null'
-  #     - matchers:
-  #         - alertname = "NodeDiskIOSaturation"
-  #       receiver: 'null'
-  #   receivers:
-  #   - name: 'null'
-  #   - name: 'slack'
-  #     slack_configs:
-  #     - channel: heartbeat-opsmgmt-production
-  #       api_url: https://slack.com/api/chat.postMessage
-  #       http_config:
-  #         authorization:
-  #           credentials_file: /etc/alertmanager/secrets/slack-token/slack-token
-  #       send_resolved: true
+  config:
+    route:
+      group_by: ['job']
+      receiver: 'pushover'
+      routes:
+        - matchers:
+            - alertname = "Watchdog"
+          receiver: 'null'
+        - matchers:
+            - alertname = "NodeDiskIOSaturation"
+          receiver: 'null'
+
+    receivers:
+      - name: 'null'
+      - name: 'pushover'
+        pushover_configs:
+          - user_key_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
+            token_file: /etc/alertmanager/secrets/pushover-secret/token
+            title: "Homelab Alert"
+            message: "🔔 {{ .CommonLabels.alertname }} - {{ .CommonLabels.severity }}"
+            priority: 0
+            sound: bugle
+            url: "https://grafana.sith.network"
+            url_title: "Grafana"
+            send_resolved: true
+
   templateFiles:
     template_1.tmpl: |-
       {{ define "__alertmanager" }}Alertmanager{{ end }}
@@ -37,9 +42,10 @@ alertmanager:
       - secretName: wildcard-sith-network
         hosts:
           - alertmanager.sith.network
-  # alertmanagerSpec:
-  #   secrets:
-  #     - slack-token
+  alertmanagerSpec:
+    secrets:
+      - pushover-secret
+
 grafana:
   namespaceOverride: "monitoring"
   defaultDashboardsEnabled: false
