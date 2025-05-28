@@ -1,0 +1,34 @@
+config:
+  snippets:
+    pipelineStages:
+      - docker: {}
+  clients:
+    - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+
+  positions:
+    filename: /run/promtail/positions.yaml
+
+  server:
+    http_listen_port: 9080
+    grpc_listen_port: 0
+
+  scrape_configs:
+    - job_name: kubernetes-pods
+      kubernetes_sd_configs:
+        - role: pod
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_name]
+          action: replace
+          target_label: job
+        - source_labels: [__meta_kubernetes_namespace]
+          action: replace
+          target_label: namespace
+        - source_labels: [__meta_kubernetes_pod_name]
+          action: replace
+          target_label: pod
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
+        - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_name, __meta_kubernetes_container_name]
+          separator: /
+          target_label: __path__
+          replacement: /var/log/pods/*$1*$2*$3/*.log

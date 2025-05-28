@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argo-cd
+spec:
+  project: default
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 6.16.6
+      chart: promtail
+      helm:
+        parameters:
+          - name: config.clients[0].url
+            value: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+        valueFiles:
+          - $values/helm/promtail-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+  destination:
+    namespace: monitoring
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true

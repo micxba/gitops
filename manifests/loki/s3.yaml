@@ -1,0 +1,22 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: loki-s3-secret
+  namespace: workflows
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: loki-s3-secret
+  data:
+    - secretKey:  LOKI_S3_ACCESS_KEY_ID 
+      remoteRef:
+        key: /loki/s3
+        property:  LOKI_S3_ACCESS_KEY_ID 
+    - secretKey: LOKI_S3_SECRET_ACCESS_KEY
+      remoteRef:
+        key: /loki/s3
+        property: LOKI_S3_SECRET_ACCESS_KEY

@@ -1,0 +1,40 @@
+global:
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-secret
+
+loki:
+  auth_enabled: false
+
+  storage:
+    type: s3
+    bucketNames:
+      chunks: loki-chunks
+      ruler: loki-ruler
+    s3:
+      endpoint: s3.sith.network:9000
+      region: us-east-1
+      accessKeyId: ${LOKI_S3_ACCESS_KEY_ID}
+      secretAccessKey: ${LOKI_S3_SECRET_ACCESS_KEY}
+      s3ForcePathStyle: true
+      insecure: true
+
+  commonConfig:
+    replication_factor: 1
+
+  schemaConfig:
+    configs:
+      - from: "2023-01-01"
+        store: boltdb-shipper
+        object_store: s3
+        schema: v11
+        index:
+          prefix: index_
+          period: 24h
+
+  compactor:
+    shared_store: s3
+    retention_enabled: true
+
+  limits_config:
+    retention_period: 168h # 7 days
