@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: complex-dag-demo-
+  namespace: workflows
+spec:
+  entrypoint: complex-dag
+  serviceAccountName: argo-workflow
+  templates:
+    - name: complex-dag
+      dag:
+        tasks:
+          - name: fetch-weather
+            template: fetch-weather-info
+
+          - name: manual-approval-1
+            dependencies: [fetch-weather]
+            template: suspend-step
+
+          - name: process-weather
+            dependencies: [manual-approval-1]
+            template: process-weather-data
+
+          - name: parallel-task-a
+            dependencies: [process-weather]
+            template: sleep-task
+            arguments:
+              parameters:
+                - name: sleep-duration
+                  value: "15"
+
+          - name: parallel-task-b
+            dependencies: [process-weather]
+            template: print-message
+            arguments:
+              parameters:
+                - name: message
+                  value: "Hello from parallel-task-b!"
+
+          - name: manual-approval-2
+            dependencies: [parallel-task-a, parallel-task-b]
+            template: suspend-step
+
+          - name: final-step
+            dependencies: [manual-approval-2]
+            template: final-task
+
+    # Template Definitions
+    - name: fetch-weather-info
+      container:
+        image: appropriate/curl
+        command: ["sh", "-c"]
+        args: ["curl -s https://wttr.in/?format=3"]
+
+    - name: process-weather-data
+      container:
+        image: alpine
+        command: ["sh", "-c"]
+        args: ["echo 'Processing weather data completed successfully.'"]
+
+    - name: sleep-task
+      inputs:
+        parameters:
+          - name: sleep-duration
+      container:
+        image: alpine
+        command: ["sleep"]
+        args: ["{{inputs.parameters.sleep-duration}}"]
+
+    - name: print-message
+      inputs:
+        parameters:
+          - name: message
+      container:
+        image: alpine
+        command: ["echo", "{{inputs.parameters.message}}"]
+
+    - name: suspend-step
+      suspend: {}
+
+    - name: final-task
+      container:
+        image: alpine
+        command: ["sh", "-c"]
+        args: ["echo 'All tasks completed successfully!'"]
