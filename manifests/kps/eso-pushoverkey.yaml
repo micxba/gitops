@@ -13,7 +13,7 @@ spec:
     - secretKey: token
       remoteRef:
         key: pushover
-        property: tokent
+        property: token
     - secretKey: homelab-apikey
       remoteRef:
         key: pushover
