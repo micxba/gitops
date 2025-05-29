@@ -12,10 +12,30 @@ controller:
     additionalLabels:
       app: argo-workflows
       release: kps
-  # attempt override due to millions of Loki logs
+  # override due to millions of Loki logs if using generated ConfigMap name from Argo-CD
   configMap:
     create: true
     name: workflow-controller-configmap
+  workflowDefaults:
+    spec:
+      metrics:
+        prometheus:
+        - name: workflow_failed_count
+          counter:
+            value: "1"
+          help: Failed workflow counter
+          labels:
+          - key: workflow_name
+            value: "{{ workflow.name }}"
+          - key: workflow_namespace
+            value: "{{ workflow.namespace }}"
+          - key: workflow_duration_seconds
+            value: "{{ workflow.duration }}"
+          - key: workflow_created_at
+            value: "{{ workflow.creationTimestamp }}"
+          - key: cron_workflow
+            value: "{{= sprig.default('', workflow.labels['workflows.argoproj.io/cron-workflow']) }}"
+          when: "{{workflow.status}} == Failed || {{workflow.status}} == Error"
 
 
   # -- enable Workflow Archive to store the status of workflows. Postgres and MySQL (>= 5.7.8) are available.
