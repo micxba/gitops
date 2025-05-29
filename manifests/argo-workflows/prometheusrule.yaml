@@ -10,7 +10,7 @@ spec:
     - alert: ArgoWorkflowFailed
       annotations:
         summary: Workflow {{ $labels.workflow_namespace }}/{{ $labels.workflow_name }} failed
-        link: https://ARGO_WORKFLOWS_HOSTNAME/workflows/{{ $labels.workflow_namespace }}/{{ $labels.workflow_name }}
+        link: https://argoworkflows.sith.network/workflows/{{ $labels.workflow_namespace }}/{{ $labels.workflow_name }}
       expr: max_over_time(argo_workflows_workflow_failed_count[2m]) > 0
       for: 0m
       labels:
