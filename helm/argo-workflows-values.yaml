@@ -35,7 +35,7 @@ controller:
             value: "{{ workflow.creationTimestamp }}"
           - key: cron_workflow
             value: "{{= sprig.default('', workflow.labels['workflows.argoproj.io/cron-workflow']) }}"
-          when: "{{workflow.status}} == Failed || {{workflow.status}} == Error"
+          when: "{{= workflow.status == 'Failed' or workflow.status == 'Error' }}"
 
 
   # -- enable Workflow Archive to store the status of workflows. Postgres and MySQL (>= 5.7.8) are available.
