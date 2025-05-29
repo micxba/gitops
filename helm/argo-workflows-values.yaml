@@ -92,9 +92,9 @@ artifactRepository:
     insecure: true                
     region: us-east-1             
     accessKeySecret:
-      name: minios3
+      name: argo-w-minios3
       key: access_key
     secretKeySecret:
-      name: minios3
+      name: argo-w-minios3
       key: secret_key
 
