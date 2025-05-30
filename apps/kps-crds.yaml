@@ -14,12 +14,12 @@ spec:
   destination:
     namespace: monitoring
     name: in-cluster
- syncPolicy:
-  syncOptions:
-  - Prune=true
-  - ServerSideApply=true
-  syncStrategy:
-    type: Automated
-    automated:
-      prune: true
-      selfHeal: true
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=true
+    syncStrategy:
+      type: Automated
+      automated:
+        prune: true
+        selfHeal: true
