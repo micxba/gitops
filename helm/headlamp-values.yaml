@@ -1,9 +1,12 @@
-# config:
-  # oidc:
-  #   clientID: kubectl
-  #   clientSecret: 603*
-  #   issuerURL: https://dex.sith.network/dex
-  #   scopes: groups
+config:
+  oidc:
+    # clientID: oidc_headlamp_secret
+    # clientSecret: 603*
+    # issuerURL: https://dex.sith.network/dex
+    # scopes: groups
+    secret:
+      create: true
+      name: headlamp-oidc-secret
 ingress:
   enabled: true
   hosts:
