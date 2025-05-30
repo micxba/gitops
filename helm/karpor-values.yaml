@@ -1,7 +1,7 @@
 
 server:
   # -- Enable RBAC authorization if set to true.
-  enableRbac: false
+  enableRbac: true
   ai:
     # -- Authentication token for accessing the AI service.
     authToken: ""
