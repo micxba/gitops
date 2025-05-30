@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: rpi4b-metrics
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: rpi4b-metrics
+  template:
+    metadata:
+      labels:
+        app: rpi4b-metrics
+    spec:
+      nodeSelector:
+        hardware: raspberrypi4b
+      containers:
+        - name: metrics-exporter
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /var/metrics
+              while true; do
+                RAW=$(cat /sys/class/thermal/thermal_zone0/temp)
+                TEMP=$(echo "$RAW / 1000" | bc -l)
+                echo "rpi_cpu_temperature_celsius $TEMP" > /var/metrics/metrics.prom
+                sleep 10
+              done
+          volumeMounts:
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+            - name: metrics
+              mountPath: /var/metrics
+          ports:
+            - containerPort: 9101
+              name: metrics
+          securityContext:
+            privileged: true
+      volumes:
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: metrics
+          emptyDir: {}
