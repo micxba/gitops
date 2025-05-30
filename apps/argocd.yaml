@@ -9,7 +9,7 @@ spec:
   project: default
   sources:
     - repoURL: https://argoproj.github.io/argo-helm
-      targetRevision: 8.0.1
+      targetRevision: 8.0.13
       chart: argo-cd
       helm:
         valueFiles:
@@ -23,6 +23,6 @@ spec:
   destination:
     namespace: argo-cd
     name: in-cluster
-  # syncPolicy:
-  #   automated:
-  #     selfHeal: true
+  syncPolicy:
+    automated:
+      selfHeal: true
