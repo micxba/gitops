@@ -6,9 +6,9 @@ config:
     # scopes: groups
     secret:
       create: false
-      externalSecret:
-        enabled: true
-        name: headlamp-sso
+    externalSecret:
+      enabled: true
+      name: headlamp-sso
 ingress:
   enabled: true
   hosts:
