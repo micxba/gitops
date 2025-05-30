@@ -9,11 +9,17 @@ spec:
   project: default
   sources:
     - repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 17.0.2
+      targetRevision: 20.0.0
       chart: prometheus-operator-crds
   destination:
     namespace: monitoring
     name: in-cluster
-#  syncPolicy:
-#    automated:
-#      selfHeal: false
+ syncPolicy:
+  syncOptions:
+  - Prune=true
+  - ServerSideApply=true
+  syncStrategy:
+    type: Automated
+    automated:
+      prune: true
+      selfHeal: true
