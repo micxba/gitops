@@ -14,29 +14,29 @@ spec:
     spec:
       nodeSelector:
         hardware: thinkstation
-    containers:
-      - name: metrics-exporter
-        image: ubuntu:20.04
-        command:
-          - bash
-          - -c
-          - |
-            apt update && apt install -y lm-sensors curl && sensors-detect --auto || true
-            mkdir -p /var/metrics
-            while true; do
-              sensors | awk '
-                /^Core [0-9]+:/ {
-                  core=substr($1, 5, 1)
-                  temp=$2
-                  gsub(/\+|°C/, "", temp)
-                  printf "node_cpu_core_temp_celsius{core=\"%s\"} %s\n", core, temp
-                }
-                /^fan[0-9]+:/ {
-                  fan=$1
-                  speed=$2
-                  gsub(/:/, "", fan)
-                  printf "node_fan_speed_rpm{fan=\"%s\"} %s\n", fan, speed
-                }
-              ' > /var/metrics/metrics.prom
-              sleep 10
-            done
+      containers:
+        - name: metrics-exporter
+          image: ubuntu:20.04
+          command:
+            - bash
+            - -c
+            - |
+              apt update && apt install -y lm-sensors curl && sensors-detect --auto || true
+              mkdir -p /var/metrics
+              while true; do
+                sensors | awk '
+                  /^Core [0-9]+:/ {
+                    core=substr($1, 5, 1)
+                    temp=$2
+                    gsub(/\+|°C/, "", temp)
+                    printf "node_cpu_core_temp_celsius{core=\"%s\"} %s\n", core, temp
+                  }
+                  /^fan[0-9]+:/ {
+                    fan=$1
+                    speed=$2
+                    gsub(/:/, "", fan)
+                    printf "node_fan_speed_rpm{fan=\"%s\"} %s\n", fan, speed
+                  }
+                ' > /var/metrics/metrics.prom
+                sleep 10
+              done
