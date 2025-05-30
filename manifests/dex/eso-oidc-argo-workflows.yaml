@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: argo-wf-sso
+  namespace: argo-workflows
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: argo-wf-sso
+    template:
+      mergePolicy: Merge
+      data:
+        client-id: argo-workflows
+  data:
+    - secretKey: client-secret
+      remoteRef:
+        key: /dex
+        property: oidc_argoworkflows_secret

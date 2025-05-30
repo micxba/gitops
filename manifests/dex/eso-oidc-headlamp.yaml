@@ -1,20 +1,23 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: argo-wf-sso
+  name: headlamp-sso
+  namespace: kube-system
 spec:
   refreshInterval: "60s"
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
   target:
-    name: argo-wf-sso
+    name: headlamp-sso
     template:
       mergePolicy: Merge
       data:
-        client-id: argo-workflows
+        clientID: "oidc_headlamp_secret"
+        issuerURL: "https://dex.sith.network/dex"
+        scopes: "email"
   data:
-    - secretKey: client-secret
+    - secretKey: clientSecret
       remoteRef:
         key: /dex
-        property: oidc_argoworkflows_secret
+        property: oidc_headlamp_secret

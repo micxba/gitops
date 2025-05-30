@@ -8,7 +8,7 @@ config:
       create: false
       externalSecret:
         enabled: true
-        name: oidc
+        name: headlamp-sso
 ingress:
   enabled: true
   hosts:
