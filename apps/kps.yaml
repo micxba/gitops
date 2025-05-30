@@ -24,11 +24,12 @@ spec:
     namespace: monitoring
     name: in-cluster
   syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+    - Prune=true
+    - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged
