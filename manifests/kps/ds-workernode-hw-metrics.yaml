@@ -14,52 +14,29 @@ spec:
     spec:
       nodeSelector:
         hardware: thinkstation
-      containers:
-        - name: metrics-exporter
-          image: alpine
-          command:
-            - sh
-            - -c
-            - |
-              apk add --no-cache curl coreutils lm-sensors && \
-              sensors-detect --auto && \
-              while true; do
-                sensors | awk '
-                  /^Core [0-9]+:/ {
-                    core=substr($1, 5, 1)
-                    temp=$2
-                    gsub(/\+|°C/, "", temp)
-                    printf "node_cpu_core_temp_celsius{core=\"%s\"} %s\n", core, temp
-                  }
-                  /^fan[0-9]+:/ {
-                    fan=$1
-                    speed=$2
-                    gsub(/:/, "", fan)
-                    printf "node_fan_speed_rpm{fan=\"%s\"} %s\n", fan, speed
-                  }
-                ' > /var/metrics/metrics.prom
-                sleep 10
-              done
-          volumeMounts:
-            - name: sys
-              mountPath: /sys
-              readOnly: true
-            - name: proc
-              mountPath: /proc
-              readOnly: true
-            - name: metrics
-              mountPath: /var/metrics
-          ports:
-            - containerPort: 9101
-              name: metrics
-          securityContext:
-            privileged: true
-      volumes:
-        - name: sys
-          hostPath:
-            path: /sys
-        - name: proc
-          hostPath:
-            path: /proc
-        - name: metrics
-          emptyDir: {}
+    containers:
+      - name: metrics-exporter
+        image: ubuntu:20.04
+        command:
+          - bash
+          - -c
+          - |
+            apt update && apt install -y lm-sensors curl && sensors-detect --auto || true
+            mkdir -p /var/metrics
+            while true; do
+              sensors | awk '
+                /^Core [0-9]+:/ {
+                  core=substr($1, 5, 1)
+                  temp=$2
+                  gsub(/\+|°C/, "", temp)
+                  printf "node_cpu_core_temp_celsius{core=\"%s\"} %s\n", core, temp
+                }
+                /^fan[0-9]+:/ {
+                  fan=$1
+                  speed=$2
+                  gsub(/:/, "", fan)
+                  printf "node_fan_speed_rpm{fan=\"%s\"} %s\n", fan, speed
+                }
+              ' > /var/metrics/metrics.prom
+              sleep 10
+            done
