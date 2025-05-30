@@ -1,12 +1,14 @@
 config:
   oidc:
     # clientID: oidc_headlamp_secret
-    # clientSecret: 603*
+    # # clientSecret: 603*
     # issuerURL: https://dex.sith.network/dex
     # scopes: groups
     secret:
-      create: true
-      name: headlamp-oidc-secret
+      create: false
+      externalSecret:
+        enabled: true
+        name: oidc
 ingress:
   enabled: true
   hosts:
