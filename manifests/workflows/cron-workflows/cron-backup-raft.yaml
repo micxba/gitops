@@ -5,6 +5,9 @@ metadata:
   namespace: workflows
 spec:
   schedule: "0 2 * * *"  # Daily at 2 AM
+  artifactRepositoryRef:
+    configMap: vault-artifact-repo
+    key: artifactRepository
   workflowSpec:
     entrypoint: vault-backup
     serviceAccountName: argo-workflow
