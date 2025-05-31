@@ -33,7 +33,7 @@ spec:
           done
 
           echo "Authenticating with Vault..."
-          TOKEN=$(vault write -field=token auth/kubernetes/login \
+          TOKEN=$(vault write -field=token auth/ruleof3-k8s/login \
             role=backup-role \
             jwt=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token))
           export VAULT_TOKEN="$TOKEN"
