@@ -51,6 +51,10 @@ spec:
             exit 1
           fi
 
+          echo "Access Key ID"
+          echo $AWS_ACCESS_KEY_ID
+          echo "###"
+          
           # Upload to S3
           aws s3 cp $SNAPSHOT_FILE s3://vault-backups/ \
           --endpoint-url http://s3.sith.network:9000 \
