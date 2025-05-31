@@ -39,7 +39,8 @@ spec:
           export VAULT_TOKEN="$TOKEN"
 
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
+          # SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
+          SNAPSHOT_FILE="/tmp/vault-snapshot.snap"
 
           echo "Creating snapshot: ${SNAPSHOT_FILE}"
           vault operator raft snapshot save ${SNAPSHOT_FILE}
@@ -56,11 +57,11 @@ spec:
       outputs:
         artifacts:
         - name: vault-snapshot
-          path: /tmp/vault-snapshot-*.snap
+          path: /tmp/vault-snapshot.snap
           archive:
             none: {}
           s3:
-            key: vault-snapshots/{{workflow.name}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}.snap
+            key: vault-snapshots/{{workflow.name}}.snap
       volumes:
       - name: snapshot-storage
         emptyDir: {}
