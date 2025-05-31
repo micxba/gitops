@@ -5,9 +5,6 @@ metadata:
   namespace: workflows
 spec:
   schedule: "0 2 * * *"  # Daily at 2 AM
-  artifactRepositoryRef:
-    configMap: vault-artifact-repo
-    key: artifactRepository
   workflowSpec:
     entrypoint: vault-backup
     serviceAccountName: argo-workflow
@@ -42,8 +39,7 @@ spec:
           export VAULT_TOKEN="$TOKEN"
 
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          # SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
-          SNAPSHOT_FILE="/tmp/vault-snapshot.snap"
+          SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
 
           echo "Creating snapshot: ${SNAPSHOT_FILE}"
           vault operator raft snapshot save ${SNAPSHOT_FILE}
@@ -54,17 +50,24 @@ spec:
             echo "ERROR: Snapshot creation failed"
             exit 1
           fi
-        volumeMounts:
-        - name: snapshot-storage
-          mountPath: /tmp
-      outputs:
-        artifacts:
-        - name: vault-snapshot
-          path: /tmp/vault-snapshot.snap
-          archive:
-            none: {}
-      volumes:
-      - name: snapshot-storage
-        emptyDir: {}
+
+          # Upload to S3
+          aws s3 cp $SNAPSHOT_FILE s3://vault-backups/ \
+          --endpoint-url http://s3.sith.network:9000 \
+          --no-progress
+
+
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: argo-w-minios3
+                key: access_key
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: argo-w-minios3
+                key: secret_key
+
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 3
