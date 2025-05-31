@@ -63,8 +63,6 @@ spec:
           path: /tmp/vault-snapshot.snap
           archive:
             none: {}
-          s3:
-            key: vault-snapshots/{{workflow.name}}.snap
       volumes:
       - name: snapshot-storage
         emptyDir: {}
