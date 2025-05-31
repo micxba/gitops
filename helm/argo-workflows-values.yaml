@@ -104,7 +104,6 @@ server:
 
 artifactRepository:
   archiveLogs: true
-
   s3:
     bucket: argo-workflows
     endpoint: s3.sith.network:9000

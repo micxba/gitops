@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: vault-backup-scheduled
+  namespace: workflows
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  workflowSpec:
+    entrypoint: vault-backup
+    serviceAccountName: argo-workflow
+    templates:
+    - name: vault-backup
+      steps:
+      - - name: create-snapshot
+          template: snapshot-vault
+
+    - name: snapshot-vault
+      container:
+        image: hashicorp/vault:1.18.1
+        command: [sh, -c]
+        args: 
+        - |
+          set -e
+          echo "Starting Vault RAFT snapshot backup job..."
+          echo "Timestamp: $(date)"
+
+          export VAULT_ADDR="http://vault.vault.svc.cluster.local:8200"
+
+          echo "Checking Vault health..."
+          until vault status > /dev/null 2>&1; do
+            echo "Waiting for Vault to be ready..."
+            sleep 10
+          done
+
+          echo "Authenticating with Vault..."
+          TOKEN=$(vault write -field=token auth/kubernetes/login \
+            role=backup-role \
+            jwt=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token))
+          export VAULT_TOKEN="$TOKEN"
+
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
+
+          echo "Creating snapshot: ${SNAPSHOT_FILE}"
+          vault operator raft snapshot save ${SNAPSHOT_FILE}
+
+          if [ -f "${SNAPSHOT_FILE}" ]; then
+            echo "Snapshot created: ${SNAPSHOT_FILE}"
+          else
+            echo "ERROR: Snapshot creation failed"
+            exit 1
+          fi
+        volumeMounts:
+        - name: snapshot-storage
+          mountPath: /tmp
+      outputs:
+        artifacts:
+        - name: vault-snapshot
+          path: /tmp/vault-snapshot-*.snap
+          archive:
+            none: {}
+          s3:
+            key: vault-snapshots/{{workflow.name}}-{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}.snap
+      volumes:
+      - name: snapshot-storage
+        emptyDir: {}
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 3
