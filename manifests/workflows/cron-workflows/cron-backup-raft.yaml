@@ -39,7 +39,7 @@ spec:
           export VAULT_TOKEN="$TOKEN"
 
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          SNAPSHOT_FILE="/tmp/vault-snapshot-${TIMESTAMP}.snap"
+          SNAPSHOT_FILE="vault-snapshot-${TIMESTAMP}.snap"
 
           echo "Creating snapshot: ${SNAPSHOT_FILE}"
           vault operator raft snapshot save ${SNAPSHOT_FILE}
