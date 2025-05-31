@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-artifact-repo
+data:
+  artifactRepository: |
+    s3:
+      bucket: vault-backups
+      endpoint: s3.sith.network:9000
+      insecure: true
+      accessKeySecret:
+        name: argo-w-minios3
+        key: access_key
+      secretKeySecret:
+        name: argo-w-minios3
+        key: secret_key
+      region: us-east-1
+      useSDKCreds: false
