@@ -26,6 +26,7 @@ server:
       command: ["/bin/sh", "-c"]
       args:
         - |
+          echo "Waiting for Vault to be unsealed..."
           until curl -s http://localhost:8200/v1/sys/health | grep -q 'sealed.*true'; do sleep 1; done
           for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
             echo "Unsealing Vault..."
