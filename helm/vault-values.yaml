@@ -19,10 +19,10 @@ server:
         sources:
           - secret:
               name: vault-unseal-secret
-              
+
   extraInitContainers:
     - name: vault-unseal
-      image: alpine:3.20
+      image: ghcr.io/micxba/tools:latest
       command: ["/bin/sh", "-c"]
       args:
         - |
