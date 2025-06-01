@@ -19,24 +19,19 @@ server:
         sources:
           - secret:
               name: vault-unseal-secret
-
-  extraInitContainers:
-    - name: vault-unseal
-      image: ghcr.io/micxba/tools:latest
-      command: ["/bin/sh", "-c"]
-      args:
-        - |
-          echo "Waiting for Vault to be unsealed..."
-          until curl -s -v http://localhost:8200/v1/sys/health | grep -q 'sealed.*true'; do sleep 1; done
-          for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
-            echo "Unsealing Vault..."
-            curl -s --request PUT --data "{\"key\": \"$key\"}" http://localhost:8200/v1/sys/unseal
-            sleep 1
-          done
-      volumeMounts:
-        - name: unseal-secret
-          mountPath: /vault/unseal
-          readOnly: true
+  volumeMounts:
+    - name: unseal-secret
+      mountPath: /vault/unseal
+      readOnly: true
+      
+  postStart:
+    - /bin/sh
+    - -c
+    - |
+      for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
+        vault operator unseal "$key"
+        sleep 1
+      done
 
   auditStorage:
     enabled: true
