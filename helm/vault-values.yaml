@@ -20,7 +20,7 @@ server:
         type: Directory
   extraInitContainers:
     - name: vault-unseal
-      image: ghcr.io/micxba/tools:latest
+      image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
       command: ["/bin/sh", "-c"]
       args:
         - |
