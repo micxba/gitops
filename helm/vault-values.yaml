@@ -11,18 +11,11 @@ server:
       - secretName: wildcard-sith-network
         hosts:
           - vault.sith.network
-
-  # extraVolumes:
-  #   - type: hostPath
-  #     name: talos-vault-keys
-  #     hostPath:
-  #       path: /var/secrets
-  #       type: Directory
-
-  # extraVolumeMounts:
-  #   - name: talos-vault-keys
-  #     mountPath: /vault/unseal
-  #     readOnly: true
+  volumes:
+    - name: talos-vault-keys
+      hostPath:
+        path: /var/secrets
+        type: Directory
 
   # extraEnvironmentVars:
   #   VAULT_SEAL_TYPE: awskms
