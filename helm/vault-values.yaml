@@ -28,11 +28,15 @@ server:
     - /bin/sh
     - -c
     - |
-      sleep 15
-      for key in $(cat /vault/unseal/vault-keys); do
-        vault operator unseal "$key"
+      echo "Waiting for Vault to become reachable..."
+      until vault status > /dev/null 2>&1; do
+        echo "Vault not ready yet..."
         sleep 1
       done
+
+      echo "Vault is reachable. Unsealing..."
+      vault operator unseal "$(cat /vault/unseal/vault-keys)"
+
 
   auditStorage:
     enabled: true
