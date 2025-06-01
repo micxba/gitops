@@ -12,7 +12,7 @@ server:
         hosts:
           - vault.sith.network
   
-  # Vault auto-unseal configuration using Talos Vault Keys
+  # Vault auto-unseal configuration using secret
   volumes:
     - name: unseal-secret
       projected:
@@ -23,11 +23,12 @@ server:
     - name: unseal-secret
       mountPath: /vault/unseal
       readOnly: true
-      
+
   postStart:
     - /bin/sh
     - -c
     - |
+      sleep 15
       for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
         vault operator unseal "$key"
         sleep 1
