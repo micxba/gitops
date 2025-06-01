@@ -29,7 +29,7 @@ server:
     - -c
     - |
       sleep 15
-      for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
+      for key in $(cat /vault/unseal/vault-keys); do
         vault operator unseal "$key"
         sleep 1
       done
