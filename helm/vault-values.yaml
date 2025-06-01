@@ -16,6 +16,10 @@ server:
       hostPath:
         path: /var/secrets
         type: Directory
+  volumeMounts:
+    - name: talos-vault-keys
+      mountPath: /vault/unseal
+      readOnly: true
 
   # extraEnvironmentVars:
   #   VAULT_SEAL_TYPE: awskms
