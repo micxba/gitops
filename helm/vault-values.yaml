@@ -14,26 +14,27 @@ server:
   
   # Vault auto-unseal configuration using Talos Vault Keys
   volumes:
-    - name: talos-vault-keys
-      hostPath:
-        path: /var/secrets
-        type: DirectoryOrCreate
+    - name: unseal-secret
+      projected:
+        sources:
+          - secret:
+              name: vault-unseal-secret
+              
   extraInitContainers:
     - name: vault-unseal
-      image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
+      image: alpine:3.20
       command: ["/bin/sh", "-c"]
       args:
         - |
-          echo "Waiting for Vault to start..."
+          apk add --no-cache curl jq
           until curl -s http://localhost:8200/v1/sys/health | grep -q 'sealed.*true'; do sleep 1; done
-
           for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
-            echo "Unsealing with key..."
+            echo "Unsealing Vault..."
             curl -s --request PUT --data "{\"key\": \"$key\"}" http://localhost:8200/v1/sys/unseal
             sleep 1
           done
       volumeMounts:
-        - name: talos-vault-keys
+        - name: unseal-secret
           mountPath: /vault/unseal
           readOnly: true
 
