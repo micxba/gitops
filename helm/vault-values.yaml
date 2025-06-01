@@ -11,29 +11,32 @@ server:
       - secretName: wildcard-sith-network
         hosts:
           - vault.sith.network
+  
+  # Vault auto-unseal configuration using Talos Vault Keys
   volumes:
     - name: talos-vault-keys
       hostPath:
         path: /var/secrets
         type: Directory
-  volumeMounts:
-    - name: talos-vault-keys
-      mountPath: /vault/unseal
-      readOnly: true
+  extraInitContainers:
+    - name: vault-unseal
+      image: ghcr.io/micxba/tools:latest
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          echo "Waiting for Vault to start..."
+          until curl -s http://localhost:8200/v1/sys/health | grep -q 'sealed.*true'; do sleep 1; done
 
-  # extraEnvironmentVars:
-  #   VAULT_SEAL_TYPE: awskms
-  #   AWS_REGION: us-east-1
-  # extraSecretEnvironmentVars:
-  #   - envName: AWS_ACCESS_KEY_ID
-  #     secretName: vault-kms
-  #     secretKey: AWS_ACCESS_KEY_ID
-  #   - envName: AWS_SECRET_ACCESS_KEY
-  #     secretName: vault-kms
-  #     secretKey: AWS_SECRET_ACCESS_KEY
-  #   - envName: VAULT_AWSKMS_SEAL_KEY_ID
-  #     secretName: vault-kms
-  #     secretKey: VAULT_AWSKMS_SEAL_KEY_ID
+          for key in $(jq -r '.keys[]' /vault/unseal/vault-keys.json); do
+            echo "Unsealing with key..."
+            curl -s --request PUT --data "{\"key\": \"$key\"}" http://localhost:8200/v1/sys/unseal
+            sleep 1
+          done
+      volumeMounts:
+        - name: talos-vault-keys
+          mountPath: /vault/unseal
+          readOnly: true
+
   auditStorage:
     enabled: true
     size: 10Gi
