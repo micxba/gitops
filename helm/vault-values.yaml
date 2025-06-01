@@ -13,29 +13,29 @@ server:
           - vault.sith.network
   
   # Vault auto-unseal configuration using secret
-  volumes:
-    - name: unseal-secret
-      projected:
-        sources:
-          - secret:
-              name: vault-unseal-secret
-  volumeMounts:
-    - name: unseal-secret
-      mountPath: /vault/unseal
-      readOnly: true
+  # volumes:
+  #   - name: unseal-secret
+  #     projected:
+  #       sources:
+  #         - secret:
+  #             name: vault-unseal-secret
+  # volumeMounts:
+  #   - name: unseal-secret
+  #     mountPath: /vault/unseal
+  #     readOnly: true
 
-  postStart:
-    - /bin/sh
-    - -c
-    - |
-      echo "Waiting for Vault to become reachable..."
-      until vault status > /dev/null 2>&1; do
-        echo "Vault not ready yet..."
-        sleep 1
-      done
+  # postStart:
+  #   - /bin/sh
+  #   - -c
+  #   - |
+  #     echo "Waiting for Vault to become reachable..."
+  #     until vault status > /dev/null 2>&1; do
+  #       echo "Vault not ready yet..."
+  #       sleep 1
+  #     done
 
-      echo "Vault is reachable. Unsealing..."
-      vault operator unseal "$(cat /vault/unseal/vault-keys)"
+  #     echo "Vault is reachable. Unsealing..."
+  #     vault operator unseal "$(cat /vault/unseal/vault-keys)"
 
 
   auditStorage:
