@@ -12,17 +12,17 @@ server:
         hosts:
           - vault.sith.network
 
-  extraVolumes:
-    - type: hostPath
-      name: talos-vault-keys
-      hostPath:
-        path: /var/secrets
-        type: Directory
+  # extraVolumes:
+  #   - type: hostPath
+  #     name: talos-vault-keys
+  #     hostPath:
+  #       path: /var/secrets
+  #       type: Directory
 
-  extraVolumeMounts:
-    - name: talos-vault-keys
-      mountPath: /vault/unseal
-      readOnly: true
+  # extraVolumeMounts:
+  #   - name: talos-vault-keys
+  #     mountPath: /vault/unseal
+  #     readOnly: true
 
   # extraEnvironmentVars:
   #   VAULT_SEAL_TYPE: awskms
