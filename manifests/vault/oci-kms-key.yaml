@@ -1,0 +1,16 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vault-oci-auth
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: vault-oci-auth
+  data:
+    - secretKey: oci-kms-key.pem
+      remoteRef:
+        key: cloud/oci-vault-unseal-user
+        property: oci-kms-key.pem
