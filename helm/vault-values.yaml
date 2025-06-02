@@ -12,30 +12,23 @@ server:
         hosts:
           - vault.sith.network
   
-  # Vault auto-unseal configuration using secret
-  # volumes:
-  #   - name: unseal-secret
-  #     projected:
-  #       sources:
-  #         - secret:
-  #             name: vault-unseal-secret
-  # volumeMounts:
-  #   - name: unseal-secret
-  #     mountPath: /vault/unseal
-  #     readOnly: true
+  extraEnvironmentVars:
+    VAULT_SEAL_TYPE: oci
+    VAULT_OCI_SEAL_TENANCY_OCID: ocid1.tenancy.oc1..aaaaaaaao6gycp2chzkf3epk36tdqgxky322tn7k2dky6uc7xnz2sl4gtwtq
+    VAULT_OCI_SEAL_USER_OCID: ocid1.user.oc1..aaaaaaaandnpojivnbdrambktw2l5n36wlwpsmgllcby5mahax7mbd6mz4hq
+    VAULT_OCI_SEAL_FINGERPRINT: cc:16:80:fd:b4:41:49:5d:8f:7e:10:bc:f4:2a:37:3b
+    VAULT_OCI_SEAL_PRIVATE_KEY_PATH: /vault/userconfig/oci-kms-key.pem
+    VAULT_OCI_SEAL_KEY_OCID: ocid1.key.oc1.iad.ejud2dszaaej6.abuwcljt5ayeb75a3dvrdurxv6iunfbs4zpsyq7mfp7x2ogh3v5y3wwwyzya
+    VAULT_OCI_SEAL_REGION: us-ashburn-1
 
-  # postStart:
-  #   - /bin/sh
-  #   - -c
-  #   - |
-  #     echo "Waiting for Vault to become reachable..."
-  #     until vault status > /dev/null 2>&1; do
-  #       echo "Vault not ready yet..."
-  #       sleep 1
-  #     done
+  extraVolumes:
+    - type: secret
+      name: vault-oci-auth
 
-  #     echo "Vault is reachable. Unsealing..."
-  #     vault operator unseal "$(cat /vault/unseal/vault-keys)"
+  extraVolumeMounts:
+    - name: vault-oci-auth
+      mountPath: /vault/userconfig
+      readOnly: true
 
 
   auditStorage:
