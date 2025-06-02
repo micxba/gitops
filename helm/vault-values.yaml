@@ -13,7 +13,7 @@ server:
           - vault.sith.network
   
   extraEnvironmentVars:
-    VAULT_SEAL_TYPE: oci
+    VAULT_SEAL_TYPE: ocikms
     VAULT_OCI_SEAL_TENANCY_OCID: ocid1.tenancy.oc1..aaaaaaaao6gycp2chzkf3epk36tdqgxky322tn7k2dky6uc7xnz2sl4gtwtq
     VAULT_OCI_SEAL_USER_OCID: ocid1.user.oc1..aaaaaaaandnpojivnbdrambktw2l5n36wlwpsmgllcby5mahax7mbd6mz4hq
     VAULT_OCI_SEAL_FINGERPRINT: cc:16:80:fd:b4:41:49:5d:8f:7e:10:bc:f4:2a:37:3b
