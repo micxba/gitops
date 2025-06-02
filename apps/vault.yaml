@@ -17,9 +17,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
-    # - repoURL: git@github.com:micxba/gitops.git
-    #   path: manifests/vault
-    #   targetRevision: main
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/vault
+      targetRevision: main
   destination:
     name: in-cluster
     namespace: vault
