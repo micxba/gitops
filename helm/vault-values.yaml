@@ -18,13 +18,13 @@ server:
 
   extraSecretEnvironmentVars:
     - envName: AWS_ACCESS_KEY_ID
-      secretName: vault-kms
+      secretName: vault-awskms
       secretKey: AWS_ACCESS_KEY_ID
     - envName: AWS_SECRET_ACCESS_KEY
-      secretName: vault-kms
+      secretName: vault-awskms
       secretKey: AWS_SECRET_ACCESS_KEY
     - envName: VAULT_AWSKMS_SEAL_KEY_ID
-      secretName: vault-kms
+      secretName: vault-awskms
       secretKey: VAULT_AWSKMS_SEAL_KEY_ID
 
 
