@@ -16,13 +16,23 @@ alertmanager:
           receiver: 'null'
 
     receivers:
-      - name: 'null'
       - name: 'pushover'
         pushover_configs:
           - user_key_file: /etc/alertmanager/secrets/pushover-secret/token
             token_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
             title: "Homelab Alert"
-            message: "🔔 {{ .CommonLabels.alertname }} - {{ .CommonLabels.severity }}"
+            message: |-
+              🔔 {{ .CommonLabels.alertname }} [{{ .CommonLabels.severity }}]
+              🔹 Instance: {{ .CommonLabels.instance }}
+              🔹 Job: {{ .CommonLabels.job }}
+              {{- if .CommonLabels.namespace }}
+              🔹 Namespace: {{ .CommonLabels.namespace }}
+              {{- end }}
+              {{- if .CommonAnnotations.description }}
+              🔸 {{ .CommonAnnotations.description }}
+              {{- else if .CommonAnnotations.summary }}
+              🔸 {{ .CommonAnnotations.summary }}
+              {{- end }}
             priority: 0
             sound: bugle
             url: "https://grafana.sith.network"
