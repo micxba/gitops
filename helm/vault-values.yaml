@@ -11,15 +11,18 @@ server:
       - secretName: wildcard-sith-network
         hosts:
           - vault.sith.network
-  
+
+  # Environment variables for OCI KMS auto-unseal
   extraEnvironmentVars:
-    VAULT_SEAL_TYPE: ocikms
-    tenancy_ocid: "ocid1.tenancy.oc1..aaaaaaaao6gycp2chzkf3epk36tdqgxky322tn7k2dky6uc7xnz2sl4gtwtq"
-    user_ocid: "ocid1.user.oc1..aaaaaaaandnpojivnbdrambktw2l5n36wlwpsmgllcby5mahax7mbd6mz4hq"
-    fingerprint: "cc:16:80:fd:b4:41:49:5d:8f:7e:10:bc:f4:2a:37:3b"
-    private_key_path: "/vault/userconfig/oci-kms-key.pem"
-    key_id: "ocid1.key.oc1.iad.ejud2dszaaej6.abuwcljt5ayeb75a3dvrdurxv6iunfbs4zpsyq7mfp7x2ogh3v5y3wwwyzya"
-    region: "us-ashburn-1"
+    VAULT_SEAL_TYPE: "ocikms"
+    VAULT_OCIKMS_SEAL_KEY_ID: "ocid1.key.oc1.iad.ejud2dszaaej6.abuwcljt5ayeb75a3dvrdurxv6iunfbs4zpsyq7mfp7x2ogh3v5y3wwwyzya"
+    VAULT_OCIKMS_CRYPTO_ENDPOINT: "https://kms.us-ashburn-1.oraclecloud.com"
+    VAULT_OCIKMS_MANAGEMENT_ENDPOINT: "https://kms-management.us-ashburn-1.oraclecloud.com"
+    VAULT_OCIKMS_AUTH_TYPE_API_KEY: "true"
+    VAULT_OCIKMS_KEY_FILE: "/vault/userconfig/oci-kms-key.pem"
+    VAULT_OCIKMS_TENANCY_OCID: "ocid1.tenancy.oc1..aaaaaaaao6gycp2chzkf3epk36tdqgxky322tn7k2dky6uc7xnz2sl4gtwtq"
+    VAULT_OCIKMS_USER_OCID: "ocid1.user.oc1..aaaaaaaandnpojivnbdrambktw2l5n36wlwpsmgllcby5mahax7mbd6mz4hq"
+    VAULT_OCIKMS_FINGERPRINT: "cc:16:80:fd:b4:41:49:5d:8f:7e:10:bc:f4:2a:37:3b"
 
   extraVolumes:
     - type: secret
