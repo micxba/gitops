@@ -93,3 +93,17 @@ mc alias set s3 http://s3.sith.network:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCES
 mc ilm add s3/etcd-backups --expire-days 14
 mc ilm ls s3/etcd-backups
 ```
+
+## Vault auto-unseal using Secret
+
+Create a VAULT secret using Bitwarden Secrets Manager:
+
+```sh
+kubectl create secret generic vault-unseal-secret \
+  --namespace=vault \
+  --from-literal=vault-keys="$(bws secret get 7aa96fe9-2098-405c-bf0d-b2ef00abb0d7 --access-token "$BWS_ACCESS_TOKEN" | jq -r '.value')" \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
+
+Afterwards you can validate with e.g. `talosctl -n 192.168.0.224 read /var/secrets/vault-keys.json`
+
