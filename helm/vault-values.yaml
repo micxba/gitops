@@ -12,7 +12,7 @@ server:
         hosts:
           - vault.sith.network
 
-   extraEnvironmentVars:
+  extraEnvironmentVars:
     VAULT_SEAL_TYPE: awskms
     AWS_REGION: us-east-1
 
