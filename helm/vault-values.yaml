@@ -19,7 +19,7 @@ server:
     VAULT_OCIKMS_CRYPTO_ENDPOINT: "https://kms.us-ashburn-1.oraclecloud.com"
     VAULT_OCIKMS_MANAGEMENT_ENDPOINT: "https://kms-management.us-ashburn-1.oraclecloud.com"
     VAULT_OCIKMS_AUTH_TYPE_API_KEY: "true"
-    VAULT_OCIKMS_KEY_FILE: "/vault/userconfig/oci-kms-key.pem"
+    VAULT_OCIKMS_KEY_FILE: "/vault/userconfig/vault-oci-auth/oci-kms-key.pem"
     VAULT_OCIKMS_TENANCY_OCID: "ocid1.tenancy.oc1..aaaaaaaao6gycp2chzkf3epk36tdqgxky322tn7k2dky6uc7xnz2sl4gtwtq"
     VAULT_OCIKMS_USER_OCID: "ocid1.user.oc1..aaaaaaaandnpojivnbdrambktw2l5n36wlwpsmgllcby5mahax7mbd6mz4hq"
     VAULT_OCIKMS_FINGERPRINT: "cc:16:80:fd:b4:41:49:5d:8f:7e:10:bc:f4:2a:37:3b"
