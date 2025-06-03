@@ -1,0 +1,24 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: vault-awskms
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: vault-awskms
+  data:
+    - secretKey: AWS_ACCESS_KEY_ID
+      remoteRef:
+        key: /cloud/aws-vault-unseal
+        property: AWS_ACCESS_KEY_ID
+    - secretKey: AWS_SECRET_ACCESS_KEY
+      remoteRef:
+        key: /cloud/aws-vault-unseal
+        property: AWS_SECRET_ACCESS_KEY
+    - secretKey: VAULT_AWSKMS_SEAL_KEY_ID
+      remoteRef:
+        key: /cloud/aws-vault-unseal
+        property: VAULT_AWSKMS_SEAL_KEY_ID
