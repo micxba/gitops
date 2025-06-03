@@ -12,20 +12,20 @@ server:
         hosts:
           - vault.sith.network
 
-  # extraEnvironmentVars:
-  #   VAULT_SEAL_TYPE: awskms
-  #   AWS_REGION: us-east-1
+  extraEnvironmentVars:
+    VAULT_SEAL_TYPE: awskms
+    AWS_REGION: us-east-1
 
-  # extraSecretEnvironmentVars:
-  #   - envName: AWS_ACCESS_KEY_ID
-  #     secretName: vault-kms
-  #     secretKey: AWS_ACCESS_KEY_ID
-  #   - envName: AWS_SECRET_ACCESS_KEY
-  #     secretName: vault-kms
-  #     secretKey: AWS_SECRET_ACCESS_KEY
-  #   - envName: VAULT_AWSKMS_SEAL_KEY_ID
-  #     secretName: vault-kms
-  #     secretKey: VAULT_AWSKMS_SEAL_KEY_ID
+  extraSecretEnvironmentVars:
+    - envName: AWS_ACCESS_KEY_ID
+      secretName: vault-kms
+      secretKey: AWS_ACCESS_KEY_ID
+    - envName: AWS_SECRET_ACCESS_KEY
+      secretName: vault-kms
+      secretKey: AWS_SECRET_ACCESS_KEY
+    - envName: VAULT_AWSKMS_SEAL_KEY_ID
+      secretName: vault-kms
+      secretKey: VAULT_AWSKMS_SEAL_KEY_ID
 
 
   auditStorage:
