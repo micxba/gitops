@@ -164,8 +164,8 @@ prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
       - job_name: minio-job
-        bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoicHhlY3UydHhjNHVnN3hMd3BBMkEiLCJleHAiOjQ5MDI2NjI0OTl9.Tj_exIpRm7r7FT4RzlYDNwkmDi217SH29rmtZ1y0g7Y27ZtFMxaYUpGsl6UCl6_t7m6kVuYpxDDvvvcwd8bcCA
-        metrics_path: /minio/v2/metrics/cluster
+        bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiUTNBTTNVUTg2N1NQUVFBNDNQMkYiLCJleHAiOjQ5MDI2NjMwMjR9.fw5CZCJ6WBEzCcVIvRJzQB82VUIG7EcjwDINLyQbI9OmI7f4yU2QYeAPc8BlHB78SB-MPX2Lx65WoLv7xwZS8g
+        metrics_path: /minio/metrics/v3
         scheme: http
         static_configs:
         - targets: ['s3.sith.network:9000']
