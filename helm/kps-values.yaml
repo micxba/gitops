@@ -162,6 +162,13 @@ prometheus:
         hosts:
           - prometheus.sith.network
   prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: minio-job
+        bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiT0NiQ3lNRW4zUTNla2VpSmJ6MmYiLCJleHAiOjQ5MDI2NjE1NzV9.lav3uyA4mFe-2_fLCcWzzy9v7S6N-mgdmah5i7Wy2yw6fUsQyEilhU6GlfvUyRgufHqHAbeU4BHZjPCAdXNVfQ
+        metrics_path: /minio/v2/metrics/cluster
+        scheme: http
+        static_configs:
+        - targets: ['s3.sith.network:9000']
     storageSpec:
       volumeClaimTemplate:
         metadata:
