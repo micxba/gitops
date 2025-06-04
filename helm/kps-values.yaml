@@ -164,7 +164,6 @@ prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
       - job_name: minio-job
-        bearer_token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwcm9tZXRoZXVzIiwic3ViIjoiUTNBTTNVUTg2N1NQUVFBNDNQMkYiLCJleHAiOjQ5MDI2NjMwMjR9.fw5CZCJ6WBEzCcVIvRJzQB82VUIG7EcjwDINLyQbI9OmI7f4yU2QYeAPc8BlHB78SB-MPX2Lx65WoLv7xwZS8g
         metrics_path: /minio/metrics/v3
         scheme: http
         static_configs:
