@@ -1,5 +1,10 @@
 # LAB Cluster setup
 
+## Info
+
+Below are notes/instructions on my Home Lab Cluster setup.  
+A graphical overview can be seen at https://kubeview.sith.network
+
 ## Lab Cluster Infrastructure
 
 ### Control Plane
@@ -25,8 +30,8 @@
   - Control Plane Endpoint: https://192.168.0.216:6443
   - DNS Domain: cluster.local
   - Base Images
-    - [Control Plane](https://factory.talos.dev/image/e8aa7ebcd209f69c863593d5c06ccab841ce3d90467f230a2d71737091e36edf/v1.10.0/metal-arm64.raw.xz)
-    - [Worker Nodes](https://factory.talos.dev/image/555773d834dfc6ed7a6984256641c04bc7bfd2e85f03aa4d52a5745a2417479a/v1.10.0/metal-amd64.iso)
+    - [Control Plane](https://factory.talos.dev/image/ee21ef4a5ef808a9b7484cc0dda0f25075021691c8c09a276591eedb638ea1f9/v1.10.3/metal-arm64.raw.xz)
+    - [Worker Nodes](https://factory.talos.dev/image/c9078f9419961640c712a8bf2bb9174933dfcf1da383fd8ea2b7dc21493f8bac/v1.10.3/metal-amd64.iso)
   - Machine Configurations
     - [Control Plane](docs/control-plane-mc.md)
     - [Worker Nodes](dcs/worker-node-mc.md)
@@ -82,7 +87,7 @@
 - Argo Workflows / Argo Events
   - > Still a lot of work to be done but initial setup is working well. Initially I intended to have AWF be in the `argo-workflows` namespace, AE in the `argo-events` namespace and actual workflows be in the `workflows` namespace. While that setup is working it did requires a little RBAC trickery so I may revamp that at some point.
 - Loki
-  - > Logs TBC
+  - > Logs
 
 ## S3 Buckets for backup etc.
 
@@ -94,16 +99,6 @@ mc ilm add s3/etcd-backups --expire-days 14
 mc ilm ls s3/etcd-backups
 ```
 
-## Vault auto-unseal using Secret
+## Vault auto-unseal using AWS KMS
 
-Create a VAULT secret using Bitwarden Secrets Manager:
-
-```sh
-kubectl create secret generic vault-unseal-secret \
-  --namespace=vault \
-  --from-literal=vault-keys="$(bws secret get 7aa96fe9-2098-405c-bf0d-b2ef00abb0d7 --access-token "$BWS_ACCESS_TOKEN" | jq -r '.value')" \
-  --dry-run=client -o yaml | kubectl apply -f -
-```
-
-Afterwards you can validate with e.g. `talosctl -n 192.168.0.224 read /var/secrets/vault-keys.json`
-
+TBC
