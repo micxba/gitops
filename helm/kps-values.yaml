@@ -168,6 +168,12 @@ prometheus:
         scheme: http
         static_configs:
         - targets: ['s3.sith.network:9000']
+      - job_name: minio-job-bucket
+        bearer_token: TOKEN
+        metrics_path: /minio/v2/metrics/bucket
+        scheme: http
+        static_configs:
+        - targets: ['s3.sith.network:9000']
     storageSpec:
       volumeClaimTemplate:
         metadata:
