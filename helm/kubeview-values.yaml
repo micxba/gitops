@@ -1,0 +1,6 @@
+ingress:
+  enabled: true
+  host: 'kubeview.sith.network'
+
+loadBalancer:
+  enabled: false
