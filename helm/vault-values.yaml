@@ -5,6 +5,9 @@ injector:
 server:
   ingress:
     enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      external-dns.alpha.kubernetes.io/target: "vault.sith.network"
     hosts:
       - host: vault.sith.network
     tls:

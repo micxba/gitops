@@ -74,15 +74,15 @@ server:
     - sso
   ingress:
     enabled: true
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "argoworkflows.sith.network"
     hosts:
       - argoworkflows.sith.network
-      - wf.sith.network
     paths:
       - /
     tls:
       - hosts:
           - argoworkflows.sith.network
-          - wf.sith.network
 
   sso:
     enabled: true
