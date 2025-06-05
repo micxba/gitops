@@ -1,5 +1,6 @@
 extraArgs:
-  config.file: /config/snmp.yml
+  - --config.file=/config/snmp.yml
+
 
 extraConfigmapMounts:
   - name: snmp-exporter-config
