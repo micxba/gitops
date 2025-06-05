@@ -1,0 +1,40 @@
+{
+  "Argo CD Application": {
+    "prefix": "argoapp",
+    "body": [
+      "apiVersion: argoproj.io/v1alpha1",
+      "kind: Application",
+      "metadata:",
+      "  name: ${1:appname}",
+      "  namespace: argo-cd",
+      "  finalizers:",
+      "  - resources-finalizer.argocd.argoproj.io",
+      "spec:",
+      "  project: default",
+      "  sources:",
+      "    - repoURL: ${2:https://chart.url}",
+      "      targetRevision: ${3:1.0.0}",
+      "      chart: ${4:chart-name}",
+      "      helm:",
+      "        valueFiles:",
+      "          - $values/helm/${6:appname}values.yaml",
+      "    - repoURL: git@github.com:micxba/gitops.git",
+      "      targetRevision: main",
+      "      ref: values",
+      "    - repoURL: git@github.com:micxba/gitops.git",
+      "      path: manifests/${7:appname}",
+      "      targetRevision: main",
+      "  destination:",
+      "    namespace: ${8:destination-namespace}",
+      "    name: in-cluster",
+      "  syncPolicy:",
+      "    syncOptions:",
+      "    - Prune=${9:true}",
+      "    - ServerSideApply=${10:true}",
+      "    automated:",
+      "      prune: true",
+      "      selfHeal: true"
+    ],
+    "description": "Scaffold an Argo CD Application manifest"
+  }
+}

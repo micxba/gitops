@@ -1,0 +1,33 @@
+sources:
+  # - crd
+  # - service
+  - ingress
+
+provider: cloudflare
+dnsConfig: {}
+cloudflare:
+  secretName: "cloudflare-api-token-secret"
+  proxied: false
+  dnsRecordsPerPage: 100
+
+domainFilters:
+  - "sith.network"
+
+## @param dryRun When enabled, prints DNS record changes rather than actually performing them (optional)
+##
+dryRun: true
+policy: sync
+txtSuffix: "-ruleof3k8s"
+txtOwnerId: "edns0"
+crd:
+  create: true
+
+resourcesPreset: "small"
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: "monitoring"
+    labels:
+      release: kps

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 8.8.3
+      chart: external-dns
+      helm:
+        valueFiles:
+          - values/helm/external-dns-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/external-dns
+      targetRevision: main
+  destination:
+    namespace: external-dns
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
