@@ -12,9 +12,9 @@ spec:
       helm:
         valueFiles:
           - $values/helm/prom-snmp-exporter-values.yaml
-    - repoURL: git@github.com:micxba/gitops.git
-      targetRevision: main
-      path: manfiests/prometheus-snmp-exporter
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   targetRevision: main
+    #   path: manfiests/prometheus-snmp-exporter
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
