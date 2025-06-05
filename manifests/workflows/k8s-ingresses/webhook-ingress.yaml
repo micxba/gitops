@@ -9,6 +9,8 @@ metadata:
   namespace: events
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redirect HTTP to HTTPS
+    external-dns.alpha.kubernetes.io/target: "alljedis.justdied.com"
 spec:
   tls:
     - hosts:
