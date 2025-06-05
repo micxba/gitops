@@ -13,12 +13,12 @@ spec:
       chart: external-dns
       helm:
         valueFiles:
-          - values/helm/external-dns-values.yaml
+          - $values/helm/external-dns-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
     - repoURL: git@github.com:micxba/gitops.git
-      path: manifests/external-dns
+      path: $values/manifests/external-dns
       targetRevision: main
   destination:
     namespace: external-dns
