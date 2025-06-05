@@ -13,9 +13,9 @@ cloudflare:
 domainFilters:
   - "sith.network"
 
-args:
-  - name: "--cloudflare-record-comment"
-    value: "provisioned by external-dns"
+# args:
+#   - name: "--cloudflare-record-comment"
+#     value: "provisioned by external-dns"
 
 dryRun: true
 policy: sync
