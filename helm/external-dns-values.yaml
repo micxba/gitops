@@ -13,8 +13,10 @@ cloudflare:
 domainFilters:
   - "sith.network"
 
-## @param dryRun When enabled, prints DNS record changes rather than actually performing them (optional)
-##
+args:
+  - name: "--cloudflare-record-comment"
+    value: "provisioned by external-dns"
+
 dryRun: true
 policy: sync
 txtSuffix: "-ruleof3k8s"
