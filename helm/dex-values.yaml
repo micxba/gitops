@@ -12,6 +12,8 @@ volumeMounts:
     readOnly: false
 ingress:
   enabled: true
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ruleof3-k8s.sith.network"
   hosts:
     - host: dex.sith.network
       paths:

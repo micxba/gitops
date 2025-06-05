@@ -75,7 +75,7 @@ server:
   ingress:
     enabled: true
     annotations:
-      external-dns.alpha.kubernetes.io/target: "argoworkflows.sith.network"
+      external-dns.alpha.kubernetes.io/target: "ruleof3-k8s.sith.network"
     hosts:
       - argoworkflows.sith.network
     paths:

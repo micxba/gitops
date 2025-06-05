@@ -68,7 +68,7 @@ server:
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      external-dns.alpha.kubernetes.io/target: "argocd.sith.network"
+      external-dns.alpha.kubernetes.io/target: "ruleof3-k8s.sith.network"
     extraTls:
       - hosts:
         - argocd.sith.network
