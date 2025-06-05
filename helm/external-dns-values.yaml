@@ -17,7 +17,7 @@ domainFilters:
 #   - name: "--cloudflare-record-comment"
 #     value: "provisioned by external-dns"
 
-dryRun: true
+dryRun: false
 policy: sync
 txtSuffix: "-ruleof3k8s"
 txtOwnerId: "edns0"
