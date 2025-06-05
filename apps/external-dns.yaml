@@ -18,7 +18,7 @@ spec:
       targetRevision: main
       ref: values
     - repoURL: git@github.com:micxba/gitops.git
-      path: $values/manifests/external-dns
+      path: manifests/external-dns
       targetRevision: main
   destination:
     namespace: external-dns
