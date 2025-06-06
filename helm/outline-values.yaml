@@ -184,7 +184,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   -  secretName: null
+   -  secretName: wildcard-sith-network
       hosts:
        - sith.network
 
