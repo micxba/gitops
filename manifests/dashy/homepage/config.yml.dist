@@ -1,0 +1,29 @@
+appConfig:
+  title: "sith.network"
+  description: "Self-Hosted Services"
+  theme: light
+  layout: auto
+  customCss: |
+    @font-face {
+      font-family: 'AurekBesh';
+      src: url('https://YOUR-FONT-HOSTING/aurek-besh.woff2') format('woff2');
+    }
+    .app-title {
+      font-family: 'AurekBesh', sans-serif !important;
+      letter-spacing: 2px;
+      font-size: 2.2em;
+    }
+
+sections:
+  - name: Infrastructure
+    icon: fas fa-server
+    items:
+      - title: ArgoCD
+        url: https://argocd.sith.network
+        icon: fab fa-git-alt
+      - title: Grafana
+        url: https://grafana.sith.network
+        icon: fas fa-chart-line
+      - title: Prometheus
+        url: https://prometheus.sith.network
+        icon: fas fa-broadcast-tower
