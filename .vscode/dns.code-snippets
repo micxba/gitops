@@ -1,0 +1,16 @@
+{
+  "Internal DNS Annotation": {
+    "prefix": "intdns",
+    "body": [
+      "external-dns.alpha.kubernetes.io/target: \"ruleof3-k8s.sith.network\""
+    ],
+    "description": "Internal DNS ExternalDNS annotation"
+  },
+  "External DNS Annotation": {
+    "prefix": "extdns",
+    "body": [
+      "external-dns.alpha.kubernetes.io/target: \"alljedis.justdied.com\""
+    ],
+    "description": "External DNS ExternalDNS annotation"
+  }
+}
