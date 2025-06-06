@@ -1,6 +1,6 @@
 env:
   TZ: America/New_York
-  CONFIG_URL: https://raw.githubusercontent.com/micxba/gitops/refs/heads/main/manifests/dashy/homepage/config.yml.dist
+  CONFIG_URL: https://raw.githubusercontent.com/micxba/gitops/refs/heads/main/manifests/dashy/homepage/config.yml
 
 ingress:
   main:
