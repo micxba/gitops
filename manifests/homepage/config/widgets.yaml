@@ -1,8 +1,8 @@
 - header:
     title: Sith Network
-- argocd:
-    url: https://argocd.sith.network
-    username: admin
-    password: ${ARGOCD_PASSWORD}
-- prometheus:
-    url: https://prometheus.sith.network
+# - argocd:
+#     url: https://argocd.sith.network
+#     username: admin
+#     password: ${ARGOCD_PASSWORD}
+# - prometheus:
+#     url: https://prometheus.sith.network
