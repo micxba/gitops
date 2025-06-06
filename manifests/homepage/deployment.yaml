@@ -25,6 +25,8 @@ spec:
               mountPath: /app/config
             - name: homepage-assets
               mountPath: /app/public/fonts
+            - name: homepage-logs
+              mountPath: /app/config/logs
       volumes:
         - name: homepage-config
           configMap:
@@ -32,3 +34,5 @@ spec:
         - name: homepage-assets
           configMap:
             name: homepage-assets
+        - name: homepage-logs
+          emptyDir: {}
