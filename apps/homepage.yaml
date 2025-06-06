@@ -1,27 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: homer
+  name: homepage
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-    - repoURL: https://djjudas21.github.io/charts/
-      targetRevision: 8.2.4
-      chart: homer
-      helm:
-        valueFiles:
-          - $values/helm/homer-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/homepage
       targetRevision: main
-      ref: values
-    # - repoURL: git@github.com:micxba/gitops.git
-    #   path: manifests/appname
-    #   targetRevision: main
   destination:
-    namespace: homer
+    namespace: homepage
     name: in-cluster
   syncPolicy:
     syncOptions:

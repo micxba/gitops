@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepage
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    external-dns.alpha.kubernetes.io/target: alljedis.justdied.com
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dashboard.sith.network
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homepage
+                port:
+                  number: 80
+  tls:
+    - secretName: wildcard-sith-network
+      hosts:
+        - dashboard.sith.network
