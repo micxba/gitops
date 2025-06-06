@@ -184,7 +184,8 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-   - hosts:
+   -  secretName: null
+      hosts:
        - sith.network
 
 # -- Bitnami Redis configuration
