@@ -11,7 +11,8 @@ appConfig:
       font-weight: normal;
       font-style: normal;
     }
-    .app-title {
+
+    h1.title, .title, .app-header-title {
       font-family: 'ImperialCode', sans-serif !important;
       font-size: 2.4em;
       letter-spacing: 3px;
