@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: outline
+  name: homer
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-    - repoURL: https://community-charts.github.io/helm-charts
-      targetRevision: 0.3.5
-      chart: outline
+    - repoURL: https://djjudas21.github.io/charts/
+      targetRevision: 8.2.4
+      chart: homer
       helm:
         valueFiles:
-          - $values/helm/outline-values.yaml
+          - $values/helm/homer-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
@@ -21,7 +21,7 @@ spec:
     #   path: manifests/appname
     #   targetRevision: main
   destination:
-    namespace: outline
+    namespace: homer
     name: in-cluster
   syncPolicy:
     syncOptions:

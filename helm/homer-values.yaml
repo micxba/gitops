@@ -1,0 +1,17 @@
+env:
+  TZ: America/New_York
+
+ingress:
+  # -- Enable and configure ingress settings for the chart under this key.
+  # @default -- See values.yaml
+  main:
+    enabled: true
+
+configmap:
+  config:
+    enabled: true
+    # -- Homer configuration. See [image documentation](https://github.com/bastienwirtz/homer/blob/main/docs/configuration.md) for more information.
+    data:
+      config.yml: |
+        externalConfig: https://raw.githubusercontent.com/bastienwirtz/homer/main/public/assets/config.yml.dist
+
