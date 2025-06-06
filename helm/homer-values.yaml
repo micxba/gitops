@@ -18,17 +18,10 @@ ingress:
           - sith.network
 
 configmap:
-  enabled: true
-  data:
-    config.yml: |-
-      title: "Sith.Network"
-      subtitle: "Self-hosted services"
-      theme: default
-      services:
-        - name: Infrastructure
-          icon: fas fa-server
-          items:
-            - name: ArgoCD
-              url: https://argocd.sith.network
-            - name: Grafana
-              url: https://grafana.sith.network
+  config:
+    enabled: true
+    # -- Homer configuration. See [image documentation](https://github.com/bastienwirtz/homer/blob/main/docs/configuration.md) for more information.
+    data:
+      config.yml: |
+        externalConfig: https://raw.githubusercontent.com/micxba/gitops/refs/heads/main/manifests/dashy/homepage/config.yml.dist
+

@@ -1,22 +1,26 @@
 appConfig:
   title: "sith.network"
-  description: "Self-Hosted Services"
-  theme: light
+  description: "Imperial Dashboard"
+  theme: colorful
   layout: auto
   customCss: |
     @font-face {
-      font-family: 'AurekBesh';
-      src: url('https://YOUR-FONT-HOSTING/aurek-besh.woff2') format('woff2');
+      font-family: 'ImperialCode';
+      src: url('https://github.com/micxba/gitops/raw/refs/heads/main/manifests/dashy/homepage/fonts/ImperialCode2-qZrad.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
     }
+
     .app-title {
-      font-family: 'AurekBesh', sans-serif !important;
-      letter-spacing: 2px;
-      font-size: 2.2em;
+      font-family: 'ImperialCode', sans-serif !important;
+      font-size: 2.4em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
 
 sections:
-  - name: Infrastructure
-    icon: fas fa-server
+  - name: Navigation
+    icon: fas fa-sitemap
     items:
       - title: ArgoCD
         url: https://argocd.sith.network
