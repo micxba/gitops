@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: dashboard.sith.network
+    - host: sith.network
       http:
         paths:
           - path: /
@@ -21,4 +21,4 @@ spec:
   tls:
     - secretName: wildcard-sith-network
       hosts:
-        - dashboard.sith.network
+        - sith.network

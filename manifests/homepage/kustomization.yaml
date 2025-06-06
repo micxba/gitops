@@ -12,6 +12,8 @@ configMapGenerator:
       - config/config.yaml
       - config/bookmarks.yaml
       - config/widgets.yaml
+      - config/settings.yaml
+
   - name: homepage-assets
     files:
       - fonts/ImperialCode2-qZrad.ttf
