@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-name: outline
-namespace: argo-cd
-finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  name: outline
+  namespace: argo-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
