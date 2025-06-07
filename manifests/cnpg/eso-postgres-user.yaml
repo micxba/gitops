@@ -1,0 +1,20 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: postgres-superuser-credentials
+spec:
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: postgres-superuser-credentials
+    template:
+      mergePolicy: Merge
+      data:
+        username: postgres
+  data:
+    - secretKey: password
+      remoteRef:
+        key: pgsql/postgres-user
+        property: password

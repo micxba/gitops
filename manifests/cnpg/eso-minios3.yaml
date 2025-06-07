@@ -1,0 +1,22 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: minios3
+  namespace: workflows
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: minios3
+  data:
+    - secretKey: ACCESS_KEY_ID
+      remoteRef:
+        key: /s3
+        property: access_key
+    - secretKey: SECRET_ACCESS_KEY
+      remoteRef:
+        key: /s3
+        property: secret_key

@@ -1,0 +1,94 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-main
+spec:
+  instances: 3
+  
+  # PostgreSQL configuration
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: "256MB"
+      effective_cache_size: "1GB"
+      maintenance_work_mem: "64MB"
+      checkpoint_completion_target: "0.9"
+      wal_buffers: "16MB"
+      default_statistics_target: "100"
+      random_page_cost: "1.1"
+      effective_io_concurrency: "200"
+      work_mem: "4MB"
+      min_wal_size: "1GB"
+      max_wal_size: "4GB"
+
+  # Bootstrap the cluster with default postgres database
+  bootstrap:
+    initdb:
+      secret:
+        name: postgres-superuser-credentials
+        
+  # Storage configuration
+  storage:
+    size: 20Gi
+    storageClass: "nfs-client"
+
+  # Monitoring
+  monitoring:
+    enabled: true
+    prometheusRule:
+      enabled: true
+    podMonitor:
+      enabled: true
+
+  # Resources
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+
+  # Backup configuration (optional but recommended)
+  backup:
+    retentionPolicy: "30d"
+    barmanObjectStore:
+      destinationPath: "s3://s3.sith.network:9000/pg-backups"
+      s3Credentials:
+        accessKeyId:
+          name: minios3
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: minios3
+          key: SECRET_ACCESS_KEY
+      wal:
+        retention: "5d"
+      data:
+        retention: "30d"
+
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: postgres-wiki-credentials
+#   namespace: default
+# type: kubernetes.io/basic-auth
+# data:
+#   username: d2lraQ==  # base64 encoded 'wiki'
+#   password: UGFzc3dvcmQxMjM=  # base64 encoded 'Password123' - CHANGE THIS!
+
+
+# ---
+# # Database resource for wiki database
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Database
+# metadata:
+#   name: wiki-database
+#   namespace: default
+# spec:
+#   cluster:
+#     name: postgres-wiki
+#   name: wiki
+#   owner: wiki
+
