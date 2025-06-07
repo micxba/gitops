@@ -1,0 +1,13 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ManagedDatabase
+metadata:
+  name: wiki
+spec:
+  cluster:
+    name: pg-main
+  database: wiki
+  owner:
+    name: wiki
+    passwordSecret:
+      name: postgres-wiki-user-credentials
+      key: password
