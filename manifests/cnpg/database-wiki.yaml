@@ -1,9 +1,9 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: pg-main-wiki-db
-spec:
-  cluster:
-    name: pg-main
-  name: wiki
-  owner: wiki
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Database
+# metadata:
+#   name: pg-main-wiki-db
+# spec:
+#   cluster:
+#     name: pg-main
+#   name: wiki
+#   owner: wiki
