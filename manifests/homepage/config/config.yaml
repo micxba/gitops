@@ -2,6 +2,7 @@ appConfig:
   title: Sith Network
   theme: dark
   layout:
+    - Welcome
     - Infrastructure
     - Monitoring
   customCss: |
