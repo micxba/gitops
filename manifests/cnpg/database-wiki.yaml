@@ -7,6 +7,3 @@ spec:
     name: pg-main
   name: wiki
   owner: wiki
-  ownerPasswordSecret:
-    name: postgres-wiki-user-credentials
-    key: password
