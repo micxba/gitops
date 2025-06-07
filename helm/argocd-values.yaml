@@ -13,14 +13,20 @@ configs:
       requestedScopes:
         - openid
         - groups
-    # resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
-    #   jqPathExpressions:
-    #   - '.webhooks[]?.clientConfig.caBundle'
     resource.exclusions: |
       - apiGroups:
           - discovery.k8s.io
         kinds:
           - EndpointSlice
+    # External Secrets don't sync well with ServerSideApply
+    resource.customizations: |
+      external-secrets.io/ExternalSecret:
+        syncOptions:
+          - ServerSideApply=false
+      apiextensions.k8s.io/CustomResourceDefinition:
+        syncOptions:
+          - ServerSideApply=true
+
   params:
     server.insecure: true
     applicationsetcontroller.enable.progressive.syncs: true
