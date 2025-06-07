@@ -5,6 +5,14 @@ metadata:
 spec:
   instances: 3
 
+  managed:
+    roles:
+      - name: wiki
+        password:
+          secret:
+            name: postgres-wiki-user-credentials
+            key: password
+            
   superuserSecret:
     name: postgres-superuser-credentials
 
