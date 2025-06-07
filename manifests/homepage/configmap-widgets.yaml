@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-widgets
+data:
+  widgets.yaml: |
+    widgets:
+      - title: CPU Usage
+        url: https://prometheus.sith.network
+        query: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+      - title: ArgoCD Sync Status
+        url: https://prometheus.sith.network
+        query: argocd_app_sync_status

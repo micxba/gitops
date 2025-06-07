@@ -1,5 +1,0 @@
-# Just a stub file to overcome readonly filesystem issues
-homepage:
-  initialized: true
-logs:
-  path: "/tmp/homepage-logs"

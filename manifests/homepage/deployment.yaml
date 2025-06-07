@@ -1,38 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: homepage
-  labels:
-    app: homepage
+  name: flask-dashboard
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: homepage
+      app: flask-dashboard
   template:
     metadata:
       labels:
-        app: homepage
+        app: flask-dashboard
     spec:
       containers:
-        - name: homepage
-          image: ghcr.io/benphelps/homepage:latest
+        - name: dashboard
+          image: ghcr.io/micxba/homepage:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+          env:
+            - name: BOOKMARKS_PATH
+              value: /config/bookmarks.yaml
+            - name: WIDGETS_PATH
+              value: /config/widgets.yaml
           volumeMounts:
-            - name: homepage-config
-              mountPath: /app/config
-            - name: homepage-assets
-              mountPath: /app/public/fonts
-            - name: homepage-logs
-              mountPath: /app/config/logs
+            - name: bookmarks-volume
+              mountPath: /config/bookmarks.yaml
+              subPath: bookmarks.yaml
+            - name: widgets-volume
+              mountPath: /config/widgets.yaml
+              subPath: widgets.yaml
       volumes:
-        - name: homepage-config
+        - name: bookmarks-volume
           configMap:
-            name: homepage-config
-        - name: homepage-assets
+            name: dashboard-bookmarks
+        - name: widgets-volume
           configMap:
-            name: homepage-assets
-        - name: homepage-logs
-          emptyDir: {}
+            name: dashboard-widgets

@@ -1,8 +1,0 @@
-- logo:
-    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/I_Love_New_York.svg/1101px-I_Love_New_York.svg.png # optional
-# - argocd:
-#     url: https://argocd.sith.network
-#     username: admin
-#     password: ${ARGOCD_PASSWORD}
-# - prometheus:
-#     url: https://prometheus.sith.network

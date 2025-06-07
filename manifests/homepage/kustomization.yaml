@@ -1,22 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: default
+
 resources:
+  - configmap-bookmarks.yaml
+  - configmap-widgets.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml
-
-configMapGenerator:
-  - name: homepage-config
-    files:
-      - config/config.yaml
-      - config/bookmarks.yaml
-      - config/widgets.yaml
-      - config/settings.yaml
-
-  - name: homepage-assets
-    files:
-      - fonts/ImperialCode2-qZrad.ttf
-
-generatorOptions:
-  disableNameSuffixHash: true

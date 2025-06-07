@@ -1,12 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homepage
+  name: flask-dashboard
   annotations:
     kubernetes.io/ingress.class: nginx
     external-dns.alpha.kubernetes.io/target: alljedis.justdied.com
 spec:
-  ingressClassName: nginx
+  tls:
+    - secretName: wildcard-sith-network
+      hosts:
+        - sith.network
   rules:
     - host: sith.network
       http:
@@ -15,10 +18,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homepage
+                name: flask-dashboard
                 port:
                   number: 80
-  tls:
-    - secretName: wildcard-sith-network
-      hosts:
-        - sith.network

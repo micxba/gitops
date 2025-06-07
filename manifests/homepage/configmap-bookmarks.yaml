@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-bookmarks
+data:
+  bookmarks.yaml: |
+    - name: Infrastructure
+      items:
+        - title: ArgoCD
+          url: https://argocd.sith.network
+        - title: Vault
+          url: https://vault.sith.network
+        - title: KubeView
+          url: https://kubeview.sith.network
+    - name: Monitoring
+      items:
+        - title: Grafana
+          url: https://grafana.sith.network
+        - title: Prometheus
+          url: https://prometheus.sith.network
+        - title: Alertmanager
+          url: https://alertmanager.sith.network
