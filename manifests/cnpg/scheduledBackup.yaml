@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pg-main-daily-backup
+spec:
+  schedule: "30 3 * * *" # Every day at 03:30 UTC
+  backupOwnerReference: self
+  cluster:
+    name: pg-main
