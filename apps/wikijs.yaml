@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wiki
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.js.wiki
+      targetRevision: 2.2.23
+      chart: wiki
+      helm:
+        valueFiles:
+          - $values/helm/wikijs-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/wikijs
+      targetRevision: main
+  destination:
+    namespace: wiki
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    # - ServerSideApply=true
+    # automated:
+    #   prune: true
+    #   selfHeal: true
