@@ -3,7 +3,6 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: minios3
-  namespace: workflows
 spec:
   refreshInterval: "60s"
   secretStoreRef:
