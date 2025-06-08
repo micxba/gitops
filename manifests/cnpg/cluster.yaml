@@ -20,7 +20,7 @@ spec:
         login: true
         createdb: true
         passwordSecret:
-          name: postgres-wiki-user-credentials
+          name: postgres-outline-user-credentials
 
   superuserSecret:
     name: postgres-superuser-credentials
