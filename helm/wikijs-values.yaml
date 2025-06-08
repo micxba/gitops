@@ -19,5 +19,5 @@ postgresql:
   postgresqlUser: wiki
   postgresqlHost: pg-main-rw.cnpg-system
   existingSecret: postgres-wiki-user-credentials
-  postgresqlPasswordKey: password
+  existingSecretKey: password
   postgresqlPort: 5432
