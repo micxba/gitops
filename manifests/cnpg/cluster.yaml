@@ -31,7 +31,7 @@ spec:
 
   backup:
     barmanObjectStore:
-      destinationPath: s3://s3.sith.network:9000/pg-backups/
+      destinationPath: s3://pg-backups/
       endpointURL: http://s3.sith.network:9000
       s3Credentials:
         accessKeyId:
