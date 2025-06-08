@@ -14,6 +14,13 @@ spec:
         createdb: true
         passwordSecret:
           name: postgres-wiki-user-credentials
+      - name: outline
+        ensure: present
+        comment: "outline user for outline wiki database"
+        login: true
+        createdb: true
+        passwordSecret:
+          name: postgres-wiki-user-credentials
 
   superuserSecret:
     name: postgres-superuser-credentials

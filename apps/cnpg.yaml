@@ -26,7 +26,7 @@ spec:
   syncPolicy:
     syncOptions:
     - Prune=true
-    # - ServerSideApply=true
+    - ServerSideApply=true
     automated:
       prune: true
       selfHeal: true
