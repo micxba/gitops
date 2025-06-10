@@ -13,7 +13,7 @@ spec:
       chart: minio
       helm:
         valueFiles:
-          - values/helm/minio-values.yaml
+          - $values/helm/minio-values.yaml
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
