@@ -1,14 +1,14 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: postgres-outline-user-credentials
+  name: minio-root-user
 spec:
   refreshInterval: "1h"
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
   target:
-    name: postgres-outline-user-credentials
+    name: minio-root-user
     template:
       mergePolicy: Merge
       data:
