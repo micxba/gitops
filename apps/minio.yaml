@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 17.0.3
+      chart: minio
+      helm:
+        valueFiles:
+          - values/helm/minio-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/minio
+      targetRevision: main
+  destination:
+    namespace: minio
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    # - ServerSideApply=true
+    # automated:
+    #   prune: true
+    #   selfHeal: true
