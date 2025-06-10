@@ -12,45 +12,11 @@ ingress:
   hostname: s3.sith.network
   tls: true
 
-  ## @param ingress.extraTls The tls configuration for additional hostnames to be covered with this ingress record.
-  ## see: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
-  ## e.g:
-  ## extraTls:
-  ## - hosts:
-  ##     - minio.local
-  ##   secretName: minio.local-tls
-  ##
-  extraTls: []
-  ## @param ingress.secrets If you're providing your own certificates, please use this to add the certificates as secrets
-  ## key and certificate are expected in PEM format
-  ## name should line up with a secretName set further up
-  ##
-  ## If it is not set and you're using cert-manager, this is unneeded, as it will create a secret for you with valid certificates
-  ## If it is not set and you're NOT using cert-manager either, self-signed certificates will be created valid for 365 days
-  ## It is also possible to create and manage the certificates outside of this helm chart
-  ## Please see README.md for more information
-  ##
-  ## Example
-  ## secrets:
-  ##   - name: minio.local-tls
-  ##     key: ""
-  ##     certificate: ""
-  ##
-  secrets: []
-  ## @param ingress.extraRules Additional rules to be covered with this ingress record
-  ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-rules
-  ## e.g:
-  ## extraRules:
-  ## - host: example.local
-  ##     http:
-  ##       path: /
-  ##       backend:
-  ##         service:
-  ##           name: example-svc
-  ##           port:
-  ##             name: http
-  ##
-  extraRules: []
+  extraTls:
+    - hosts:
+        - s3.sith.network
+      secretName: wildcard-sith-network
+
 
 persistence:
   size: 20Gi
