@@ -13,9 +13,9 @@ spec:
   data:
     - secretKey:  LOKI_S3_ACCESS_KEY_ID 
       remoteRef:
-        key: /loki/s3
-        property:  LOKI_S3_ACCESS_KEY_ID 
+        key: garage/base-s3-rw
+        property:  ACCESS_KEY_ID
     - secretKey: LOKI_S3_SECRET_ACCESS_KEY
       remoteRef:
-        key: /loki/s3
-        property: LOKI_S3_SECRET_ACCESS_KEY
+        key: garage/base-s3-rw
+        property: SECRET_ACCESS_KEY

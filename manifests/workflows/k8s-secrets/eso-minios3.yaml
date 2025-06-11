@@ -14,9 +14,9 @@ spec:
   data:
     - secretKey: access_key
       remoteRef:
-        key: /s3
-        property: access_key
+        key: garage/base-s3-rw
+        property: ACCESS_KEY_ID
     - secretKey: secret_key
       remoteRef:
-        key: /s3
-        property: secret_key
+        key: garage/base-s3-rw
+        property: SECRET_ACCESS_KEY
