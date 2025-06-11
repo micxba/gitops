@@ -41,7 +41,7 @@ spec:
 
               # Upload to S3
               aws s3 cp cluster-backup-${DATE}.tar.gz s3://etcd-backups/ \
-              --endpoint-url http://s3.sith.network:9000 \
+              --endpoint-url http://s3.sith.network:3900 \
               --no-progress
 
 

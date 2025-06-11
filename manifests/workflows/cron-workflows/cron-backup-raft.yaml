@@ -57,7 +57,7 @@ spec:
           
           # Upload to S3
           aws s3 cp $SNAPSHOT_FILE s3://vault-backups/ \
-          --endpoint-url http://s3.sith.network:9000 \
+          --endpoint-url http://s3.sith.network:3900 \
           --no-progress
 
 
