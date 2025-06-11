@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   annotations:
-    workflows.argoproj.io/description: Dump/Restore a PostgreSQL database to/from S3.
+    workflows.argoproj.io/description: Dump a PostgreSQL database to S3.
   name: pgdump-s3
 spec:
   arguments:
@@ -27,7 +27,7 @@ spec:
           - name: s3_bucket
           - name: s3_prefix
       container:
-        image: schickling/postgres-backup-s3
+        image: ghcr.io/micxba/pg-dump:2025-06-11-7b0330c9-dace-44f5-80d5-132d2122c17d
         env:
         - name: S3_ACCESS_KEY_ID
           valueFrom:
