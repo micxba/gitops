@@ -94,7 +94,7 @@ A graphical overview can be seen at https://kubeview.sith.network
 Using Minio container running on Synology, configured with OIDC auth. Currently the GUI does not appear to support lifecycle policies so you can do so via cli:
 ```sh
 brew install minio/stable/mc
-mc alias set s3 http://s3.sith.network:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+mc alias set s3 http://s3.sith.network:3900 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 mc ilm add s3/etcd-backups --expire-days 14
 mc ilm ls s3/etcd-backups
 ```

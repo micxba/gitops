@@ -106,9 +106,9 @@ artifactRepository:
   archiveLogs: true
   s3:
     bucket: argo-workflows
-    endpoint: s3.sith.network:9000
+    endpoint: s3.sith.network:3900
     insecure: true                
-    region: us-east-1             
+    region: garage            
     accessKeySecret:
       name: argo-w-minios3
       key: access_key

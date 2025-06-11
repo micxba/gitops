@@ -176,12 +176,12 @@ prometheus:
         metrics_path: /minio/metrics/v3
         scheme: http
         static_configs:
-        - targets: ['s3.sith.network:9000']
+        - targets: ['s3.sith.network:3900']
       - job_name: minio-job-bucket
         metrics_path: /minio/v2/metrics/bucket
         scheme: http
         static_configs:
-        - targets: ['s3.sith.network:9000']
+        - targets: ['s3.sith.network:3900']
     storageSpec:
       volumeClaimTemplate:
         metadata:
