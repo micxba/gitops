@@ -5,6 +5,7 @@ metadata:
     workflows.argoproj.io/description: Dump a PostgreSQL database to S3.
   name: pgdump-s3
 spec:
+  serviceAccountName: argo-workflow
   arguments:
     parameters:
       - name: postgres_host
