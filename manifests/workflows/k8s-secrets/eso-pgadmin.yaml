@@ -1,0 +1,21 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: argo-w-pgadmin
+spec:
+  refreshInterval: "60s"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: argo-w-pgadmin
+    template:
+      mergePolicy: Merge
+      data:
+        username: postgres
+  data:
+    - secretKey: password
+      remoteRef:
+        key: pgsql/postgres-user
+        property: password
