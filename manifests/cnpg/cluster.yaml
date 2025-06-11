@@ -41,7 +41,6 @@ spec:
     barmanObjectStore:
       destinationPath: s3://pg-backups/
       endpointURL: http://s3.sith.network:3900
-      s3EndpointMode: path
       s3Credentials:
         accessKeyId:
           name: minios3
@@ -52,6 +51,9 @@ spec:
       wal:
         compression: gzip
         maxParallel: 2
+      externalBarmanConfiguration:
+        - name: s3_endpoint_mode
+          value: path-style
 
 
   resources:
