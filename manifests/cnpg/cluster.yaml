@@ -51,10 +51,6 @@ spec:
       wal:
         compression: gzip
         maxParallel: 2
-      externalBarmanConfiguration:
-        - name: s3_endpoint_mode
-          value: path-style
-
 
   resources:
     requests:
