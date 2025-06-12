@@ -3,9 +3,18 @@ replicaCount: 1
 # -- This is for setting up the url manually. It will be auto generated if not set. Depending to your ingress configuration, it can be automatically generated from ingress domain or service definition.
 url: "https://sith.network"
 defaultLanguage: en_US
+
 logging:
-  level: debug # error, warn, info, http, verbose, debug and silly
-  extraDebug: [] # "lifecycle", "http", "editor", "router", "collaboration", "misc", "store", "plugins", "policies"
+  level: debug
+  extraDebug:
+    - http
+    - lifecycle
+    - store
+
+
+# logging:
+#   level: debug # error, warn, info, http, verbose, debug and silly
+#   extraDebug: [] # "lifecycle", "http", "editor", "router", "collaboration", "misc", "store", "plugins", "policies"
 
 # -- This is for setting up the file storage. More information about file storage can be found here: https://docs.getoutline.com/s/hosting/doc/file-storage-N4M0T6Ypu7
 fileStorage:
