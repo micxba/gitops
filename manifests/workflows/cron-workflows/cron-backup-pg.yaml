@@ -16,7 +16,7 @@ spec:
     arguments:
       parameters:
         - name: timestamp
-          value: "{{=sprig.now | date \"2006-01-02\"}}"
+          value: "{{=sprig.date(\"2006-01-02\", sprig.now)}}"
     templates:
       - name: run-parallel-dumps
         inputs:
