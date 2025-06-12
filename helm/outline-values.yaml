@@ -23,27 +23,16 @@ fileStorage:
 
 # -- This is for setting up the auth.
 auth:
-  # -- This is for setting up the oidc. More information about oidc can be found here: https://docs.getoutline.com/s/hosting/doc/oidc-8CPBm6uC0I
   oidc:
-    # -- This is for setting up the oidc enabled.
-    enabled: false
-    # -- This is for setting up the oidc client id.
-    clientId: ""
-    # -- This is for setting up the oidc client secret.
-    clientSecret: ""
-    # -- This is for setting up the oidc auth uri.
-    authUri: ""
-    # -- This is for setting up the oidc token uri.
-    tokenUri: ""
-    # -- This is for setting up the oidc user info uri.
-    userInfoUri: ""
-    # -- This is for setting up the oidc logout uri. This is optional.
-    logoutUri: ""
-    # -- This is for setting up the oidc username claim.
+    enabled: true
+    clientId: "outline"
+    clientSecret: "<secret>"
+    authUri: "https://dex.sith.network/dex/auth"
+    tokenUri: "https://dex.sith.network/dex/token"
+    userInfoUri: "https://dex.sith.network/dex/userinfo"
+    logoutUri: "https://dex.sith.network/dex/logout"   # Optional
     usernameClaim: preferred_username
-    # -- This is for setting up the oidc display name.
-    displayName: "OpenID Connect"
-    # -- This is for setting up the oidc scopes.
+    displayName: "Single Sign-On"
     scopes:
       - openid
       - profile
