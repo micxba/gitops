@@ -16,7 +16,7 @@ fileStorage:
   s3:
     existingSecret: outline-s3-credentials
     bucket: wiki
-    region: garage
+    region: us-east-1
     bucketUrl: http://s3.sith.network:3900/wiki
     forcePathStyle: true
     acl: private
