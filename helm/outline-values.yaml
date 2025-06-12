@@ -14,7 +14,7 @@ fileStorage:
   importMaxSize: ""
   workspaceImportMaxSize: ""
   s3:
-    existingSecret: "outline-s3-credentials"
+    existingSecret: outline-s3-credentials
     bucket: wiki
     region: garage
     bucketUrl: http://s3.sith.network:3900/wiki
@@ -125,7 +125,8 @@ ingress:
           pathType: ImplementationSpecific
   # -- This is for setting up the ingress tls.
   tls:
-   - hosts:
+   -  secretName: sith-network-wildcard
+      hosts:
        - sith.network
 
 redis:
