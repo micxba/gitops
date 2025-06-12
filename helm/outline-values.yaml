@@ -27,7 +27,7 @@ fileStorage:
     bucket: wiki
     region: us-east-1
     bucketUrl: http://s3.sith.network:3900/wiki
-    forcePathStyle: true
+    forcePathStyle: false
     acl: private
 
 # -- This is for setting up the auth.
