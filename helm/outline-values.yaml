@@ -16,19 +16,31 @@ logging:
 #   level: debug # error, warn, info, http, verbose, debug and silly
 #   extraDebug: [] # "lifecycle", "http", "editor", "router", "collaboration", "misc", "store", "plugins", "policies"
 
-# -- This is for setting up the file storage. More information about file storage can be found here: https://docs.getoutline.com/s/hosting/doc/file-storage-N4M0T6Ypu7
 fileStorage:
-  mode: s3
+  mode: local # local or s3
   uploadMaxSize: "262144000"
   importMaxSize: ""
   workspaceImportMaxSize: ""
-  s3:
-    existingSecret: outline-s3-credentials
-    bucket: wiki
-    region: us-east-1
-    bucketUrl: http://s3.sith.network:3900/wiki
-    forcePathStyle: false
-    acl: private
+  local:
+    rootDir: /var/lib/outline/data
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
+
+# fileStorage:
+#   mode: s3
+#   uploadMaxSize: "262144000"
+#   importMaxSize: ""
+#   workspaceImportMaxSize: ""
+#   s3:
+#     existingSecret: outline-s3-credentials
+#     bucket: wiki
+#     region: us-east-1
+#     bucketUrl: http://s3.sith.network:3900/wiki
+#     forcePathStyle: false
+#     acl: private
 
 # -- This is for setting up the auth.
 auth:
