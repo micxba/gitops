@@ -26,11 +26,11 @@ auth:
   oidc:
     enabled: true
     clientId: "outline"
-    clientSecret: "<secret>"
+    clientSecret: "outline-secret"
     authUri: "https://dex.sith.network/dex/auth"
     tokenUri: "https://dex.sith.network/dex/token"
     userInfoUri: "https://dex.sith.network/dex/userinfo"
-    logoutUri: "https://dex.sith.network/dex/logout"   # Optional
+    logoutUri: "https://dex.sith.network/dex/logout"
     usernameClaim: preferred_username
     displayName: "Single Sign-On"
     scopes:
