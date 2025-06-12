@@ -11,11 +11,11 @@ spec:
   target:
     name: outline-crypt-keys
   data:
-    - secretKey: secretKey
+    - secretKey: SECRET_KEY
       remoteRef:
         key: outline
-        property: secretKey
-    - secretKey: sutilsSecret
+        property: SECRET_KEY
+    - secretKey: UTILS_SECRET
       remoteRef:
         key: outline
-        property: utilsSecret
+        property: UTILS_SECRET
