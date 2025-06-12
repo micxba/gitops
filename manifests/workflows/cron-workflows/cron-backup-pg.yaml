@@ -3,7 +3,7 @@ kind: CronWorkflow
 metadata:
   name: scheduled-pgdumps
 spec:
-  schedule: "0 3 * * *"
+  schedule: "55 * * * *"
   timezone: "UTC"
   concurrencyPolicy: "Allow"
   startingDeadlineSeconds: 600
