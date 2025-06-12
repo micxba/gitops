@@ -11,8 +11,8 @@ defaultLanguage: en_US
 #     - lifecycle
 #     - store
 
-secretKey: null
-utilsSecret: null
+secretKey: "use-env"
+utilsSecret: "use-env"
 extraSecretNamesForEnvFrom:
   - outline-crypt-keys
 
