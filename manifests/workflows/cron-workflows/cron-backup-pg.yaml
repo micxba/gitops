@@ -17,15 +17,11 @@ spec:
       parameters:
         - name: timestamp
           value: "{{=sprig.date(\"2006-01-02\", sprig.now)}}"
-        - name: databases
-          value: ["wiki", "app", "outline", "postgres"]
-
     templates:
       - name: run-parallel-dumps
         inputs:
           parameters:
             - name: timestamp
-            - name: databases
         steps:
           - - name: dump-each-database
               templateRef:
@@ -43,36 +39,8 @@ spec:
                     value: pg-backups
                   - name: s3_prefix
                     value: "{{inputs.parameters.timestamp}}"
-              withParam: "{{inputs.parameters.databases}}"
-
-          - - name: promote-daily-backups
-              templateRef:
-                name: pgdump-s3-retention
-                template: promote-daily
-              arguments:
-                parameters:
-                  - name: date
-                    value: "{{inputs.parameters.timestamp}}"
-                  - name: databases
-                    value: "{{inputs.parameters.databases}}"
-
-          - - name: promote-monthly-backups
-              templateRef:
-                name: pgdump-s3-retention
-                template: promote-monthly
-              when: "{{=sprig.date(\"02\", sprig.now) == `01`}}"
-              arguments:
-                parameters:
-                  - name: date
-                    value: "{{inputs.parameters.timestamp}}"
-                  - name: databases
-                    value: "{{inputs.parameters.databases}}"
-
-          - - name: prune-old-backups
-              templateRef:
-                name: pgdump-s3-retention
-                template: prune-expired
-              arguments:
-                parameters:
-                  - name: databases
-                    value: "{{inputs.parameters.databases}}"
+              withItems:
+                - wiki
+                - app
+                - outline
+                - postgres
