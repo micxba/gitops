@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: scheduled-pgdumps
+spec:
+  schedule: "0 3 * * *"  # Runs daily at 3:00 AM
+  timezone: "UTC"
+  concurrencyPolicy: "Allow"  # Allow overlapping runs
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  workflowSpec:
+    serviceAccountName: argo-workflow
+    parallelism: 5  # Controls how many can run in parallel
+    templates:
+      - name: run-parallel-dumps
+        steps:
+          - - name: dump-each-database
+              templateRef:
+                name: pgdump-s3
+                template: backup
+              arguments:
+                parameters:
+                  - name: postgres_host
+                    value: pg-main-r.cnpg-system
+                  - name: postgres_database
+                    value: "{{item}}"
+                  - name: s3_endpoint
+                    value: s3.sith.network:3900
+                  - name: s3_bucket
+                    value: pg-backups
+                  - name: s3_prefix
+                    value: "{{workflow.creationTimestamp.YYYY}}-{{workflow.creationTimestamp.MM}}-{{workflow.creationTimestamp.DD}}"
+              withItems:
+                - wiki
+                - app
+                - outline
+                - postgres
