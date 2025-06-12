@@ -1,0 +1,86 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: pgdump-s3-retention
+spec:
+  templates:
+
+    - name: promote-daily
+      inputs:
+        parameters:
+          - name: date       # Format: YYYY-MM-DD
+          - name: databases  # Comma-separated
+      script:
+        image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
+        command: [bash]
+        source: |
+          set -euo pipefail
+          IFS=',' read -ra DBS <<< "{{inputs.parameters.databases}}"
+          for db in "${DBS[@]}"; do
+            echo "Finding latest backup for $db on {{inputs.parameters.date}}..."
+            latest=$(aws --endpoint-url http://s3.sith.network:3900 s3 ls s3://pg-backups/{{inputs.parameters.date}}/ | grep "${db}_" | sort | tail -n1 | awk '{print $4}')
+            if [[ -n "$latest" ]]; then
+              echo "Promoting $latest to daily..."
+              aws --endpoint-url http://s3.sith.network:3900 s3 cp \
+                s3://pg-backups/{{inputs.parameters.date}}/$latest \
+                s3://pg-backups/daily/{{inputs.parameters.date}}/${db}.sql.gz
+            else
+              echo "No backup found for $db on {{inputs.parameters.date}}"
+            fi
+          done
+
+    - name: promote-monthly
+      inputs:
+        parameters:
+          - name: date
+          - name: databases
+      script:
+        image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
+        command: [bash]
+        source: |
+          set -euo pipefail
+          year_month=$(date -d "{{inputs.parameters.date}}" +%Y-%m)
+          IFS=',' read -ra DBS <<< "{{inputs.parameters.databases}}"
+          for db in "${DBS[@]}"; do
+            echo "Copying daily backup of $db to monthly..."
+            aws --endpoint-url http://s3.sith.network:3900 s3 cp \
+              s3://pg-backups/daily/{{inputs.parameters.date}}/${db}.sql.gz \
+              s3://pg-backups/monthly/$year_month/${db}.sql.gz || echo "Daily backup for $db missing"
+          done
+
+    - name: prune-expired
+      inputs:
+        parameters:
+          - name: databases
+      script:
+        image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
+        command: [bash]
+        source: |
+          set -euo pipefail
+          retention_hourly=72    # in hours
+          retention_daily=35     # in days
+          retention_monthly=15   # in months
+          now=$(date +%s)
+
+          prune_s3_folder() {
+            local folder="$1"
+            local cutoff_epoch="$2"
+            echo "Pruning $folder older than $(date -d @$cutoff_epoch)..."
+            aws --endpoint-url http://s3.sith.network:3900 s3 ls s3://pg-backups/$folder/ --recursive | while read -r line; do
+              file=$(echo "$line" | awk '{print $4}')
+              [[ -z "$file" ]] && continue
+              filename=$(basename "$file")
+              if [[ "$filename" =~ _([0-9]+)\.sql\.gz$ ]]; then
+                file_epoch="${BASH_REMATCH[1]}"
+                if [[ "$file_epoch" -lt "$cutoff_epoch" ]]; then
+                  echo "Deleting s3://pg-backups/$file"
+                  aws --endpoint-url http://s3.sith.network:3900 s3 rm s3://pg-backups/$file
+                fi
+              fi
+            done
+          }
+
+          # Calculate cutoffs
+          prune_s3_folder "hourly" $((now - retention_hourly * 3600))
+          prune_s3_folder "daily"  $(date -d "-${retention_daily} days" +%s)
+          prune_s3_folder "monthly" $(date -d "-${retention_monthly} months" +%s)
