@@ -3,18 +3,25 @@ kind: CronWorkflow
 metadata:
   name: scheduled-pgdumps
 spec:
-  schedule: "0 3 * * *"  # Runs daily at 3:00 AM
+  schedule: "0 3 * * *"
   timezone: "UTC"
-  concurrencyPolicy: "Allow"  # Allow overlapping runs
+  concurrencyPolicy: "Allow"
   startingDeadlineSeconds: 600
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   workflowSpec:
-    serviceAccountName: argo-workflow
     entrypoint: run-parallel-dumps
-    parallelism: 5  # Controls how many can run in parallel
+    serviceAccountName: argo-workflow
+    parallelism: 5
+    arguments:
+      parameters:
+        - name: timestamp
+          value: "{{=sprig.now | date \"2006-01-02\"}}"
     templates:
       - name: run-parallel-dumps
+        inputs:
+          parameters:
+            - name: timestamp
         steps:
           - - name: dump-each-database
               templateRef:
@@ -31,7 +38,7 @@ spec:
                   - name: s3_bucket
                     value: pg-backups
                   - name: s3_prefix
-                    value: "{{workflow.creationTimestamp.YYYY}}-{{workflow.creationTimestamp.MM}}-{{workflow.creationTimestamp.DD}}"
+                    value: "{{inputs.parameters.timestamp}}"
               withItems:
                 - wiki
                 - app
