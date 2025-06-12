@@ -28,7 +28,7 @@ spec:
           - name: s3_bucket
           - name: s3_prefix
       container:
-        image: ghcr.io/micxba/pg-dump:2025-06-11-46bf18a0-4616-44f0-a8e5-f2e092685a52
+        image: ghcr.io/micxba/pg-dump:2025-06-12-737385b4-00a5-4ee9-8de0-214f73e7d902
         env:
         - name: S3_ACCESS_KEY_ID
           valueFrom:
