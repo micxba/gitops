@@ -8,8 +8,8 @@ spec:
     - name: promote-daily
       inputs:
         parameters:
-          - name: date       # Format: YYYY-MM-DD
-          - name: databases  # Comma-separated
+          - name: date
+          - name: databases
       script:
         image: ghcr.io/micxba/tools:2025-05-31-f8238363-f158-497d-ae77-7d95cb2b2064
         command: [bash]

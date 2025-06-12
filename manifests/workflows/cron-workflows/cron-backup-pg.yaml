@@ -18,7 +18,8 @@ spec:
         - name: timestamp
           value: "{{=sprig.date(\"2006-01-02\", sprig.now)}}"
         - name: databases
-          value: "wiki,app,outline,postgres"
+          value: ["wiki", "app", "outline", "postgres"]
+
     templates:
       - name: run-parallel-dumps
         inputs:
