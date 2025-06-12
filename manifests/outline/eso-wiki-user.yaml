@@ -1,20 +1,20 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: postgres-wiki-user-credentials
+  name: postgres-outline-user-credentials
 spec:
   refreshInterval: "1h"
   secretStoreRef:
     name: vault-backend-css
     kind: ClusterSecretStore
   target:
-    name: postgres-wiki-user-credentials
+    name: postgres-outline-user-credentials
     template:
       mergePolicy: Merge
       data:
         username: wiki
   data:
-    - secretKey: password
+    - secretKey: postgres-password
       remoteRef:
-        key: pgsql/wiki-user
+        key: pgsql/outline-user
         property: password

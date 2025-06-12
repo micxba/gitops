@@ -1,0 +1,21 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: outline-s3-credentials
+spec:
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: outline-s3-credentials
+  data:
+    - secretKey: access-key-id
+      remoteRef:
+        key: garage/base-s3-rw
+        property: ACCESS_KEY_ID
+    - secretKey: secret-access-key
+      remoteRef:
+        key: garage/base-s3-rw
+        property: SECRET_ACCESS_KEY
