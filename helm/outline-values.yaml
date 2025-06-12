@@ -4,20 +4,22 @@ replicaCount: 1
 url: "https://sith.network"
 defaultLanguage: en_US
 
-logging:
-  level: debug
-  extraDebug:
-    - http
-    - lifecycle
-    - store
-
-
 # logging:
-#   level: debug # error, warn, info, http, verbose, debug and silly
-#   extraDebug: [] # "lifecycle", "http", "editor", "router", "collaboration", "misc", "store", "plugins", "policies"
+#   level: debug
+#   extraDebug:
+#     - http
+#     - lifecycle
+#     - store
+
+extraSecretNamesForEnvFrom:
+  - outline-crypt-keys
+
+logging:
+  level: info # error, warn, info, http, verbose, debug and silly
+  extraDebug: [] # "lifecycle", "http", "editor", "router", "collaboration", "misc", "store", "plugins", "policies"
 
 fileStorage:
-  mode: local # local or s3
+  mode: local
   uploadMaxSize: "262144000"
   importMaxSize: ""
   workspaceImportMaxSize: ""
