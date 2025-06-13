@@ -56,7 +56,7 @@ extraEnvVars:
   - name: AUTH_DEX_ISSUER_URL
     value: https://dex.sith.network/dex
   - name: AUTH_DEX_DEFAULT_ROLE_ID
-    value: User
+    value: 88349fc8-0061-41d0-838d-988a36071c08
   - name: AUTH_DEX_SYNC_USER_INFO
     value: "true"
   - name: AUTH_DEX_CLIENT_SECRET
