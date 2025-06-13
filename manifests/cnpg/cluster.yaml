@@ -23,7 +23,7 @@ spec:
         passwordSecret:
           name: postgres-outline-user-credentials
       - name: directus
-        ensure: absent
+        ensure: present
         comment: "directus user for outline wiki database"
         login: true
         createdb: true
