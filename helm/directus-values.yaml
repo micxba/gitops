@@ -64,6 +64,18 @@ extraEnvVars:
       secretKeyRef:
         name: directus-extra-secrets
         key: AUTH_DEX_CLIENT_SECRET
+  # Testing values to get OIDC working
+
+  - name: AUTH_DEX_IDENTIFIER_KEY
+    value: "email"
+  - name: AUTH_DEX_ALLOW_PUBLIC_REGISTRATION
+    value: "true"  # If you want to auto-create users
+  - name: REFRESH_TOKEN_COOKIE_SECURE
+    value: "true"  # Since you're using HTTPS
+  - name: REFRESH_TOKEN_COOKIE_SAME_SITE
+    value: "none"  # For cross-domain scenarios
+  - name: CORS_CREDENTIALS
+    value: "true"
 
 extraSecrets:
   - directus-extra-secrets
