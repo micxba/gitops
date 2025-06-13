@@ -54,7 +54,7 @@ extraEnvVars:
   - name: AUTH_DEX_CLIENT_ID
     value: directus
   - name: AUTH_DEX_ISSUER_URL
-    value: https://dex.sith.network/dex/.well-known/openid-configuration
+    value: https://dex.sith.network/dex
   - name: AUTH_DEX_CLIENT_SECRET
     valueFrom:
       secretKeyRef:
