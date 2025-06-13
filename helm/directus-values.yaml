@@ -43,20 +43,20 @@ extraEnvVars:
   - name: STORAGE_GARAGE_FORCE_PATH_STYLE
     value: "true"
   # OIDC configuration
-  - name: AUTH_PROVIDERS
-    value: DEX
-  - name: AUTH_DISABLE_DEFAULT
-    value: "false"
-  - name: AUTH_DEX_DRIVER
-    value: openid
-  - name: AUTH_DEX_CLIENT_ID
-    value: directus
-  - name: AUTH_DEX_ISSUER_URL
-    value: https://dex.sith.network
+  # - name: AUTH_PROVIDERS
+  #   value: DEX
+  # - name: AUTH_DISABLE_DEFAULT
+  #   value: "false"
+  # - name: AUTH_DEX_DRIVER
+  #   value: openid
+  # - name: AUTH_DEX_CLIENT_ID
+  #   value: directus
+  # - name: AUTH_DEX_ISSUER_URL
+  #   value: https://dex.sith.network
 
 extraSecrets:
   - directus-s3-credentials
-  - directus-dex-secret
+  # - directus-dex-secret
 
 
 
