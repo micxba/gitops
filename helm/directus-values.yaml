@@ -6,6 +6,8 @@ ingress:
   enabled: true
   # -- Enable TLS in PUBLIC_URL
   enableTLS: true
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ruleof3-k8s.sith.network"
   hosts:
     # -- Hostname to expose. You should create CNAME DNS record with this hostname to redirect to ALB DNS name
     - host: directus.sith.network
