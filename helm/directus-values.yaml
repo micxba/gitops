@@ -38,6 +38,9 @@ databaseEngine: "postgresql"
 createPostgresqlSecret: false
 createMysqlSecret: false
 
+mysql:
+  enableInstallation: false
+
 postgresql:
   # -- The switch to switch off the installation of the postgresql
   # The rest of the settings are being used during the installation and for DB connection
