@@ -57,8 +57,9 @@ extraEnvVars:
     value: https://dex.sith.network/dex/.well-known/openid-configuration
 
 extraSecrets:
-  - directus-s3-credentials
-  - directus-dex-secret
+  # - directus-s3-credentials
+  # - directus-dex-secret
+  - directus-extra-secrets
 
 
 
