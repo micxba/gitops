@@ -19,13 +19,27 @@ ingress:
        - sith.network
 
 extraEnvVars:
-  - STORAGE_LOCATIONS: GARAGE
-  - STORAGE_GARAGE_DRIVER: s3
-  - STORAGE_GARAGE_KEY: null
-  - STORAGE_GARAGE_SERET: null
-  - STORAGE_GARAGE_BUCKET: directus
-  - STORAGE_GARAGE_REGION: garage
-  - STORAGE_GARAGE_ENDPOINT: http://s3.sith.network:3900
+  - name: STORAGE_LOCATIONS
+    value: GARAGE
+  - name: STORAGE_GARAGE_DRIVER
+    value: s3
+  - name: STORAGE_GARAGE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: directus-s3-credentials
+        key: STORAGE_GARAGE_KEY
+  - name: STORAGE_GARAGE_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: directus-s3-credentials
+        key: STORAGE_GARAGE_SECRET
+  - name: STORAGE_GARAGE_BUCKET
+    value: directus
+  - name: STORAGE_GARAGE_REGION
+    value: garage
+  - name: STORAGE_GARAGE_ENDPOINT
+    value: http://s3.sith.network:3900
+
 
 extraSecrets:
   - directus-s3-credentials
