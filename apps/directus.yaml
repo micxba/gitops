@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: directus
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://directus-labs.github.io/helm-chart
+      targetRevision: 2.0.2
+      chart: directus
+      helm:
+        valueFiles:
+          - $values/helm/directus-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/directus
+      targetRevision: main
+  destination:
+    namespace: directus
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=false
+    # automated:
+    #   prune: true
+    #   selfHeal: true
