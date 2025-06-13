@@ -29,12 +29,12 @@ extraEnvVars:
   - name: STORAGE_GARAGE_KEY
     valueFrom:
       secretKeyRef:
-        name: directus-s3-credentials
+        name: directus-extra-secrets
         key: STORAGE_GARAGE_KEY
   - name: STORAGE_GARAGE_SECRET
     valueFrom:
       secretKeyRef:
-        name: directus-s3-credentials
+        name: directus-extra-secrets
         key: STORAGE_GARAGE_SECRET
   - name: STORAGE_GARAGE_BUCKET
     value: directus
@@ -55,10 +55,13 @@ extraEnvVars:
     value: directus
   - name: AUTH_DEX_ISSUER_URL
     value: https://dex.sith.network/dex/.well-known/openid-configuration
+  - name: AUTH_DEX_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: directus-extra-secrets
+        key: AUTH_DEX_CLIENT_SECRET
 
 extraSecrets:
-  # - directus-s3-credentials
-  # - directus-dex-secret
   - directus-extra-secrets
 
 
