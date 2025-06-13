@@ -46,7 +46,7 @@ extraEnvVars:
   - name: AUTH_PROVIDERS
     value: DEX
   - name: AUTH_DISABLE_DEFAULT
-    value: false
+    value: "false"
   - name: AUTH_DEX_DRIVER
     value: openid
   - name: AUTH_DEX_CLIENT_ID
