@@ -39,6 +39,8 @@ extraEnvVars:
     value: garage
   - name: STORAGE_GARAGE_ENDPOINT
     value: http://s3.sith.network:3900
+  - name: STORAGE_GARAGE_FORCE_PATH_STYLE
+    value: "true"
 
 
 extraSecrets:
