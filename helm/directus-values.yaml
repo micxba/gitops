@@ -18,6 +18,20 @@ ingress:
    - hosts:
        - sith.network
 
+extraEnvVars:
+  - STORAGE_LOCATIONS: GARAGE
+  - STORAGE_GARAGE_DRIVER: s3
+  - STORAGE_GARAGE_KEY: null
+  - STORAGE_GARAGE_SERET: null
+  - STORAGE_GARAGE_BUCKET: directus
+  - STORAGE_GARAGE_REGION: garage
+  - STORAGE_GARAGE_ENDPOINT: http://s3.sith.network:3900
+
+extraSecrets:
+  - directus-s3-credentials
+
+
+
 autoscaling:
   enabled: false
   minReplicas: 1
