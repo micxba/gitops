@@ -18,7 +18,7 @@ spec:
         - .data
   sources:
     - repoURL: https://charts.jetstack.io
-      targetRevision: v1.17.2
+      targetRevision: 1.18.0
       chart: cert-manager
       helm:
         valueFiles:
