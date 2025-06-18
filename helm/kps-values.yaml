@@ -20,23 +20,28 @@ alertmanager:
         pushover_configs:
           - user_key_file: /etc/alertmanager/secrets/pushover-secret/token
             token_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
-            title: '{{ .Status | toUpper }}: {{ .CommonAnnotations.summary }}'
+            title: '{{ .Status | toUpper }}{{ if .CommonAnnotations.summary }}: {{ .CommonAnnotations.summary }}{{ else }}: {{ .CommonLabels.alertname }}{{ end }}'
             message: |-
-              🔥 Severity: {{ .CommonLabels.severity }}
-              📝 Description: {{ .CommonAnnotations.description }}
-              📛 Alert Name: {{ .CommonLabels.alertname }}
-              📦 Container: {{ .CommonLabels.container | default "n/a" }}
-              🛠️ Controller: {{ .CommonLabels.controller | default "n/a" }}
+              🔥 Severity: {{ .CommonLabels.severity | default "unknown" }}
+              📝 Description: {{ .CommonAnnotations.description | default .CommonAnnotations.summary | default "No description" }}
+              📛 Alert: {{ .CommonLabels.alertname }}
+              {{- if .CommonLabels.container }}
+              📦 Container: {{ .CommonLabels.container }}
+              {{- end }}
+              {{- if .CommonLabels.controller }}
+              🛠️ Controller: {{ .CommonLabels.controller }}
+              {{- end }}
               🖥️ Instance: {{ .CommonLabels.instance }}
-              📂 Namespace: {{ .CommonLabels.namespace | default "n/a" }}
+              {{- if .CommonLabels.namespace }}
+              📂 Namespace: {{ .CommonLabels.namespace }}
+              {{- end }}
               🚦 Status: {{ .Status }}
-
-              👉 [View in Grafana](https://grafana.sith.network)
-            priority: 0
-            sound: bugle
-            url: "https://grafana.sith.network"
-            url_title: "Grafana"
-            send_resolved: true
+                priority: 0
+                sound: bugle
+                url: "https://grafana.sith.network"
+                url_title: "Grafana"
+                send_resolved: true
+      - name: 'null'
 
 
   templateFiles:
