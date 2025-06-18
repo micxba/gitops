@@ -40,7 +40,5 @@ spec:
                   - name: s3_prefix
                     value: "{{inputs.parameters.timestamp}}"
               withItems:
-                - wiki
-                - app
-                - outline
+                - directus
                 - postgres
