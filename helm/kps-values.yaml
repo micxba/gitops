@@ -20,24 +20,25 @@ alertmanager:
         pushover_configs:
           - user_key_file: /etc/alertmanager/secrets/pushover-secret/token
             token_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
-            title: "Homelab Alert"
+            title: '{{ .Status | toUpper }}: {{ .CommonAnnotations.summary }}'
             message: |-
-              🔔 {{ .CommonLabels.alertname }} [{{ .CommonLabels.severity }}]
-              🔹 Instance: {{ .CommonLabels.instance }}
-              🔹 Job: {{ .CommonLabels.job }}
-              {{- if .CommonLabels.namespace }}
-              🔹 Namespace: {{ .CommonLabels.namespace }}
-              {{- end }}
-              {{- if .CommonAnnotations.description }}
-              🔸 {{ .CommonAnnotations.description }}
-              {{- else if .CommonAnnotations.summary }}
-              🔸 {{ .CommonAnnotations.summary }}
-              {{- end }}
+              🔥 Severity: {{ .CommonLabels.severity }}
+              📝 Description: {{ .CommonAnnotations.description }}
+              ⏰ Time: {{ .StartsAt | time }}
+              📛 Alert Name: {{ .CommonLabels.alertname }}
+              📦 Container: {{ .CommonLabels.container | default "n/a" }}
+              🛠️ Controller: {{ .CommonLabels.controller | default "n/a" }}
+              🖥️ Instance: {{ .CommonLabels.instance }}
+              📂 Namespace: {{ .CommonLabels.namespace | default "n/a" }}
+              🚦 Status: {{ .Status }}
+
+              👉 [View in Grafana](https://grafana.sith.network)
             priority: 0
             sound: bugle
             url: "https://grafana.sith.network"
             url_title: "Grafana"
             send_resolved: true
+
 
   templateFiles:
     template_1.tmpl: |-
