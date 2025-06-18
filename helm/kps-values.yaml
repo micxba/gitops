@@ -22,8 +22,8 @@ alertmanager:
             token_file: /etc/alertmanager/secrets/pushover-secret/homelab-apikey
             title: '{{ .Status | toUpper }}{{ if .CommonAnnotations.summary }}: {{ .CommonAnnotations.summary }}{{ else }}: {{ .CommonLabels.alertname }}{{ end }}'
             message: |-
-              🔥 Severity: {{ .CommonLabels.severity | default "unknown" }}
-              📝 Description: {{ .CommonAnnotations.description | default .CommonAnnotations.summary | default "No description" }}
+              🔥 Severity: {{ if .CommonLabels.severity }}{{ .CommonLabels.severity }}{{ else }}unknown{{ end }}
+              📝 Description: {{ if .CommonAnnotations.description }}{{ .CommonAnnotations.description }}{{ else if .CommonAnnotations.summary }}{{ .CommonAnnotations.summary }}{{ else }}No description{{ end }}
               📛 Alert: {{ .CommonLabels.alertname }}
               {{- if .CommonLabels.container }}
               📦 Container: {{ .CommonLabels.container }}
@@ -36,11 +36,9 @@ alertmanager:
               📂 Namespace: {{ .CommonLabels.namespace }}
               {{- end }}
               🚦 Status: {{ .Status }}
-                priority: 0
-                sound: bugle
-                url: "https://grafana.sith.network"
-                url_title: "Grafana"
-                send_resolved: true
+
+              👉 [View in Grafana](https://grafana.sith.network)
+
       - name: 'null'
 
 
