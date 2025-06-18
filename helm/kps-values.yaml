@@ -24,7 +24,6 @@ alertmanager:
             message: |-
               🔥 Severity: {{ .CommonLabels.severity }}
               📝 Description: {{ .CommonAnnotations.description }}
-              ⏰ Time: {{ .StartsAt | time }}
               📛 Alert Name: {{ .CommonLabels.alertname }}
               📦 Container: {{ .CommonLabels.container | default "n/a" }}
               🛠️ Controller: {{ .CommonLabels.controller | default "n/a" }}
