@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homer
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/homer
+      targetRevision: main
+  destination:
+    namespace: homer
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=false
+    automated:
+      prune: true
+      selfHeal: true
