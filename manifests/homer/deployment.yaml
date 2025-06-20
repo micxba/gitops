@@ -15,7 +15,7 @@ spec:
       containers:
         - name: homer
           resources: {}
-          image: ghcr.io/micxba/homer:2025-06-20-59f0b582-bd8a-413a-8a50-baaa248a2f50
+          image: ghcr.io/micxba/homer:2025-06-20-a26db3a5-1d99-4fc2-bfd7-5ed955c213ab
           ports:
             - containerPort: 8080
           volumeMounts:
