@@ -55,9 +55,9 @@ pages:
                 colorRules:
                   - gt: 0
                     color: green
-                  - gt: 60
+                  - gt: 80
                     color: orange
-                  - gt: 85
+                  - gt: 90
                     color: red
  
             - key: "Memory: Worker 2"
@@ -72,9 +72,9 @@ pages:
                 colorRules:
                   - gt: 0
                     color: green
-                  - gt: 60
+                  - gt: 80
                     color: orange
-                  - gt: 85
+                  - gt: 90
                     color: red
             - key: "Memory: Worker 3"
               cluster: ruleof3-k8s
@@ -88,9 +88,9 @@ pages:
                 colorRules:
                   - gt: 0
                     color: green
-                  - gt: 60
+                  - gt: 80
                     color: orange
-                  - gt: 85
+                  - gt: 90
                     color: red
 
       - span: 1
