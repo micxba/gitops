@@ -1,0 +1,36 @@
+---
+# Build a single image from the helm-aware repository
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: helm-aware-build
+  namespace: workflows
+spec:
+  entrypoint: build-helm-aware
+  serviceAccountName: argo-workflow
+
+  templates:
+    - name: build-helm-aware
+      container:
+        image: gcr.io/kaniko-project/executor:v1.22.0-debug
+        command: [sh, -c]
+        args:
+          - |
+            mkdir -p /kaniko/.docker && \
+            echo "{\"auths\":{\"ghcr.io\":{\"auth\":\"$(echo -n micxba:${GHCR_TOKEN} | base64 -w 0)\"}}}" > /kaniko/.docker/config.json && \
+            TAG=$(date +%F)-{{workflow.uid}} && \
+            /kaniko/executor \
+              --dockerfile=Dockerfile \
+              --context=git://github.com/micxba/helm-aware.git#refs/heads/main \
+              --destination=ghcr.io/micxba/helm-aware:latest \
+              --destination=ghcr.io/micxba/helm-aware:$TAG \
+              --cache=true \
+              --cache-repo=ghcr.io/micxba/cache \
+              --verbosity=debug
+        env:
+          - name: GHCR_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: ghcr-creds
+                key: token
+
