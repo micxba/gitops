@@ -1,0 +1,49 @@
+
+controller:
+  kind: daemonset
+  # Annotations to add to the daemonset or deployment
+  annotations: {}
+  # -- Extra labels to add to the daemonset or deployment
+  labels: {}
+  daemonset:
+    updateStrategy:
+      # You can also customize maxUnavailable or minReadySeconds if you
+      # need it
+      # -- Perform rolling updates by default in the DaemonSet agent
+      # ref: https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/
+      type: RollingUpdate
+  deployment:
+    # -- Number of replicas when installing Falco using a deployment. Change it if you really know what you are doing.
+    # For more info check the section on Plugins in the README.md file.
+    replicas: 1
+    # -- Number of old history to retain to allow rollback (If not set, default Kubernetes value is set to 10)
+    # revisionHistoryLimit: 1
+
+metrics:
+  enabled: true
+
+# -- certificates used by webserver and grpc server.
+# paste certificate content or use helm with --set-file
+# or use existing secret containing key, crt, ca as well as pem bundle
+certs:
+  # -- Existing secret containing the following key, crt and ca as well as the bundle pem.
+  existingSecret: ""
+  server:
+    # -- Key used by gRPC and webserver.
+    key: ""
+    # -- Certificate used by gRPC and webserver.
+    crt: ""
+  ca:
+    # -- CA certificate used by gRPC, webserver and AuditSink validation.
+    crt: ""
+  existingClientSecret: ""
+  client:
+    # -- Key used by http mTLS client.
+    key: ""
+    # -- Certificate used by http mTLS client.
+    crt: ""
+
+# -- For configuration values, see https://github.com/falcosecurity/charts/blob/master/charts/falcosidekick/values.yaml
+falcosidekick:
+  enabled: true
+ 

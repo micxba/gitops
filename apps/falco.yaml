@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: falco
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://falcosecurity.github.io/chartsartifac
+      targetRevision: 6.0.2
+      chart: falco
+      helm:
+        valueFiles:
+          - $values/helm/falco-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   path: manifests/falco
+    #   targetRevision: main
+  destination:
+    namespace: falco
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=false
+    # automated:
+    #   prune: true
+    #   selfHeal: true
