@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://falcosecurity.github.io/chartsartifac
+    - repoURL: https://falcosecurity.github.io/charts
       targetRevision: 6.0.2
       chart: falco
       helm:
