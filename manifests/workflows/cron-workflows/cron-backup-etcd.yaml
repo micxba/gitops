@@ -25,24 +25,48 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              #!/usr/bin/env bash
               set -euo pipefail
 
               export TALOSCONFIG=/tmp/talos/config
 
               DATE=$(date +%Y%m%d%H%M)
-              cp='192.168.0.216'
-              wn='192.168.0.220'
+              SNAPSHOT="ruleof3-k8s-etcd-${DATE}.snapshot"
+              BACKUP_FILES=()
 
-              talosctl -n "$cp" etcd snapshot ruleof3-k8s-etcd-${DATE}.snapshot
-              talosctl -n "$cp" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > cp.yaml
-              talosctl -n "$wn" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > wn.yaml
+              # List your control-plane and worker node IPs/hostnames here
+              CONTROL_PLANES=(192.168.0.216 192.168.0.228 192.168.0.236)
+              WORKER_NODES=(192.168.0.220 192.168.0.156 192.168.0.224)
 
-              tar -zcf cluster-backup-${DATE}.tar.gz ruleof3-k8s-etcd-${DATE}.snapshot cp.yaml wn.yaml
+              # Take etcd snapshot from the first control-plane node
+              FIRST_CP="${CONTROL_PLANES[0]}"
+              talosctl -n "$FIRST_CP" etcd snapshot "$SNAPSHOT"
+              BACKUP_FILES+=("$SNAPSHOT")
+
+              # Backup control-plane configs
+              for cp_ip in "${CONTROL_PLANES[@]}"; do
+                last_octet="${cp_ip##*.}"
+                cp_file="cp${last_octet}.yaml"
+                talosctl -n "$cp_ip" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > "$cp_file"
+                BACKUP_FILES+=("$cp_file")
+              done
+
+              # Backup worker node configs
+              for wn_ip in "${WORKER_NODES[@]}"; do
+                last_octet="${wn_ip##*.}"
+                wn_file="wn${last_octet}.yaml"
+                talosctl -n "$wn_ip" get mc v1alpha1 -o yaml | yq -o=yaml '.spec' > "$wn_file"
+                BACKUP_FILES+=("$wn_file")
+              done
+
+              # Create tarball
+              TARBALL="cluster-backup-${DATE}.tar.gz"
+              tar -zcf "$TARBALL" "${BACKUP_FILES[@]}"
 
               # Upload to S3
-              aws s3 cp cluster-backup-${DATE}.tar.gz s3://etcd-backups/ \
-              --endpoint-url http://s3.sith.network:3900 \
-              --no-progress
+              aws s3 cp "$TARBALL" s3://etcd-backups/ \
+                --endpoint-url http://s3.sith.network:3900 \
+                --no-progress
 
 
           env:
