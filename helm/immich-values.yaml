@@ -7,7 +7,7 @@ env:
   valueFrom:
     secretKeyRef:
       name: postgres-immich-user-credentials
-      key: passowrd
+      key: DB_PASSWORD
   IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
 
 # postgresql:
