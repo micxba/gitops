@@ -9,7 +9,7 @@ postgresql:
   global:
     postgresql:
       auth:
-        existingSecret: immich-postgresql-secret
+        existingSecret: postgres-immich-user-credentials
 
 immich:
   metrics:
