@@ -5,6 +5,10 @@ env:
   DB_DATABASE_NAME: immich
   IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
 
+persistence:
+  library:
+    existingClaim: immich-library-pvc
+
 postgresql:
   global:
     postgresql:
@@ -37,8 +41,6 @@ server:
 
 machine-learning:
   persistence:
-    library:
-      existingClaim: immich-library-pvc
     cache:
       enabled: true
       size: 30Gi
