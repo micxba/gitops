@@ -1,9 +1,11 @@
+namespaceOverride: monitoring
+
 alloy:
   configMap:
     create: true
     content: |
       loki.source.kubernetes "pods" {
-        forward_to = [loki.write.local.receiver]
+        targets = [loki.write.local.receiver]
       }
 
       loki.write "local" {
@@ -14,5 +16,6 @@ alloy:
   mounts:
     varlog: true
     dockercontainers: false
+
 controller:
-  type: 'daemonset'
+  type: "daemonset"
