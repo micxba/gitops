@@ -35,6 +35,3 @@ server:
           hosts:
             - baumannphoto.com
 
-machine-learning:
-  persistence:
-      size: 30Gi
