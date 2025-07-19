@@ -4,10 +4,10 @@ env:
   DB_USERNAME: immich
   DB_DATABASE_NAME: immich
   DB_PASSWORD:
-  valueFrom:
-    secretKeyRef:
-      name: postgres-immich-user-credentials
-      key: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: postgres-immich-user-credentials
+        key: DB_PASSWORD
   IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
 
 # postgresql:
