@@ -37,4 +37,9 @@ server:
 
 machine-learning:
   persistence:
+    cache:
+      enabled: true
       size: 30Gi
+      type: pvc
+      accessMode: ReadWriteMany
+      storageClass: nfs-client
