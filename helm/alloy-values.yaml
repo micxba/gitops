@@ -2,24 +2,17 @@ alloy:
   configMap:
     create: true
     content: |
-      discovery.files {
-        targets = [
-          {
-            __path__ = "/var/log/pods/**/*.log"
-          }
-        ]
+      loki.source.kubernetes "pods" {
+        # Optionally, customize namespace or selectors here if you want to restrict collection
+        # namespaces = ["default", "monitoring", ...]
       }
-      local.file_match "pod_logs" {
-        files = discovery.files.targets
-      }
-      loki.write {
+
+      loki.write "local" {
         endpoint {
           url = "http://loki-write.monitoring.svc:3100/loki/api/v1/push"
         }
-        labels = {
-          job = "kubernetes-pods"
-        }
-        forward_to = [local.file_match.pod_logs.receiver]
+        # This automatically gets all the right labels (namespace, pod, etc) from source.kubernetes
+        forward_to = [loki.source.kubernetes.pods.receiver]
       }
   mounts:
     varlog: true
