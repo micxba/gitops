@@ -8,6 +8,7 @@ alloy:
           url       = "http://loki-write.monitoring.svc/loki/api/v1/push"
           tenant_id = "lab"
         }
+      }
   mounts:
     varlog: true
     dockercontainers: false
