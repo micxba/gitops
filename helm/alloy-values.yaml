@@ -2,16 +2,12 @@ alloy:
   configMap:
     create: true
     content: |
-      loki.source.kubernetes "pods" {
-        # Optionally, customize namespace or selectors here if you want to restrict collection
-        # namespaces = ["default", "monitoring", ...]
-      }
+      loki.source.kubernetes "pods" {}
 
       loki.write "local" {
         endpoint {
           url = "http://loki-write.monitoring.svc:3100/loki/api/v1/push"
         }
-        # This automatically gets all the right labels (namespace, pod, etc) from source.kubernetes
         forward_to = [loki.source.kubernetes.pods.receiver]
       }
   mounts:
