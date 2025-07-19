@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argo-cd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://immich-app.github.io/immich-charts
+      targetRevision: 0.9.3
+      chart: immich
+      helm:
+        valueFiles:
+          - $values/helm/immich-values.yaml
+    - repoURL: git@github.com:micxba/gitops.git
+      targetRevision: main
+      ref: values
+    - repoURL: git@github.com:micxba/gitops.git
+      path: manifests/immich
+      targetRevision: main
+  destination:
+    namespace: immich
+    name: in-cluster
+  syncPolicy:
+    syncOptions:
+    - Prune=true
+    - ServerSideApply=false
+    automated:
+      prune: true
+      selfHeal: true
