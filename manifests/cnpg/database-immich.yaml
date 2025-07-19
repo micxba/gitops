@@ -1,0 +1,31 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: postgres-immich-user-credentials
+spec:
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: vault-backend-css
+    kind: ClusterSecretStore
+  target:
+    name: postgres-immich-user-credentials
+    template:
+      mergePolicy: Merge
+      data:
+        username: immich
+  data:
+    - secretKey: password
+      remoteRef:
+        key: pgsql/immich-user
+        property: password
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: pg-main-immich-db
+spec:
+  cluster:
+    name: pg-main
+  name: immich
+  owner: immich
