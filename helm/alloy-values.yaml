@@ -1,18 +1,13 @@
 namespaceOverride: monitoring
-
 alloy:
   configMap:
     create: true
-    content: |
-      loki.source.kubernetes "pods" {
-        targets = [loki.write.local.receiver]
-      }
-
+    content: |-
       loki.write "local" {
         endpoint {
-          url = "http://loki-write.monitoring.svc:3100/loki/api/v1/push"
+          url       = "http://loki-write.monitoring.svc/loki/api/v1/push"
+          tenant_id = "lab"
         }
-      }
   mounts:
     varlog: true
     dockercontainers: false
