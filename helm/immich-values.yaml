@@ -3,13 +3,18 @@ env:
   DB_HOSTNAME: pg-main-rw.cnpg-system
   DB_USERNAME: immich
   DB_DATABASE_NAME: immich
+  DB_PASSWORD:
+  valueFrom:
+    secretKeyRef:
+      name: postgres-immich-user-credentials
+      key: passowrd
   IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
 
-postgresql:
-  global:
-    postgresql:
-      auth:
-        existingSecret: postgres-immich-user-credentials
+# postgresql:
+#   global:
+#     postgresql:
+#       auth:
+#         existingSecret: postgres-immich-user-credentials
 
 immich:
   metrics:
