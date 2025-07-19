@@ -2,14 +2,17 @@ alloy:
   configMap:
     create: true
     content: |
-      loki.source.kubernetes "pods" {}
+      loki.source.kubernetes "pods" {
+        forward_to = [loki.write.local.receiver]
+      }
 
       loki.write "local" {
         endpoint {
           url = "http://loki-write.monitoring.svc:3100/loki/api/v1/push"
         }
-        forward_to = [loki.source.kubernetes.pods.receiver]
       }
   mounts:
     varlog: true
     dockercontainers: false
+controller:
+  type: 'daemonset'
