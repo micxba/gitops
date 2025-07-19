@@ -29,6 +29,13 @@ spec:
         createdb: true
         passwordSecret:
           name: postgres-directus-user-credentials
+      - name: immich
+        ensure: present
+        comment: "immich user"
+        login: true
+        createdb: true
+        passwordSecret:
+          name: postgres-immich-user-credentials
 
   superuserSecret:
     name: postgres-superuser-credentials
