@@ -37,6 +37,8 @@ server:
 
 machine-learning:
   persistence:
+    library:
+      existingClaim: immich-library-pvc
     cache:
       enabled: true
       size: 30Gi
