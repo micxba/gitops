@@ -3,6 +3,7 @@ singleNamespace: false
 workflow:
   serviceAccount:
     create: true
+
 # Controller
 controller:
   metricsConfig:
@@ -36,7 +37,9 @@ controller:
           - key: cron_workflow
             value: "{{= sprig.default('', workflow.labels['workflows.argoproj.io/cron-workflow']) }}"
           when: "{{= workflow.status == 'Failed' or workflow.status == 'Error' }}"
-
+      ttlStrategy:
+        secondsAfterFailure: 600        # Delete failed workflows after 10 minutes
+        secondsAfterSuccess: 172800     # Delete succeeded workflows after 48 hours (2 days)
 
   # -- enable Workflow Archive to store the status of workflows. Postgres and MySQL (>= 5.7.8) are available.
   ## Ref: https://argo-workflows.readthedocs.io/en/stable/workflow-archive/
