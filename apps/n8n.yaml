@@ -17,9 +17,9 @@ spec:
     - repoURL: git@github.com:micxba/gitops.git
       targetRevision: main
       ref: values
-    - repoURL: git@github.com:micxba/gitops.git
-      path: manifests/n8n
-      targetRevision: main
+    # - repoURL: git@github.com:micxba/gitops.git
+    #   path: manifests/n8n
+    #   targetRevision: main
   destination:
     namespace: n8n
     name: in-cluster
