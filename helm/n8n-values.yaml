@@ -703,7 +703,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls: []
+  tls:
    - hosts:
        - n8n.sith.network
 
