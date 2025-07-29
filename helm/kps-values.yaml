@@ -16,7 +16,7 @@ alertmanager:
           receiver: 'null'
         - matchers:
             - alertname = "KubePodNotReady"
-              namespace = "workflows"
+            - namespace = "workflows"
           receiver: 'null'
 
 
